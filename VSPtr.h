@@ -5,7 +5,6 @@
 #ifndef VS_CODE_MEMORY_MANAGER_VSPTR_H
 #define VS_CODE_MEMORY_MANAGER_VSPTR_H
 
-
 #include <iostream>
 #include <bits/stdc++.h>
 
@@ -18,20 +17,28 @@ private:
 
     T *ptr;
 
+    string id;
+
+public:
+
     T *get_ptr() {
         return ptr;
     }
 
-public:
-    explicit VSPtr(T *p = NULL) {
-        ptr = p;
-        cout << "Nuevo" << endl;
+    string get_id(){
+        return id;
     }
 
-    VSPtr(const VSPtr &p) {
-        ptr = p.get_ptr();
-        cout << "Copia" << endl;
+    VSPtr () {
+        id = "some random id generator like uuid";
+        ptr = new T();
     }
+
+
+//    VSPtr(const VSPtr &p) {
+//        ptr = p;
+//        cout << "Copia" << endl;
+//    }
 
     ~VSPtr() {
         delete (ptr);
@@ -40,6 +47,7 @@ public:
     VSPtr &operator=(VSPtr &element) {
         cout << "Pointer to Pointer" << endl;
         ptr = element.get_ptr();
+        id = element.get_id();
     }
 
     VSPtr &operator=(T element) {
@@ -51,15 +59,13 @@ public:
         return *ptr;
     }
 
-    T *operator*() {
-        return ptr;
+    VSPtr<T>& operator*() {
+        return *this;
     }
 
-    //    static VSPtr New(){
-//        VSPtr p1;
-//        VSPtr p2 = p1;
-//        return p2;
-//    }
+    static VSPtr<T> New() {
+        return VSPtr<T>();
+    }
 
 };
 
