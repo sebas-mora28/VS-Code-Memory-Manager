@@ -18,7 +18,7 @@ private:
 
     T *ptr;
 
-    T *get_ptr(){
+    T *get_ptr() {
         return ptr;
     }
 
@@ -37,18 +37,21 @@ public:
         delete (ptr);
     }
 
-    VSPtr &operator =(VSPtr &element) {
+    VSPtr &operator=(VSPtr &element) {
         cout << "Pointer to Pointer" << endl;
         ptr = element.get_ptr();
     }
-    VSPtr &operator =(T element) {
+
+    VSPtr &operator=(T element) {
         cout << "Pointer to Data" << endl;
         ptr = new T(element);
     }
 
+    T &operator&() {
+        return *ptr;
+    }
+
 };
-
-
 
 
 #endif //VS_CODE_MEMORY_MANAGER_VSPTR_H
