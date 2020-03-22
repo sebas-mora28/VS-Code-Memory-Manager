@@ -51,6 +51,16 @@ public:
         return *ptr;
     }
 
+    T *operator*() {
+        return ptr;
+    }
+
+    //    static VSPtr New(){
+//        VSPtr p1;
+//        VSPtr p2 = p1;
+//        return p2;
+//    }
+
 };
 
 
