@@ -37,7 +37,14 @@ public:
         delete (ptr);
     }
 
-
+    VSPtr &operator =(VSPtr &element) {
+        cout << "Pointer to Pointer" << endl;
+        ptr = element.get_ptr();
+    }
+    VSPtr &operator =(T element) {
+        cout << "Pointer to Data" << endl;
+        ptr = new T(element);
+    }
 
 };
 
