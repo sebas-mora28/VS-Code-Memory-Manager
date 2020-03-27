@@ -6,7 +6,7 @@
 #define VS_CODE_MEMORY_MANAGER_VSPTR_H
 
 #include <iostream>
-#include <bits/stdc++.h>
+//#include <bits/stdc++.h>
 
 using namespace std;
 
