@@ -6,68 +6,192 @@
 #define VS_CODE_MEMORY_MANAGER_VSPTR_H
 
 #include <iostream>
-//#include <bits/stdc++.h>
+#include "GarbageCollector/GarbageCollector.h"
 
 using namespace std;
 
+
 template<class T>
-
 class VSPtr {
+
+    /**
+     * CLASS MEMBERS
+     */
 private:
-
     T *ptr;
+    uint32_t id;
 
-    string id;
+    static GarbageCollector* garbageCollector;
+
+
 
 public:
 
-    T *get_ptr() {
-        return ptr;
+
+    /**
+     * Constructor
+     */
+    VSPtr() {
+        ptr = (T*) malloc(sizeof(T));
+        id = garbageCollector->generateID();
+        garbageCollector->addInstance(ptr);
+        std::cout << "DIRECCION DE MEMORIA DEL DATO QUE GUARDA EL VSPointer " << id << "   " << ptr << "\n";
     }
 
-    string get_id(){
-        return id;
+
+
+
+
+    /**
+    * Return the current of the current VSPtr
+    * @tparam T
+    * @return uint32_t id
+    */
+    uint32_t get_id(){
+        return this->id;
     }
 
-    VSPtr () {
-        id = "some random id generator like uuid";
-        ptr = new T();
+
+    /**
+    * Return the ptr that VSPtr holds
+    * @tparam T
+    * @return
+    */
+    T* get_ptr() {
+        return this->ptr;
     }
 
 
-//    VSPtr(const VSPtr &p) {
-//        ptr = p;
-//        cout << "Copia" << endl;
-//    }
+
+
+    /**
+     * Sets the VSPtr id
+     * @param newid
+     */
+    void set_id(uint32_t newid){
+        this->id = newid;
+    }
+
+
+
+    static GarbageCollector* getGc(){
+        return garbageCollector;
+    }
+
+
+
+
+    /**
+     * Copy constructor
+     * @param p
+     */
+    VSPtr(const VSPtr &p) {
+        ptr = p.ptr;
+        std::cout << "Copia" << "\n";
+    }
+
+
+
+
+    /**
+     * Destructor
+     */
 
     ~VSPtr() {
+        std::cout << "DESTRUCTOR" << "\n";
         delete (ptr);
     }
 
-    VSPtr &operator=(VSPtr &element) {
-        cout << "Pointer to Pointer" << endl;
-        ptr = element.get_ptr();
-        id = element.get_id();
-    }
 
-    VSPtr &operator=(T element) {
-        cout << "Pointer to Data" << endl;
-        ptr = new T(element);
-    }
 
-    T &operator&() {
-        return *ptr;
-    }
+    /**
+     * Overload = operator
+     * @param other
+     * @return
+     */
 
-    VSPtr<T>& operator*() {
+    VSPtr<T>& operator=(VSPtr& other) {
+        std::cout << "ENTRA OPERATOR = Y EL ID ES " <<  id <<   "\n";
+        std::cout << "Pointer to Pointer " << "\n";
+        garbageCollector->decrementRedCount(id);
+        ptr = other.get_ptr();
+        id = other.get_id();
+        garbageCollector->incrementRefCount(id);
+        garbageCollector->printGargabeCollectorInfo();
         return *this;
     }
 
-    static VSPtr<T> New() {
-        return VSPtr<T>();
+
+
+
+    /**
+     * Overlodad the = operator
+     * @param element
+     * @return
+     */
+    VSPtr& operator=(T element) {
+        std::cout << "Pointer to Data" << "\n";
+        ptr = new T(element);
+        return *this;
     }
 
+
+
+
+
+
+    /**
+     * Overlodad & operato
+     * @return
+     */
+    T& operator&() {
+        std::cout << "OPERADOR & ";
+        return *ptr;
+    }
+
+
+
+
+    /**
+     * Overload the * operator
+     * @return
+     */
+    T& operator*() {
+        std::cout << "OPERADOR *"  << ptr << "\n";
+        return *ptr;
+    }
+
+
+
+
+    /**
+     * Overload -> operator
+     */
+    VSPtr<T>& operator->(){
+        return &this;
+    }
+
+
+
+
+    /**
+     *
+     * @return
+     */
+    static VSPtr<T> New() {
+        VSPtr<T> newVSptr {VSPtr<T>()};
+        garbageCollector->printGargabeCollectorInfo();
+        return newVSptr;
+    }
+
+
+
 };
+
+
+/** Initialization garbage collector instance */
+template <class T>
+GarbageCollector* VSPtr<T>::garbageCollector = garbageCollector->getGarbageCollectorInstance();
 
 
 #endif //VS_CODE_MEMORY_MANAGER_VSPTR_H
