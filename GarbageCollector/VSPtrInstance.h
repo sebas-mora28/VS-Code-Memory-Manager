@@ -2,8 +2,8 @@
 // Created by sebasmora on 22/3/20.
 //
 
-#ifndef VS_CODE_MEMORY_MANAGER_VSPTRINSTANCE_H
-#define VS_CODE_MEMORY_MANAGER_VSPTRINSTANCE_H
+#ifndef GC_VSPTRINSTANCE_H
+#define GC_VSPTRINSTANCE_H
 
 #include <iostream>
 
@@ -20,7 +20,7 @@ struct VSPrtInfo{
 
 public:
     int refcount;
-    uint32_t  id;
+    std::string id;
 
 
     virtual void* getInstance();
@@ -55,7 +55,7 @@ private:
      */
 
 public:
-    explicit VSPtrInstance(T instance, uint32_t& id);
+    explicit VSPtrInstance(T instance, std::string& id);
 
 
 
@@ -78,7 +78,7 @@ public:
      * This mehods the id
      * @return
      */
-    uint32_t getId();
+    std::string getId();
 
 
 
@@ -111,7 +111,7 @@ public:
  * @param instance
  */
 template<typename T>
-VSPtrInstance<T>::VSPtrInstance(T instance, uint32_t& id){
+VSPtrInstance<T>::VSPtrInstance(T instance, std::string& id){
     VSPrtInfo::refcount = 1;
     VSPrtInfo::id = id;
     this->instance = instance;
@@ -133,8 +133,9 @@ T VSPtrInstance<T>::getInstance() {
 
 
 template<typename T>
-uint32_t VSPtrInstance<T>::getId() {
+std::string VSPtrInstance<T>::getId() {
     return this->id;
 }
 
-#endif //VS_CODE_MEMORY_MANAGER_VSPTRINSTANCE_H
+
+#endif //GC_VSPTRINSTANCE_H

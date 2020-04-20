@@ -2,5 +2,5 @@ cmake_minimum_required(VERSION 3.15)
 project(VS_Code_Memory_Manager)
 
 set(CMAKE_CXX_STANDARD 14)
+add_library(VS_Code_Memory_Manager SHARED library.cpp library.h List/ListGC.h GarbageCollector/GarbageCollector.h GarbageCollector/VSPtrInstance.h GarbageCollector/UUID.h)
 
-add_library(VS_Code_Memory_Manager SHARED library.cpp library.h VSPtr.h List/ListGC.h GarbageCollector/GarbageCollector.h GarbageCollector/VSPtrInstance.h)

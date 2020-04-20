@@ -2,12 +2,13 @@
 // Created by sebasmora on 21/3/20.
 //
 
-#ifndef VS_CODE_MEMORY_MANAGER_GARBAGECOLLECTIOR_H
-#define VS_CODE_MEMORY_MANAGER_GARBAGECOLLECTIOR_H
+#ifndef GC_GARBAGECOLLECTIOR_H
+#define GC_GARBAGECOLLECTIOR_H
 
 #include "VSPtrInstance.h"
 #include "../List/ListGC.h"
-#include <thread>
+#include "UUID.h"
+
 
 
 template <typename T>
@@ -22,11 +23,8 @@ class GarbageCollector {
 
 private:
     static GarbageCollector* garbageCollector;
-    static uint32_t nextID;
     ListGC<VSPrtInfo*> listGc;
 
-
-private:
 
     /**
      * Constructor declaration
@@ -52,7 +50,7 @@ public:
      * This method return a ID for each VSPtr instance
      * @return
      */
-    uint32_t generateID();
+    std::string generateID();
 
 
 
@@ -62,7 +60,7 @@ public:
      * @param value VSPtr instance
      */
     template <typename T>
-    void addInstance(T& value);
+    void addInstance(T& value, std::string& id);
 
 
 
@@ -72,7 +70,7 @@ public:
      * This method increment the ref count to the instance with the id
      * @param id instance's id
      */
-    void incrementRefCount(uint32_t id);
+    void incrementRefCount(std::string& id);
 
 
 
@@ -81,7 +79,7 @@ public:
   * @param id instance's id
   */
 
-    void decrementRedCount(uint32_t id);
+    void decrementRedCount(std::string& id);
 
 
     /**
@@ -104,16 +102,10 @@ public:
 GarbageCollector* GarbageCollector::garbageCollector = nullptr;
 
 
-/** Initialization of Id member class*/
-uint32_t GarbageCollector::nextID = 0;
-
-
-
 /**
     * Constructor garbage collector, declared private avoiding instance it more than once
     */
 GarbageCollector::GarbageCollector(){
-    nextID = 0;
     ListGC<VSPrtInfo*>();
 }
 
@@ -134,13 +126,12 @@ GarbageCollector*GarbageCollector::getGarbageCollectorInstance
 
 
 
-
 /**
  * Generate a new ID when a VSPointer is created;
  * @return
  */
-uint32_t GarbageCollector::generateID() {
-    return ++nextID;
+std::string GarbageCollector::generateID() {
+    return generateUUID();
 }
 
 
@@ -153,9 +144,9 @@ uint32_t GarbageCollector::generateID() {
  * @param value VSPointer
  */
 template <typename T>
-void GarbageCollector::addInstance(T& value) {
+void GarbageCollector::addInstance(T& value, std::string& id) {
     std::cout << "INSTANCIA EN ADD INSTANCE " <<  value << "\n";
-    VSPtrInstance<T>* vsPtrInstance = new VSPtrInstance<T>(value, nextID);
+    VSPtrInstance<T>* vsPtrInstance = new VSPtrInstance<T>(value, id);
     listGc.add(vsPtrInstance);
 }
 
@@ -180,7 +171,7 @@ void GarbageCollector::printGargabeCollectorInfo() {
  * This method increment the ref count to the instance with the id
  * @param id instance's id
  */
-void GarbageCollector::incrementRefCount(uint32_t id) {
+void GarbageCollector::incrementRefCount(std::string& id) {
     std::cout << "INCREMENTA EL CONTADOR DE REFERENCIAS " << "\n";
     VSPrtInfo* current = garbageCollector->listGc.getByID(id);
     current->refcount++;
@@ -200,7 +191,7 @@ void GarbageCollector::incrementRefCount(uint32_t id) {
  * This method decrement the ref count to the instance with the id
  * @param id instance's id
  */
-void GarbageCollector::decrementRedCount(uint32_t id) {
+void GarbageCollector::decrementRedCount(std::string& id) {
     std::cout << "DECREMENTA EL CONTADOR DE REFERENCIAS " << "\n";
     VSPrtInfo* current = garbageCollector->listGc.getByID(id);
     current->refcount--;
@@ -209,4 +200,6 @@ void GarbageCollector::decrementRedCount(uint32_t id) {
 }
 
 
-#endif //VS_CODE_MEMORY_MANAGER_GARBAGECOLLECTIOR_H
+
+
+#endif //GC_GARBAGECOLLECTIOR_H

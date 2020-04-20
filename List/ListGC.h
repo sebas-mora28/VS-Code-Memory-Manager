@@ -2,17 +2,18 @@
 // Created by sebasmora on 22/3/20.
 //
 
-#ifndef VS_CODE_MEMORY_MANAGER_LISTGC_H
-#define VS_CODE_MEMORY_MANAGER_LISTGC_H
+#ifndef GC_LISTGC_H
+#define GC_LISTGC_H
 
 #include <iostream>
+
 #include "../GarbageCollector/VSPtrInstance.h"
+
 
 
 
 template <typename T>
 class VSPtr;
-
 
 /**
  * Node class implementation
@@ -43,7 +44,7 @@ public:
 
 /**
  * Linked List implmentation
- * @tparam T
+    * @tparam T
  */
 template <class T>
 class ListGC {
@@ -87,7 +88,7 @@ public:
      * @return VSPtr instance with id given
      */
     //template<typename Type>
-    VSPrtInfo* getByID(uint32_t id);
+    VSPrtInfo* getByID(std::string& id);
 
 
 
@@ -99,7 +100,7 @@ public:
      * @param id
      */
     template<typename Type>
-    void remove(uint32_t id);
+    void remove(std::string& id);
 
 
 
@@ -194,7 +195,7 @@ void ListGC<T>::add(T value) {
  */
 
 template <class T>
-VSPrtInfo* ListGC<T>::getByID(uint32_t id) {
+VSPrtInfo* ListGC<T>::getByID(std::string& id) {
     Node<T>* current = head;
 
     while(current != nullptr){
@@ -202,7 +203,7 @@ VSPrtInfo* ListGC<T>::getByID(uint32_t id) {
 
         VSPrtInfo* vsPrtInfo = current->value;
 
-        if(vsPrtInfo->id == id){
+        if(vsPrtInfo->id.compare(id) == 0){
             return vsPrtInfo;
         }
         current = current->next;
@@ -222,7 +223,7 @@ VSPrtInfo* ListGC<T>::getByID(uint32_t id) {
  */
 template <class T>
 template<typename Type>
-void ListGC<T>::remove(uint32_t id) {
+void ListGC<T>::remove(std::string& id) {
 
     if(!isEmpty()){
 
@@ -234,14 +235,14 @@ void ListGC<T>::remove(uint32_t id) {
         VSPtrInstance<Type>* prevVSPinstance = static_cast<VSPtrInstance<Type>*>(prev->value);
 
 
-        if(prevVSPinstance->getId() == id) {
+        if(prevVSPinstance->id.compare(id) == 0){
             head = current->next;
             delete(current);
             return;
 
         }
 
-        while(currentVSPinstance->value != id) {
+        while(currentVSPinstance->id.compare(id) != 0) {
             prev = current;
             current = current->next;
             currentVSPinstance = static_cast<VSPtrInstance<Type>>(current->value);
@@ -255,6 +256,8 @@ void ListGC<T>::remove(uint32_t id) {
 
 
 
+
+
 /**
    * Print all the elements of the linked list
    */
@@ -263,9 +266,8 @@ void ListGC<T>::print() {
     std::cout << "-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*" <<"\n";
     Node<T>* temp = head;
     while(temp != nullptr){
-        //VSPrtInfo* vsPrtInfo = temp->value;
-        //std::cout << "INSTANCIA  " << vsPrtInfo->getInstance() << "   id " << vsPrtInfo->id << "   REF COUNT " <<  vsPrtInfo->refcount << "\n";
-        std::cout << temp->value << "\n";
+        VSPrtInfo* vsPrtInfo = temp->value;
+        std::cout << "INSTANCIA  " << vsPrtInfo->getInstance() << "   id " << vsPrtInfo->id << "   REF COUNT " <<  vsPrtInfo->refcount << "\n";
         temp = temp->next;
 
     }
@@ -275,4 +277,4 @@ void ListGC<T>::print() {
 }
 
 
-#endif //VS_CODE_MEMORY_MANAGER_LISTGC_H
+#endif //GC_LISTGC_H
