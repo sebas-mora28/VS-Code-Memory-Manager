@@ -64,7 +64,11 @@ public:
 
 
 
+    /**
+    * This method parses the garbage collector list and generates a JSON file with the Content of the list.
+    */
 
+    void generateJSON();
 
     /**
      * This method increment the ref count to the instance with the id
@@ -196,6 +200,76 @@ void GarbageCollector::decrementRedCount(std::string& id) {
     VSPrtInfo* current = garbageCollector->listGc.getByID(id);
     current->refcount--;
     std::cout << "PRINT DESDE EL GARBAGE COLLECTOR PARA INCREMENTAR SU REFERENCIA" << current->id << "     " <<  current->refcount << "\n";
+
+}
+
+/**
+ * This method returns the type of the VSPtr.
+ * @param entry
+ * @return std::string
+ */
+
+template <class T>
+std::string getType(T entry){
+    std::string result = typeid(entry).name();
+
+    if (result == "Pv"){
+        return "void";
+    }else if(result == "Pi"){
+        return "int";
+    }else if(result == "Pb"){
+        return "bool";
+    }else if(result == "NSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE"){
+        return "string";
+    }else if(result == "Pc"){
+        return "char";
+    }else if(result == "Pf"){
+        return "float";
+    }else if(result == "Pl"){
+        return "long";
+    }else{
+        return "unknown";
+    }
+}
+
+/**
+ * This method parses the garbage collector list and generates a JSON file with the Content of the list.
+ */
+
+void GarbageCollector::generateJSON() {
+
+    std::cout << "\n\n\n ************************** \n\n\n";
+
+    Json::StyledStreamWriter writer;
+    Json::Value my_list;
+
+    Json::Value vec(Json::arrayValue);
+
+
+    for(int i=0; i< listGc.getSize(); i++){
+        VSPrtInfo* current = listGc.getByIndex(i);
+
+        Json::Value obj;
+
+        std::ostringstream get_addr;
+        get_addr << current->getInstance();
+        std::cout << get_addr.str() << "\n";
+
+        obj["id"] = current->id;
+        obj["addr"] = get_addr.str();
+        obj["type"] = getType(current->getInstance());
+        obj["ref count"] = current->refcount;
+
+
+        vec.append(obj);
+    }
+
+    my_list["VSPtr"] = vec;
+    std::ofstream file("../test.json");
+    writer.write(file, my_list);
+    file.close();
+
+    std::cout << "\n\n\n ************************** \n\n\n";
 
 }
 

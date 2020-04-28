@@ -68,6 +68,13 @@ public:
     /**Destructor*/
     ~ListGC();
 
+    /**
+    * Get the list`s size.
+    * @return int
+    */
+
+    int getSize();
+
 
     /**Verify is the linked list is empty*/
     bool isEmpty();
@@ -91,6 +98,13 @@ public:
     VSPrtInfo* getByID(std::string& id);
 
 
+    /**
+     * Get nodes by index in list, starting in index 0.
+     * @tparam int
+    * @param index
+    * @return VSPtr
+    */
+    VSPrtInfo* getByIndex(int index);
 
 
     /**
@@ -156,7 +170,14 @@ bool ListGC<T>::isEmpty() {
 
 
 
-
+/**
+ * Get the list`s size.
+ * @return int
+ */
+template <class T>
+int ListGC<T>::getSize() {
+    return size;
+}
 
 
 /**
@@ -254,6 +275,29 @@ void ListGC<T>::remove(std::string& id) {
 
 }
 
+/**
+ * Get nodes by index in list, starting in index 0.
+ * @tparam int
+ * @param index
+ * @return VSPtr
+ */
+
+template <class T>
+VSPrtInfo* ListGC<T>::getByIndex(int index) {
+    Node<T>* current = head;
+
+    if (index < size){
+
+        for (int i = 0; i <= index; i++){
+            VSPrtInfo* info = current->value;
+            if (i == index){
+
+                return info;
+            }
+            current = current->next;
+        }
+    }
+}
 
 
 
