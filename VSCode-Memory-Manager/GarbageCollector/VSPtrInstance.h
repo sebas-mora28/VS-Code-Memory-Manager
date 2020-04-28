@@ -1,6 +1,3 @@
-//
-// Created by sebasmora on 22/3/20.
-//
 
 #ifndef GC_VSPTRINSTANCE_H
 #define GC_VSPTRINSTANCE_H
@@ -21,7 +18,7 @@ struct VSPrtInfo{
 public:
     int refcount;
     std::string id;
-
+    std::string type;
 
     virtual void* getInstance();
 
@@ -42,11 +39,9 @@ struct VSPtrInstance: public VSPrtInfo{
 
 public:
 
-
 private:
     /**VSPtr instance*/
     T instance;
-
 
 
     /**
@@ -69,16 +64,17 @@ public:
 
 
 
-    void* getInstance() override {
-        return instance;
-    }
-
+    void* getInstance() override;
 
     /***
      * This mehods the id
      * @return
      */
     std::string getId();
+
+
+
+    std::string getTypeData(T& type);
 
 
 
@@ -90,6 +86,9 @@ public:
     ~VSPtrInstance(){
         delete this;
     }
+
+
+
 
 
 };
@@ -114,8 +113,9 @@ template<typename T>
 VSPtrInstance<T>::VSPtrInstance(T instance, std::string& id){
     VSPrtInfo::refcount = 1;
     VSPrtInfo::id = id;
+    VSPrtInfo::type = getTypeData(instance);
     this->instance = instance;
-    std::cout << "INSTANCIA GUARDADA EN VSptrInstance " << instance << "   " << this->instance <<  "\n";
+    std::cout << "INSTANCIA GUARDADA EN VSptrInstance " << instance << "   " << this->instance <<"   "  << "    " << type <<  "\n";
 }
 
 
@@ -124,17 +124,44 @@ VSPtrInstance<T>::VSPtrInstance(T instance, std::string& id){
  * This method return that VSPtr's instance that holds VSPtrInstance
  * @tparam T
  * @return
+*/
 
-template<typename T>
-T VSPtrInstance<T>::getInstance() {
-    return instance;
-}
- */
+
 
 
 template<typename T>
 std::string VSPtrInstance<T>::getId() {
     return this->id;
+}
+
+
+template<typename T>
+std::string VSPtrInstance<T>::getTypeData(T &type) {
+    std::string result = typeid(type).name();
+
+    if (result == "Pv"){
+        return "void";
+    }else if(result == "Pi"){
+        return "int";
+    }else if(result == "Pb"){
+        return "bool";
+    }else if(result == "NSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE"){
+        return "string";
+    }else if(result == "Pc"){
+        return "char";
+    }else if(result == "Pf"){
+        return "float";
+    }else if(result == "Pl"){
+        return "long";
+    }else{
+        return result;
+    }
+
+}
+
+template<typename T>
+void *VSPtrInstance<T>::getInstance() {
+    return instance;
 }
 
 

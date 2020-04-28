@@ -5,14 +5,6 @@ import * as fs from 'fs';
 import * as path from 'path';	
 
 
-const panel = vscode.window.createWebviewPanel('memoryManager', 'REMOTE GARBAGE COLLECTOR', vscode.ViewColumn.Beside, {
-
-	enableScripts: true,
-	localResourceRoots: [vscode.Uri.file(path.join('/home/sebasmora/Documents/TEC/Semestre III/Datos II/VS-Code-Memory-Manager/vsptr-memory-manager/', 'src/view'))]
-})
-
-
-
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -33,7 +25,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 
 		//Add WebView content from index.html
-		updateWebView();
+		updateWebView(context.extensionPath);
 	});
 
 	context.subscriptions.push(disposable);
@@ -43,8 +35,15 @@ export function activate(context: vscode.ExtensionContext) {
 export function deactivate() {}
 
 
-function updateWebView(){
-	fs.readFile(path.join('/home/sebasmora/Documents/TEC/Semestre III/Datos II/VS-Code-Memory-Manager/vsptr-memory-manager/','/src/view', 'index.html'), (err, data)=>{
+function updateWebView(contentPath : string){
+
+	const panel = vscode.window.createWebviewPanel('memoryManager', 'REMOTE GARBAGE COLLECTOR', vscode.ViewColumn.Beside, {
+
+	enableScripts: true,
+	localResourceRoots: [vscode.Uri.file(path.join(contentPath, 'src/view'))]
+	})
+
+	fs.readFile(path.join(contentPath,'/src/view', 'index.html'), (err, data)=>{
 		if(err){
 			console.log(err);
 		}

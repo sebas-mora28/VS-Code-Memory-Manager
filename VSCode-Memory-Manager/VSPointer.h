@@ -12,7 +12,6 @@
 
 
 
-
 template<class T>
 class VSPtr {
 
@@ -22,7 +21,6 @@ class VSPtr {
 private:
     T *ptr;
     std::string id;
-
     static GarbageCollector* garbageCollector;
 
 
@@ -65,13 +63,6 @@ public:
 
 
 
-    static GarbageCollector* getGc(){
-        return garbageCollector;
-    }
-
-
-
-
     /**
      * Copy constructor
      * @param p
@@ -90,7 +81,7 @@ public:
 
     ~VSPtr() {
         std::cout << "DESTRUCTOR" << "\n";
-        delete (ptr);
+        garbageCollector->decrementRedCount(id);
     }
 
 
@@ -171,7 +162,6 @@ public:
      */
      static VSPtr<T> New() {
         VSPtr<T> newVSptr {VSPtr<T>()};
-        garbageCollector->printGargabeCollectorInfo();
         return newVSptr;
     }
 

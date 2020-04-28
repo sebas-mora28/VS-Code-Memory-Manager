@@ -1,15 +1,10 @@
-//
-// Created by sebasmora on 15/4/20.
-//
 
 #ifndef GC_UUID_H
 #define GC_UUID_H
 
-
 #include "cstdlib"
 #include "string"
 #include <random>
-
 
 
     const std::string CHARS = "qwertyuiopasdfghjklzxcvbnm123456789";
@@ -18,6 +13,7 @@
     std::uniform_int_distribution<int> dist(0, CHARS.size() - 1);
 
     std::string generateUUID() {
+
         std::string currentUUID = std::string(24, ' ');
         for (char &i : currentUUID) {
 

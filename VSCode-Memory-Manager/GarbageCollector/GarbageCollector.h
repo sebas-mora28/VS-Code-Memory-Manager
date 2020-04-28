@@ -1,14 +1,16 @@
-//
-// Created by sebasmora on 21/3/20.
-//
 
 #ifndef GC_GARBAGECOLLECTIOR_H
 #define GC_GARBAGECOLLECTIOR_H
 
 #include "VSPtrInstance.h"
-#include "../List/ListGC.h"
 #include "UUID.h"
-
+#include <thread>
+#include <mutex>
+#include <sstream>
+#include <fstream>
+#include "jsoncpp/json/json.h"
+#include <map>
+#include <condition_variable>
 
 
 template <typename T>
@@ -21,9 +23,18 @@ class VSPtr;
  */
 class GarbageCollector {
 
+
+
+/********************************************************************************************************************
+ *                                         Members and function class declaration
+ ********************************************************************************************************************/
+
 private:
     static GarbageCollector* garbageCollector;
-    ListGC<VSPrtInfo*> listGc;
+    std::thread GCThread;
+    mutable std::mutex mutex_;
+    std::map<std::string, VSPrtInfo*> mapGarbageCollector;
+
 
 
     /**
@@ -46,11 +57,15 @@ public:
 
 
 
+
+
     /**
      * This method return a ID for each VSPtr instance
-     * @return
+     * @return An id to every VSPtr wrapper
      */
-    std::string generateID();
+    std::string generateID() const;
+
+
 
 
 
@@ -60,21 +75,15 @@ public:
      * @param value VSPtr instance
      */
     template <typename T>
-    void addInstance(T& value, std::string& id);
+    void addInstance(const T& value, std::string& id);
 
 
-
-    /**
-    * This method parses the garbage collector list and generates a JSON file with the Content of the list.
-    */
-
-    void generateJSON();
 
     /**
      * This method increment the ref count to the instance with the id
      * @param id instance's id
      */
-    void incrementRefCount(std::string& id);
+    void incrementRefCount(const std::string& id);
 
 
 
@@ -83,13 +92,35 @@ public:
   * @param id instance's id
   */
 
-    void decrementRedCount(std::string& id);
+    void decrementRedCount(const std::string& id);
+
+
 
 
     /**
      * Print all the garbage collectot's list elements
      */
     void printGargabeCollectorInfo();
+
+
+
+
+    /**
+     * This methods is executed by a thread every 10 seconds to verify which the ref count of every Vsptr contained in
+     * the garbage collector list and delete those which its ref count is 0
+     */
+
+    void executeGarbageCollector();
+
+
+
+    void generateJSON();
+
+
+
+    std::thread spawnThread();
+
+
 
 };
 
@@ -102,24 +133,37 @@ public:
 
 
 
+
+/********************************************************************************************************************
+ *                                  Garbage collector functionality
+ *******************************************************************************************************************/
+
+
+
 /** Initialization of the garbage collector instance */
 GarbageCollector* GarbageCollector::garbageCollector = nullptr;
+
+
+
+
+std::thread GarbageCollector::spawnThread(){
+    return std::thread(&GarbageCollector::executeGarbageCollector, this);
+}
 
 
 /**
     * Constructor garbage collector, declared private avoiding instance it more than once
     */
-GarbageCollector::GarbageCollector(){
-    ListGC<VSPrtInfo*>();
-}
+GarbageCollector::GarbageCollector() {
+    GCThread = spawnThread(); //Initialize Garbage collector thread ;
 
+}
 
 /**
  * Singleton implementation, returns the instance of the garbage collector created at the first time
  * @return garbage collector implementation
  */
-GarbageCollector*GarbageCollector::getGarbageCollectorInstance
-() {
+GarbageCollector*GarbageCollector::getGarbageCollectorInstance() {
     if(garbageCollector == nullptr){
         std::cout << "GABARGE COLLECTOR INSTANCE HAS BEEN CREATED" << "\n";
         garbageCollector = new GarbageCollector();
@@ -134,9 +178,11 @@ GarbageCollector*GarbageCollector::getGarbageCollectorInstance
  * Generate a new ID when a VSPointer is created;
  * @return
  */
-std::string GarbageCollector::generateID() {
+std::string GarbageCollector::generateID() const {
     return generateUUID();
 }
+
+
 
 
 
@@ -148,13 +194,12 @@ std::string GarbageCollector::generateID() {
  * @param value VSPointer
  */
 template <typename T>
-void GarbageCollector::addInstance(T& value, std::string& id) {
+void GarbageCollector::addInstance(const T& value, std::string& id) {
     std::cout << "INSTANCIA EN ADD INSTANCE " <<  value << "\n";
     VSPtrInstance<T>* vsPtrInstance = new VSPtrInstance<T>(value, id);
-    listGc.add(vsPtrInstance);
+    mapGarbageCollector[id] = vsPtrInstance;
+    //listGc.add(vsPtrInstance);
 }
-
-
 
 
 
@@ -165,8 +210,15 @@ void GarbageCollector::addInstance(T& value, std::string& id) {
  */
 
 void GarbageCollector::printGargabeCollectorInfo() {
-    listGc.print();
+    std::cout << "\n\n -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*" <<"\n";
+    for(std::map<std::string, VSPrtInfo*>::iterator it= mapGarbageCollector.begin(); it != mapGarbageCollector.end(); it++){
+        std::cout << "id  " <<  it->second->id << "   ref cout  " << it->second->refcount << "   addrr  " << it->second->getInstance() << "   type  " << it->second->type << "\n";
+
+
+    }
+    std::cout << "\n\n -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*" <<"\n";
 }
+
 
 
 
@@ -175,18 +227,15 @@ void GarbageCollector::printGargabeCollectorInfo() {
  * This method increment the ref count to the instance with the id
  * @param id instance's id
  */
-void GarbageCollector::incrementRefCount(std::string& id) {
+void GarbageCollector::incrementRefCount(const std::string& id) {
     std::cout << "INCREMENTA EL CONTADOR DE REFERENCIAS " << "\n";
-    VSPrtInfo* current = garbageCollector->listGc.getByID(id);
+    //VSPrtInfo* current = garbageCollector->listGc.getByID(id);
+    VSPrtInfo* current = mapGarbageCollector[id];
     current->refcount++;
-    std::cout << "PRINT DESDE EL GARBAGE COLLECTOR PARA DECREMENTA SU REFERENCIA" << current->id << "     " <<  current->refcount << "\n";
+    executeGarbageCollector();
+    std::cout << "PRINT DESDE EL GARBAGE COLLECTOR PARA DECREMENTA SU REFERENCIA     " << current->id << "     " <<  current->refcount << "\n";
 
 }
-
-
-
-
-
 
 
 
@@ -195,59 +244,83 @@ void GarbageCollector::incrementRefCount(std::string& id) {
  * This method decrement the ref count to the instance with the id
  * @param id instance's id
  */
-void GarbageCollector::decrementRedCount(std::string& id) {
+void GarbageCollector::decrementRedCount(const std::string& id) {
     std::cout << "DECREMENTA EL CONTADOR DE REFERENCIAS " << "\n";
-    VSPrtInfo* current = garbageCollector->listGc.getByID(id);
+    //VSPrtInfo* current = garbageCollector->listGc.getByID(id);
+    VSPrtInfo* current = mapGarbageCollector[id];
     current->refcount--;
-    std::cout << "PRINT DESDE EL GARBAGE COLLECTOR PARA INCREMENTAR SU REFERENCIA" << current->id << "     " <<  current->refcount << "\n";
+    std::cout << "PRINT DESDE EL GARBAGE COLLECTOR PARA DECREMENTAR SU REFERENCIA" << current->id << "     " <<  current->refcount << "\n";
+    executeGarbageCollector();
 
 }
 
+
+
+
+
+/*********************************************************************************************************************
+ *   Thread
+ *********************************************************************************************************************/
+
+
+
+
+
 /**
- * This method returns the type of the VSPtr.
- * @param entry
- * @return std::string
+ * This method is executed every 5 seconds by the GB collector thread. Verify is one of the instance contained in the map
+ * has 0 reference to delete it. Besides call the function to generate the JSON file
  */
 
-template <class T>
-std::string getType(T entry){
-    std::string result = typeid(entry).name();
+void GarbageCollector::executeGarbageCollector() {
 
-    if (result == "Pv"){
-        return "void";
-    }else if(result == "Pi"){
-        return "int";
-    }else if(result == "Pb"){
-        return "bool";
-    }else if(result == "NSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE"){
-        return "string";
-    }else if(result == "Pc"){
-        return "char";
-    }else if(result == "Pf"){
-        return "float";
-    }else if(result == "Pl"){
-        return "long";
-    }else{
-        return "unknown";
+
+    try{
+        std::unique_lock<std::mutex> locker(mutex_);
+
+        std::cout << "THREAD START EXECUTING" << "\n";
+        std::this_thread::sleep_for(std::chrono::seconds(10));
+
+        for(std::map<std::string, VSPrtInfo*>::iterator it= mapGarbageCollector.begin(); it != mapGarbageCollector.end(); it++){
+
+            if(it->second->refcount == 0){
+                VSPrtInfo* vsPrtInfo = it->second;
+                std::cout << "removing ..." << vsPrtInfo->id << "\n";
+                mapGarbageCollector.erase(it->second->id);
+                delete vsPrtInfo;
+            }
+        }
+        generateJSON();
+        std::cout << "SALE DE EXECUTE GC" << "\n";
+        std::cout << "\n\n***************************** \n\n";
+
+
+    } catch (const std::exception& err) {
+        std::cout << err.what() << "\n";
+        GCThread = spawnThread();
+
     }
+
 }
 
-/**
- * This method parses the garbage collector list and generates a JSON file with the Content of the list.
- */
+
+
+
+
+
+
+/*********************************************************************************************************************
+ *   JSON
+ *********************************************************************************************************************/
 
 void GarbageCollector::generateJSON() {
 
     std::cout << "\n\n\n ************************** \n\n\n";
-
     Json::StyledStreamWriter writer;
     Json::Value my_list;
 
     Json::Value vec(Json::arrayValue);
-
-
-    for(int i=0; i< listGc.getSize(); i++){
-        VSPrtInfo* current = listGc.getByIndex(i);
+    for(std::map<std::string, VSPrtInfo*>::iterator it=mapGarbageCollector.begin();  it != mapGarbageCollector.end(); it++){
+        VSPrtInfo* current = it->second;
 
         Json::Value obj;
 
@@ -257,13 +330,13 @@ void GarbageCollector::generateJSON() {
 
         obj["id"] = current->id;
         obj["addr"] = get_addr.str();
-        obj["type"] = getType(current->getInstance());
+        obj["type"] = current->type;
         obj["ref count"] = current->refcount;
 
 
         vec.append(obj);
-    }
 
+    }
     my_list["VSPtr"] = vec;
     std::ofstream file("../test.json");
     writer.write(file, my_list);
@@ -272,7 +345,6 @@ void GarbageCollector::generateJSON() {
     std::cout << "\n\n\n ************************** \n\n\n";
 
 }
-
 
 
 
