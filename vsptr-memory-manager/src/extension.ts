@@ -3,7 +3,10 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs'; 
 import * as path from 'path';	
+import { exec } from 'child_process';
 
+
+const exect = require('child_process').exec;
 
 
 // this method is called when your extension is activated
@@ -24,8 +27,16 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.showInformationMessage('VSPtr Memory Manager');
 
 
+
+		//Copy and paste the Memory Manager Library
+		configureMemoryManagerLibrary();
+
 		//Add WebView content from index.html
 		updateWebView(context.extensionPath);
+
+
+
+
 	});
 
 	context.subscriptions.push(disposable);
@@ -33,6 +44,26 @@ export function activate(context: vscode.ExtensionContext) {
 
 // this method is called when your extension is deactivated
 export function deactivate() {}
+
+
+
+//This method copy and paste the .so file and the header of the Memory Manager Library  
+function configureMemoryManagerLibrary(){
+
+	const config = exect('cp -r ./lib ' + vscode.workspace.rootPath,
+	function(error : any, stdout : any, atderr : any){
+		console.log("stdout " + stdout);
+
+		if(error != null){
+			console.log('Error' + error); 
+		}
+	})
+
+
+}
+
+
+
 
 
 function updateWebView(contentPath : string){
