@@ -10,7 +10,9 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.vsptrMemoryManager"
+		"onCommand:extension.vsptrMemoryManager",
+		"onCommand:vscodeHeap.start",
+		"onWebviewPanel:extension"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -18,6 +20,11 @@
 			{
 				"command": "extension.vsptrMemoryManager",
 				"title": "MEMORY MANAGER"
+			},
+			{
+				"command": "vscodeHeap.start",
+				"title": "Start VsCode Heap Visualizer",
+				"category": "VsCode Heap"
 			}
 		]
 	},
@@ -42,4 +49,5 @@
 		"typescript": "^3.7.5",
 		"vscode-test": "^1.3.0"
 	}
+	
 }

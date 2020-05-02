@@ -1,11 +1,14 @@
 {
 	"compilerOptions": {
 		"module": "commonjs",
+		"resolveJsonModule": true,
+		"esModuleInterop": true,
 		"target": "es6",
 		"outDir": "out",
 		"lib": [
-			"es6"
+			"es6" , "dom"
 		],
+		"strictNullChecks":false,
 		"sourceMap": true,
 		"rootDir": "src",
 		"strict": true   /* enable all strict type-checking options */
