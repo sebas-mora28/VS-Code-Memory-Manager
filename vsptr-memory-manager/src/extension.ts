@@ -3,10 +3,9 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs'; 
 import * as path from 'path';
-import * as graph from './data.json';
+
  
-
-
+const exec  = require('child_process').exec; 
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -65,13 +64,31 @@ export function activate(context: vscode.ExtensionContext) {
 
 
 
+	//Copy and paste the library to the working directory 
+	configLibraryDirecory();
 
-		//Add WebView content from index.html
-		updateWebView(context.extensionPath);
+	//Add WebView content from index.html
+	updateWebView(context.extensionPath);
 		
 	});
 
 	context.subscriptions.push(disposable);
+}
+
+
+
+function configLibraryDirecory(){
+
+	var child = exec('cp -r ./lib ' + vscode.workspace.rootPath,
+    function (error : string, stdout : string, stderr : string) {
+        console.log('stdout: ' + stdout);
+        console.log('stderr: ' + stderr);
+        if (error !== null) {
+             console.log('exec error: ' + error);
+        }
+    });
+
+
 }
 
 
