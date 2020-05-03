@@ -5,13 +5,13 @@
         "addr" : "0x558ab2691340",
         "id" : "g2mus4bhkpib6m8qkw11179l",
         "refCount" : 2,
-        "type" : "void"
+        "type" : "int"
       },
       {
         "addr" : "0x558ab26919a0",
         "id" : "t387cwabhcr>tgo3xorxx3f5z",
         "refCount" : 0,
-        "type" : "void"
+        "type" : "int"
       }
     ]
 }

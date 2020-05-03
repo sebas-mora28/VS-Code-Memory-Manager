@@ -4,15 +4,9 @@ import * as vscode from 'vscode';
 import * as fs from 'fs'; 
 import * as path from 'path';
 import * as graph from './data.json';
+ 
 
 
-
-
-const panel = vscode.window.createWebviewPanel('memoryManager', 'REMOTE GARBAGE COLLECTOR', vscode.ViewColumn.Beside, {
-
-	enableScripts: true,
-	localResourceRoots: [vscode.Uri.file(path.join('/home/david/HACKERPLACE/VS-Code-Memory-Manager/vsptr-memory-manager/', 'src/view'))]
-});
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -23,12 +17,15 @@ export function activate(context: vscode.ExtensionContext) {
 	// This line of code will only be executed once when your extension is activated
 	console.log('Congratulations, your extension "vsptr-memory-manager" is now active!');
 
+	/*
 	context.subscriptions.push(
 		vscode.commands.registerCommand('vscodeHeap.start', () => {
 			ExtensionWebViewPanel.createOrShow(context.extensionPath);
 		})
 	);
+	*/
 
+	/*
 	if (vscode.window.registerWebviewPanelSerializer) {
 		// Make sure we register a serializer in activation event
 		vscode.window.registerWebviewPanelSerializer(ExtensionWebViewPanel.viewType, {
@@ -38,6 +35,7 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 		});
 	}
+	*/
 
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
@@ -48,9 +46,28 @@ export function activate(context: vscode.ExtensionContext) {
 		// Display a message box to the user
 		vscode.window.showInformationMessage('VSPtr Memory Manager');
 
+		ExtensionWebViewPanel.createOrShow(context.extensionPath);
+
+		try{
+		if (vscode.window.registerWebviewPanelSerializer) {
+			// Make sure we register a serializer in activation event
+			vscode.window.registerWebviewPanelSerializer(ExtensionWebViewPanel.viewType, {
+				async deserializeWebviewPanel(webviewPanel: vscode.WebviewPanel, state: any) {
+					console.log(`Got state: ${state}`);
+					ExtensionWebViewPanel.revive(webviewPanel, context.extensionPath);
+				}
+			});
+		}
+	}catch(error){
+		console.log(error);
+	}
+
+
+
+
 
 		//Add WebView content from index.html
-		updateWebView();
+		updateWebView(context.extensionPath);
 		
 	});
 
@@ -58,15 +75,48 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 
-function updateWebView(){
-	fs.readFile(path.join('/home/david/HACKERPLACE/VS-Code-Memory-Manager/vsptr-memory-manager/','/src/view', 'index.html'), (err, data)=>{
+
+
+
+
+function updateWebView(extensionPath : any){
+	
+	try{
+	const panel = vscode.window.createWebviewPanel( 
+		'memoryManager', 'REMOTE GARBAGE COLLECTOR',
+		 vscode.ViewColumn.Beside, {
+
+		enableScripts: true,
+		localResourceRoots: [vscode.Uri.file(path.join(extensionPath, 'src/view'))]
+	});
+	
+	fs.readFile(path.join(extensionPath, 'src/view', 'index.html'), (err, data)=>{
 		if(err){
 			console.log(err);
 		}
 		panel.webview.html = data.toString();  
 	});
+	}catch(error){
+		console.log(error);
+	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * 
+ * This class generate a WebView to visualize the heap visualizer
+ */
 
 class ExtensionWebViewPanel {
 	/**
@@ -94,7 +144,7 @@ class ExtensionWebViewPanel {
 		// Otherwise, create a new panel.
 		const panel = vscode.window.createWebviewPanel(
 			ExtensionWebViewPanel.viewType,
-			'Extension',
+			'Heap Visualizer',
 			column || vscode.ViewColumn.One,
 			{
 				// Enable javascript in the webview
@@ -115,9 +165,24 @@ class ExtensionWebViewPanel {
 	private constructor(panel: vscode.WebviewPanel, extensionPath: string) {
 		this._panel = panel;
 		this._extensionPath = extensionPath;
+	 
 
 		// Set the webview's initial html content
-		this._update();
+
+		
+
+		setInterval(()=>{
+
+			if(fs.existsSync(path.join(vscode.workspace.rootPath, 'lib/vsptr.json'))){
+				this._update();
+			}else{
+				console.log("No hay contenido");
+			}
+		}, 3000);
+
+	
+
+		
 
 		// Listen for when the panel is disposed
 		// This happens when the user closes the panel or when the panel is closed programatically
@@ -148,6 +213,7 @@ class ExtensionWebViewPanel {
 		);
 	}
 
+
 	public dispose() {
 		ExtensionWebViewPanel.currentPanel = undefined;
 
@@ -176,6 +242,32 @@ class ExtensionWebViewPanel {
 		// Use a nonce to whitelist which scripts can be run
 		const nonce = getNonce();
 
+
+
+		const jsonFile =  require(path.join(vscode.workspace.rootPath, 'lib/vsptr.json'));
+
+
+
+
+
+	
+
+		const tableHtml = jsonFile.vsptr.reduce((acc : any, data : any) => {
+			return `
+			${acc}
+			<tr>
+				<td>${data.id}</td>
+				<td>${data.addr}</td>
+				<td>${data.refCount}</td>
+				<td>${data.type}</td>
+			</tr>
+		`;
+	}, '');
+
+
+
+
+	/*
 		const tableHtml = graph.VSPtr.reduce((acc, data) => {
 			return `
 				${acc}
@@ -187,6 +279,8 @@ class ExtensionWebViewPanel {
 				</tr>
 			`;
 		}, '');
+		*/
+
 
 		const renderedHtlm = `<!DOCTYPE html>
             <html lang="en">
