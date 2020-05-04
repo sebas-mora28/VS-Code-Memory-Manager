@@ -186,10 +186,9 @@ class ExtensionWebViewPanel {
 
 		// Set the webview's initial html content
 
-		
+
 
 		setInterval(()=>{
-
 			if(fs.existsSync(path.join(vscode.workspace.rootPath, 'lib/vsptr.json'))){
 				this._update();
 			}else{
@@ -261,45 +260,23 @@ class ExtensionWebViewPanel {
 
 
 
-		const jsonFile =  require(path.join(vscode.workspace.rootPath, 'lib/vsptr.json'));
-
-
-
-
+		let jsonFile = JSON.parse(fs.readFileSync(path.join(vscode.workspace.rootPath, 'lib/vsptr.json'), 'utf8'));
 
 	
-
-		const tableHtml = jsonFile.vsptr.reduce((acc : any, data : any) => {
+		const tableHtml = jsonFile.VSPtr.reduce((acc : any, data : any) => {
 			return `
 			${acc}
 			<tr>
 				<td>${data.id}</td>
 				<td>${data.addr}</td>
-				<td>${data.refCount}</td>
+				<td>${data.refcount}</td>
 				<td>${data.type}</td>
 			</tr>
 		`;
 	}, '');
+	
 
-
-
-
-	/*
-		const tableHtml = graph.VSPtr.reduce((acc, data) => {
-			return `
-				${acc}
-				<tr>
-					<td>${data.id}</td>
-					<td>${data.addr}</td>
-					<td>${data.refCount}</td>
-					<td>${data.type}</td>
-				</tr>
-			`;
-		}, '');
-		*/
-
-
-		const renderedHtlm = `<!DOCTYPE html>
+		let renderedHtlm = `<!DOCTYPE html>
             <html lang="en">
             <head>
 				<meta charset="UTF-8">
@@ -341,7 +318,8 @@ class ExtensionWebViewPanel {
 						</html>`;
 
 		
-		
+
+		//console.log(renderedHtlm);
 		this._panel.webview.html = renderedHtlm;
 	}
 }
@@ -353,4 +331,18 @@ function getNonce() {
 		text += possible.charAt(Math.floor(Math.random() * possible.length));
 	}
 	return text;
+}
+
+
+function getJsonFile(){
+	fs.readFile(path.join(vscode.workspace.rootPath, 'lib/vsptr.json'), 'utf8',
+		function(err : any, data : any){
+			if(err){
+				console.log(err);
+				return;
+			}
+			//console.log(JSON.parse(data));
+			return JSON.parse(data);
+		});
+
 }
