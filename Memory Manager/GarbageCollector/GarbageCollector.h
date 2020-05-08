@@ -108,8 +108,9 @@ public:
      * This methods is executed by a thread every 10 seconds to verify the ref count of every Vsptr contained in
      * the garbage collector list and delete those which its ref count is 0
      */
-
     void executeGarbageCollector();
+
+
 
 
 

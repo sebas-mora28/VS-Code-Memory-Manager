@@ -73,7 +73,7 @@ std::string GarbageCollector::generateID() const {
 void GarbageCollector::printGargabeCollectorInfo() {
     std::cout << "\n\n -*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*" <<"\n";
     for(std::map<std::string, VSPrtInfo*>::iterator it= mapGarbageCollector.begin(); it != mapGarbageCollector.end(); it++){
-        std::cout << "id  " <<  it->second->id << "   ref cout  " << it->second->refcount << "   addrr  " << it->second->getInstance() << "   type  " << it->second->type << "\n";
+        std::cout << "id  " <<  it->second->id << "   ref cout  " << it->second->refcount << "   addrr  " << it->second->getInstance() << "   type  " << it->second->getValue() << "\n";
 
 
     }
@@ -90,10 +90,9 @@ void GarbageCollector::printGargabeCollectorInfo() {
  */
 void GarbageCollector::incrementRefCount(const std::string& id) {
     std::unique_lock<std::mutex> lock(mutex_);
-    std::cout << "INCREMENTA EL CONTADOR DE REFERENCIAS " << "\n";
     VSPrtInfo* current = mapGarbageCollector[id];
     current->refcount++;
-    std::cout << "PRINT DESDE EL GARBAGE COLLECTOR PARA DECREMENTA SU REFERENCIA     " << current->id << "     " <<  current->refcount << "\n\n";
+    std::cout << "INCREMENTA EL CONTADOR DE REFERENCIAS     " << current->id << "     " <<  current->refcount << "\n\n";
 
 }
 
@@ -105,10 +104,9 @@ void GarbageCollector::incrementRefCount(const std::string& id) {
  */
 void GarbageCollector::decrementRedCount(const std::string& id) {
     std::unique_lock<std::mutex> lock(mutex_);
-    std::cout << "DECREMENTA EL CONTADOR DE REFERENCIAS " << "\n";
     VSPrtInfo* current = mapGarbageCollector[id];
     current->refcount--;
-    std::cout << "PRINT DESDE EL GARBAGE COLLECTOR PARA DECREMENTAR SU REFERENCIA" << current->id << "     " <<  current->refcount << "\n";
+    std::cout << " DECREMENTA EL CONTADOR DE REFERENCIA" << current->id << "     " <<  current->refcount << "\n";
 
 }
 
@@ -132,6 +130,7 @@ void GarbageCollector::decrementRedCount(const std::string& id) {
 void GarbageCollector::executeGarbageCollector() {
     try{
         while(true){
+            std::this_thread::sleep_for(std::chrono::seconds(10));
             std::unique_lock<std::mutex> locker(mutex_);
             std::cout << "THREAD START EXECUTING" << "\n";
             for(std::map<std::string, VSPrtInfo*>::iterator it= mapGarbageCollector.begin(); it != mapGarbageCollector.end(); it++){
@@ -146,7 +145,6 @@ void GarbageCollector::executeGarbageCollector() {
             std::cout << "SALE DE EXECUTE GC" << "\n";
             std::cout << "\n\n***************************** \n\n";
             locker.unlock();
-            std::this_thread::sleep_for(std::chrono::seconds(5));
         }
 
 
@@ -175,7 +173,6 @@ void GarbageCollector::generateJSON() {
     Json::Value vec(Json::arrayValue);
     for(std::map<std::string, VSPrtInfo*>::iterator it=mapGarbageCollector.begin();  it != mapGarbageCollector.end(); it++){
         VSPrtInfo* current = it->second;
-
         Json::Value obj;
 
         std::ostringstream get_addr;
@@ -184,13 +181,15 @@ void GarbageCollector::generateJSON() {
         obj["id"] = current->id;
         obj["addr"] = get_addr.str();
         obj["type"] = current->type;
-        obj["ref count"] = current->refcount;
+        obj["value"] = current->getValue();
+        obj["refcount"] = std::to_string(current->refcount);
 
         vec.append(obj);
 
     }
     my_list["VSPtr"] = vec;
     std::ofstream file("./lib/vsptr.json");
+    std::cout << file.is_open() << "\n";
     writer.write(file, my_list);
     file.close();
 }

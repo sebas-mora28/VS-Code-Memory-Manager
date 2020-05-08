@@ -22,6 +22,8 @@ public:
         return nullptr;
     };
 
+    virtual std::string getValue() = 0;
+
     virtual ~VSPrtInfo() {
     };
 };
@@ -49,7 +51,6 @@ public:
     explicit VSPtrInstance(T instance, std::string& id);
 
 
-
     /**
     * This method return that VSPtr instance that holds VSPtrInstance
     * @tparam T
@@ -59,6 +60,11 @@ public:
     void* getInstance() override{
         return instance;
     };
+
+
+    std::string getValue() override {
+        return std::to_string(*instance);
+    }
 
     /***
      * This mehods the id
@@ -120,14 +126,13 @@ VSPtrInstance<T>::VSPtrInstance(T instance, std::string& id){
  * @tparam T
  * @return
 */
-
-
-
-
 template<typename T>
 std::string VSPtrInstance<T>::getId() {
     return this->id;
 }
+
+
+
 
 
 template<typename T>
@@ -153,8 +158,5 @@ std::string VSPtrInstance<T>::getTypeData(T &type) {
     }
 
 }
-
-
-
 
 #endif //GC_VSPTRINSTANCE_H

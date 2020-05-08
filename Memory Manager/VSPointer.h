@@ -33,7 +33,8 @@ public:
         ptr = ((T*)malloc(sizeof(T)));
         id = garbageCollector->generateID();
         garbageCollector->addInstance(ptr, id);
-        std::cout << "DIRECCION DE MEMORIA DEL DATO QUE GUARDA EL VSPointer " << id << "   " << ptr << "\n\n";
+        garbageCollector->printGargabeCollectorInfo();
+        //std::cout << "DIRECCION DE MEMORIA DEL DATO QUE GUARDA EL VSPointer " << id << "   " << ptr << "\n\n";
     }
 
 

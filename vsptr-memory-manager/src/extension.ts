@@ -65,7 +65,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 
 	//Copy and paste the library to the working directory 
-	configLibraryDirecory();
+	//configLibraryDirecory();
 
 	//Add WebView content from index.html
 	updateWebView(context.extensionPath);
@@ -270,6 +270,7 @@ class ExtensionWebViewPanel {
 				<td>${data.id}</td>
 				<td>${data.addr}</td>
 				<td>${data.refcount}</td>
+				<td>${data.value}
 				<td>${data.type}</td>
 			</tr>
 		`;
@@ -307,6 +308,7 @@ class ExtensionWebViewPanel {
 												<th>id</th>
 												<th>addr</th>
 												<th>refCount</th>
+												<th>value</th>
 												<th>type</th>
 											</tr>
 											${ tableHtml }
