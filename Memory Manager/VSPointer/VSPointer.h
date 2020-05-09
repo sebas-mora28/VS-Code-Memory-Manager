@@ -32,7 +32,7 @@ public:
     VSPtr() {
         ptr = ((T*)malloc(sizeof(T)));
         id = garbageCollector->generateID();
-        garbageCollector->addInstance(ptr, id);
+        garbageCollector->addInstance(this, id);
         garbageCollector->printGargabeCollectorInfo();
         std::cout << "DIRECCION DE MEMORIA DEL DATO QUE GUARDA EL VSPointer " << id << "   " << ptr << "\n\n";
     }

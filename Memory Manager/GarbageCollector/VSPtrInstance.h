@@ -21,7 +21,6 @@ public:
     virtual void* getInstance(){
         return nullptr;
     };
-
     virtual std::string getValue() = 0;
 
     virtual ~VSPrtInfo() {
@@ -63,7 +62,7 @@ public:
 
 
     std::string getValue() override {
-        return std::to_string(*instance);
+        return std::to_string(instance);
     }
 
     /***
