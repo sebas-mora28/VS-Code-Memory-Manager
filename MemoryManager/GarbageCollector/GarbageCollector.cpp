@@ -77,7 +77,7 @@ void GarbageCollector::printGargabeCollectorInfo() {
 
 
 /**
- * This method increment the ref count to the instance with the id
+ * This method increments the ref instance's ref count assign to the id
  * @param id instance's id
  */
 void GarbageCollector::incrementRefCount(const std::string& id) {
@@ -92,7 +92,7 @@ void GarbageCollector::incrementRefCount(const std::string& id) {
 
 
 /**
- * This method decrement the ref count to the instance with the id
+ * This method decrements the instance's ref count assign to the id
  * @param id instance's id
  */
 void GarbageCollector::decrementRedCount(const std::string& id) {

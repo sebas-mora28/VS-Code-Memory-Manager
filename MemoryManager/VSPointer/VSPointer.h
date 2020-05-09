@@ -7,7 +7,7 @@
 #define GC_VSPOINTER_H
 
 #include <iostream>
-#include "GarbageCollector/GarbageCollector.h"
+#include "../GarbageCollector/GarbageCollector.h"
 
 
 

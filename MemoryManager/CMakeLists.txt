@@ -9,6 +9,7 @@ find_package(PkgConfig REQUIRED)
 pkg_check_modules(JSONCPP jsoncpp)
 link_libraries(${JSONCPP_LIBRARIES})
 add_executable(MemoryManager main.cpp GarbageCollector/GarbageCollector.cpp GarbageCollector/GarbageCollector.h GarbageCollector/VSPtrInstance.h
-        GarbageCollector/UUID.cpp GarbageCollector/UUID.h VSPtrRemote.h Client/ClientSocket.cpp Client/ClientSocket.h)
+        GarbageCollector/UUID/UUID.cpp GarbageCollector/UUID/UUID.h VSPointer/VSPtrRemote.h Client/ClientSocket.cpp Client/ClientSocket.h Client/remoteGarbageCollectorClient.cpp
+        Client/remoteGarbageCollectorClient.h)
 target_link_libraries(MemoryManager ${JSONCPP_LIBRARIES})
 

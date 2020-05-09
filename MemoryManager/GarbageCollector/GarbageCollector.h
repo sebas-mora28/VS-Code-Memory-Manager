@@ -6,7 +6,7 @@
 #define GC_GARBAGECOLLECTIOR_H
 
 #include "VSPtrInstance.h"
-#include "UUID.h"
+#include "UUID/UUID.h"
 #include <thread>
 #include <mutex>
 #include <sstream>
@@ -79,7 +79,7 @@ public:
 
 
     /**
-     * This method increment the ref count to the instance with the id
+     * This method increments the instance's ref count assign to the id
      * @param id instance's id
      */
     void incrementRefCount(const std::string& id);
@@ -87,7 +87,7 @@ public:
 
 
     /**
-  * This method decrement the ref count to the instance with the id
+  * This method decrements the instance's ref count assign to the id
   * @param id instance's id
   */
 
@@ -113,11 +113,17 @@ public:
 
 
 
-
+    /**
+     * Loops through garbage collector hash map and serialize each vsptrInfo into a json file
+     */
     void generateJSON();
 
 
 
+    /**
+     * Spawn garbageCollector Thread
+     * @return
+     */
     std::thread spawnThread();
 
 

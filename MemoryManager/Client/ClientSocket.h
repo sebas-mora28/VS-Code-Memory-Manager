@@ -16,6 +16,11 @@
 #include <string>
 
 
+
+
+/**
+ * This class initialize the client socket and connect
+ */
 class ClientSocket {
 
 
@@ -40,9 +45,10 @@ public:
      */
     void createSocket();
 
+private:
 
     /**
-     * Verify if client socket created successfully
+     * Verifies if client socket created successfully
      * @return
      */
     bool isClientCreatedSuccessfully() const;
@@ -57,18 +63,35 @@ public:
 
     
     /**
-     * Veify if client socket is connected to the server 
+     * Verifies if client socket is connected to the server
      * @return 
      */
     bool isClientConnectedToServer() const;
     
-    
-    void sendInfo();
-    
+
+
+
+public:
+    /**
+     * This method send information to the server
+     */
+    std::string sendInfo(char* message);
+
+
+private:
+    /**
+     * Verifies if the message was sended successfully
+     * @return
+     */
     bool messageSendedSuccessfully() const;
 
 
-    std::string messageReceivedFromServer();
+
+    /**
+     * Receives the info in bytes from the server and converts it into string
+     * @return
+     */
+    std::string messageReceivedFromServer() const;
 };
 
 

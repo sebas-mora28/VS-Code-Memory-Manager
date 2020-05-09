@@ -18,9 +18,6 @@ class VSPtrRemote{
 
 template<class T>
 VSPtrRemote<T>::VSPtrRemote() {
-    T* addr = (T*)malloc(sizeof(T));
-
-
 
 
 }

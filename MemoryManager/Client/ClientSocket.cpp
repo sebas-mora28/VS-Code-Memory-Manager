@@ -5,6 +5,11 @@
 #include <cstring>
 #include "ClientSocket.h"
 
+
+
+/**
+* Creates client socket
+*/
 void ClientSocket::createSocket(){
     ClientSocket::client = socket(AF_INET, SOCK_STREAM, 0);
 
@@ -20,11 +25,19 @@ void ClientSocket::createSocket(){
 }
 
 
+/**
+ *Verifies if client socket created successfully
+ * @return
+ */
 bool ClientSocket::isClientCreatedSuccessfully() const {
         return client != -1;
 }
 
 
+
+/**
+ * This method connects looking for the listen server and connect the client;
+ */
 void ClientSocket::connetClientToServer() {
     hint.sin_family = AF_INET;
     hint.sin_port = htons(PORT);
@@ -39,24 +52,29 @@ void ClientSocket::connetClientToServer() {
 }
 
 
-
+/**
+* Verifies if client socket is connected to the server
+* @return
+*/
 bool ClientSocket::isClientConnectedToServer() const {
     return serverConnection != -1;;
 }
 
-void ClientSocket::sendInfo() {
 
-    std::string temp = "Hello";
-    // variable temp
-    int sendRes = send(client, temp.c_str(), temp.size() +1, 0);
 
+/**
+ * This method send information to the server
+ */
+std::string  ClientSocket::sendInfo(char* message) {
+
+    
+    messageSended = send(client, message, strlen(message), 0);
 
     try {
         if (!messageSendedSuccessfully()) {
             throw std::exception();
         }
-        printf("Mensage %s", messageReceivedFromServer().c_str());
-
+        return messageReceivedFromServer();
 
     } catch (std::exception& err) {
         err.what();
@@ -64,15 +82,25 @@ void ClientSocket::sendInfo() {
     }
 
 
-
 }
 
+
+
+/**
+ * Verifies if the message was sended successfully
+ * @return
+ */
 bool ClientSocket::messageSendedSuccessfully() const {
     return messageSended != -1;
 }
 
 
-std::string ClientSocket::messageReceivedFromServer() {
+
+/**
+ * Receives the info in bytes from the server and converts it into string
+ * @return
+ */
+std::string ClientSocket::messageReceivedFromServer() const {
 
     char bufferReceived[1024];
     memset(bufferReceived, 0, 1024);

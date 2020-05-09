@@ -3,11 +3,9 @@
 
 
 
-
-
 #Compile from .cpp to .o all the files needed for shared library
 g++ -Wall -Wextra -o GarbageCollector.o -c -fPIC GarbageCollector/GarbageCollector.cpp
-g++ -Wall -Wextra -o UUID.o -c -fPIC GarbageCollector/UUID.cpp
+g++ -Wall -Wextra -o UUID.o -c -fPIC GarbageCollector/UUID/UUID.cpp
 
 
 #Compile the shared library
