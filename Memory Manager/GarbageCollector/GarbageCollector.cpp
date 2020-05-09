@@ -67,7 +67,7 @@ std::string GarbageCollector::generateID() const {
 void GarbageCollector::printGargabeCollectorInfo() {
     printf("\n*******************************\n");
     for(std::map<std::string, VSPrtInfo*>::iterator it= mapGarbageCollector.begin(); it != mapGarbageCollector.end(); it++){
-        printf("id: %s  refCount: %d  addr: %p  type: %s  value: %s", it->second->id.c_str(), it->second->refcount, it->second->getInstance(), it->second->getValue().c_str());
+        printf("id: %s  refCount: %d  addr: %p  type: %s  value: %s \n", it->second->id.c_str(), it->second->refcount, it->second->getInstance(), it->second->type.c_str(), it->second->getValue().c_str());
     }
     printf("\n**************************************\n");
 }
@@ -83,6 +83,7 @@ void GarbageCollector::printGargabeCollectorInfo() {
 void GarbageCollector::incrementRefCount(const std::string& id) {
     std::unique_lock<std::mutex> lock(mutex_);
     VSPrtInfo* current = mapGarbageCollector[id];
+    printf("INCREMENTA EL CONTADOR DE REFERENCIAS: id: %s  refCount: %d \n", current->id.c_str(), current->refcount);
     current->refcount++;
 
 
@@ -98,7 +99,7 @@ void GarbageCollector::decrementRedCount(const std::string& id) {
     std::unique_lock<std::mutex> lock(mutex_);
     VSPrtInfo* current = mapGarbageCollector[id];
     current->refcount--;
-    printf("INCREMENT EL CONTADOR DE REFERENCIAS: id: %s  refCount: %d", current->id.c_str(), current->refcount);
+    printf("DECREMENTA EL CONTADOR DE REFERENCIAS: id: %s  refCount: %d \n", current->id.c_str(), current->refcount);
 }
 
 

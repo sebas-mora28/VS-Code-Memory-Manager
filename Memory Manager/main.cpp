@@ -24,6 +24,9 @@ int main() {
         VSPtr<int> vsPtr = VSPtr<int>::New();
         *vsPtr = 8;
 
+        VSPtr<int> vsPtr2 = VSPtr<int>::New();
+        *vsPtr2 = 20;
+        vsPtr2 = vsPtr;
         std::this_thread::sleep_for(std::chrono::seconds(5));
 
 
