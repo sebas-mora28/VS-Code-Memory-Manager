@@ -34,7 +34,7 @@ public:
         id = garbageCollector->generateID();
         garbageCollector->addInstance(ptr, id);
         garbageCollector->printGargabeCollectorInfo();
-        //std::cout << "DIRECCION DE MEMORIA DEL DATO QUE GUARDA EL VSPointer " << id << "   " << ptr << "\n\n";
+        std::cout << "DIRECCION DE MEMORIA DEL DATO QUE GUARDA EL VSPointer " << id << "   " << ptr << "\n\n";
     }
 
 
@@ -174,9 +174,6 @@ public:
 /** Initialization garbage collector instance */
 template <class T>
 GarbageCollector* VSPtr<T>::garbageCollector = garbageCollector->getGarbageCollectorInstance();
-
-
-
 
 
 

@@ -13,7 +13,7 @@
 #include <fstream>
 #include "jsoncpp/json/json.h"
 #include <map>
-#include <condition_variable>
+#include <stdio.h>
 
 
 
@@ -147,7 +147,7 @@ public:
  */
 template <typename T>
 void GarbageCollector::addInstance(const T& value, std::string& id) {
-    std::cout << "INSTANCIA EN ADD INSTANCE " <<  value << "\n";
+    printf("INSTNACIA EN ADD INSTANCE &p", value);
     VSPtrInstance<T>* vsPtrInstance = new VSPtrInstance<T>(value, id);
     mapGarbageCollector[id] = vsPtrInstance;
 
