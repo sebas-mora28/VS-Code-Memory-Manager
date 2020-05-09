@@ -6,35 +6,6 @@
 
 
 
-class Persona{
-    std::string name;
-    int age;
-    Persona* persona;
-
-private:
-    Persona(){
-        age = 8;
-        name = std::string("Persona");
-    }
-
-public:
-    Persona* getInstance(){
-        if(persona == nullptr){
-            persona = new Persona();
-            return persona;
-        }
-        return persona;
-    }
-
-    Persona* disableName(){
-        delete persona;
-        return this;
-    }
-
-};
-
-
-
 
 int main() {
 
