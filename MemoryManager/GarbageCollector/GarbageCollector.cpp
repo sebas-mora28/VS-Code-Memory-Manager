@@ -38,7 +38,7 @@ GarbageCollector::GarbageCollector() {
  * Singleton implementation, returns the instance of the garbage collector created at the first time
  * @return garbage collector implementation
  */
-GarbageCollector*GarbageCollector::getGarbageCollectorInstance() {
+GarbageCollector* GarbageCollector::getGarbageCollectorInstance() {
     if(garbageCollector == nullptr){
         printf("GARBAGE COLLECTOR INSTANCE HAS BEEN CREATED\n");
         garbageCollector = new GarbageCollector();
@@ -66,8 +66,11 @@ std::string GarbageCollector::generateID() const {
  */
 void GarbageCollector::printGargabeCollectorInfo() {
     printf("\n*******************************\n");
+    printf(" GARBARGE COLLECTOR LIST \n");
+    printf("|             id          |   refCount |        addr       |   type  |  value  \n");
     for(std::map<std::string, VSPrtInfo*>::iterator it= mapGarbageCollector.begin(); it != mapGarbageCollector.end(); it++){
-        printf("id: %s  refCount: %d  addr: %p  type: %s  value: %s \n", it->second->id.c_str(), it->second->refcount, it->second->getInstance(), it->second->type.c_str(), it->second->getValue().c_str());
+        printf("|%s |    %d       |   %p  |  %s   |   %s\n", it->second->id.c_str(), it->second->refcount,
+               it->second->getAdress(), it->second->type.c_str(), it->second->getValue().c_str());
     }
     printf("\n**************************************\n");
 }
@@ -168,7 +171,7 @@ void GarbageCollector::generateJSON() {
         Json::Value obj;
 
         std::ostringstream get_addr;
-        get_addr << current->getInstance();
+        get_addr << current->getAdress();
 
         obj["id"] = current->id;
         obj["addr"] = get_addr.str();
@@ -180,8 +183,7 @@ void GarbageCollector::generateJSON() {
 
     }
     my_list["VSPtr"] = vec;
-    std::ofstream file("./lib/vsptr.json");
-    std::cout << file.is_open() << "\n";
+    std::ofstream file("./vsptr.json");
     writer.write(file, my_list);
     file.close();
 }

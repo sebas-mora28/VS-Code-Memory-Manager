@@ -6,22 +6,22 @@
 #define GC_VSPTRINSTANCE_H
 
 #include <iostream>
-
+#include <sstream>
 
 /**
  * VSPtr class, this class holds the reference count of each VSPtr instance
  */
-class VSPrtInfo{
+class VSPrtInfo {
+
 
 public:
-    int refcount;
     std::string id;
+    int refcount;
     std::string type;
 
-    virtual void* getInstance(){
-        return nullptr;
-    };
+    virtual void* getAdress() = 0;
     virtual std::string getValue() = 0;
+
 
     virtual ~VSPrtInfo() {
     };
@@ -55,23 +55,26 @@ public:
     * @tparam T
     * @return
     */
-    //T getInstance();
-    void* getInstance() override{
+    //T getAdress();
+    void* getAdress() override {
         return instance;
     };
 
 
     std::string getValue() override {
-        return std::to_string(instance);
+        std::stringstream str;
+        str << (*instance);
+        return str.str();
     }
 
-    /***
-     * This mehods the id
+
+
+
+    /**
+     * Get the data type of current instance
+     * @param type
      * @return
      */
-    std::string getId();
-
-
     std::string getTypeData(T& type);
 
 
@@ -115,22 +118,8 @@ VSPtrInstance<T>::VSPtrInstance(T instance, std::string& id){
     VSPrtInfo::id = id;
     VSPrtInfo::type = getTypeData(instance);
     this->instance = instance;
-    std::cout << "INSTANCIA GUARDADA EN VSptrInstance " << instance << "   " << this->instance <<"   "  << "    " << type <<  "\n";
+    //std::cout << "INSTANCIA GUARDADA EN VSptrInstance " << instance << "   " << this->instance <<"   "  << "    " << type <<  "\n";
 }
-
-
-
-/**
- * This method return that VSPtr's instance that holds VSPtrInstance
- * @tparam T
- * @return
-*/
-template<typename T>
-std::string VSPtrInstance<T>::getId() {
-    return this->id;
-}
-
-
 
 
 

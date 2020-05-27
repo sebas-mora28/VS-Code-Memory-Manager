@@ -153,7 +153,7 @@ public:
  */
 template <typename T>
 void GarbageCollector::addInstance(const T& value, std::string& id) {
-    printf("INSTNACIA EN ADD INSTANCE &p", value);
+    //printf("INSTNACIA EN ADD INSTANCE &p", value);
     VSPtrInstance<T>* vsPtrInstance = new VSPtrInstance<T>(value, id);
     mapGarbageCollector[id] = vsPtrInstance;
 
