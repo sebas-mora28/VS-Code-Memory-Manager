@@ -11,16 +11,16 @@
 * Creates client socket
 */
 void ClientSocket::createSocket(){
-    ClientSocket::client = socket(AF_INET, SOCK_STREAM, 0);
 
     try {
+        ClientSocket::client = socket(AF_INET, SOCK_STREAM, 0);
+
         if (!isClientCreatedSuccessfully()) {
             throw std::exception();
         }
-
         connetClientToServer();
     } catch (std::exception& err) {
-        err.what();
+        std::cout << "Error creating client  : " << err.what() << "\n";
     }
 }
 
@@ -38,17 +38,24 @@ bool ClientSocket::isClientCreatedSuccessfully() const {
 /**
  * This method connects looking for the listen server and connect the client;
  */
-void ClientSocket::connetClientToServer() {
+void ClientSocket::connetClientToServer()  {
     hint.sin_family = AF_INET;
     hint.sin_port = htons(PORT);
-    inet_pton(AF_INET, ipAddres.c_str(), &hint.sin_addr);
+    try {
+        inet_pton(AF_INET, ipAddres.c_str(), &hint.sin_addr);
 
         serverConnection = connect(client, (sockaddr *) &hint, sizeof(hint));
 
-        if(isClientConnectedToServer()){
+
+        if (!isClientConnectedToServer()) {
             throw std::exception();
         }
         std::cout << "Client connected Successfully";
+
+    } catch (std::exception& err) {
+        std::cout << "Error conectando el socket" << "\n";
+
+    }
 }
 
 
@@ -57,7 +64,7 @@ void ClientSocket::connetClientToServer() {
 * @return
 */
 bool ClientSocket::isClientConnectedToServer() const {
-    return serverConnection != -1;;
+    return serverConnection  != -1;
 }
 
 
@@ -65,19 +72,16 @@ bool ClientSocket::isClientConnectedToServer() const {
 /**
  * This method send information to the server
  */
-std::string  ClientSocket::sendInfo(const char* message) {
-
-    std::cout << "Mensaje enviado: " << message << "\n";
-    messageSended = send(client, message, strlen(message), 0);
-
+std::string  ClientSocket::sendInfo(char* message) {
+    messageSended = send(client, message, strlen(message) + 1, 0);
     try {
         if (!messageSendedSuccessfully()) {
             throw std::exception();
         }
         return messageReceivedFromServer();
-
     } catch (std::exception& err) {
-        err.what();
+        std::cout << "Error sendInfo : ";
+
 
     }
 
@@ -101,13 +105,15 @@ bool ClientSocket::messageSendedSuccessfully() const {
  * @return
  */
 std::string ClientSocket::messageReceivedFromServer() const {
+    try {
+        char bufferReceived[1024];
+        memset(bufferReceived, 0, 1024);
+        int bytesReceived = recv(client, bufferReceived, 1024, 0);
+        return std::string(bufferReceived, bytesReceived);
 
-    char bufferReceived[1024];
-    memset(bufferReceived, 0, 1024);
+    } catch (std::exception& err) {
+        std::cout << "Error receiving message : " << err.what() << "\n";
 
-    int bytesReceived = recv(client, bufferReceived, 1024, 0);
-    return std::string(bufferReceived, bytesReceived);
-
-
+    }
 
 }

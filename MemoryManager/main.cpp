@@ -2,36 +2,29 @@
 #include "VSPointer/VSPointer.h"
 #include <thread>
 #include "Client/ClientSocket.h"
-
-
+#include <unordered_set>
 
 
 
 int main() {
 
 
-    ClientSocket clientSocket;
-
-    clientSocket.createSocket();
 
 
-    char* command = "ADD";
-    std::cout << clientSocket.sendInfo(command) << "\n";
-    //std::cout << clientSocket.sendInfo("SE ENVIO EL ID");
 
-
-    /*
     while(true) {
-        VSPtr<int> vsPtr = VSPtr<int>::New();
-        *vsPtr = 8;
 
         VSPtr<int> vsPtr2 = VSPtr<int>::New();
-        *vsPtr2 = 20;
-        vsPtr2 = vsPtr;
-        std::this_thread::sleep_for(std::chrono::seconds(5));
+        *vsPtr2 = 65;
 
+        VSPtr<int> vsPtr3 = VSPtr<int>::New();
+        *vsPtr3 = 147;
+
+
+        VSPtr<int> vsPtr4 = VSPtr<int>::New();
+        *vsPtr4 = 145;
+
+        std::this_thread::sleep_for(std::chrono::seconds(20));
 
     }
-     */
-
 }

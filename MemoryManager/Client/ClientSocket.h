@@ -34,7 +34,7 @@ private:
 
 public:
 
-    ClientSocket() = default; //Por definir
+    ClientSocket() = default;
 
     ~ClientSocket() = default; //Por definir
 
@@ -75,7 +75,7 @@ public:
     /**
      * This method send information to the server
      */
-    std::string sendInfo(const char* message);
+    std::string sendInfo(char* message);
 
 
 private:

@@ -2,18 +2,21 @@
 // Created by sebasmora on 8/5/20.
 //
 
-#include "remoteGarbageCollectorClient.h"
+#include "RemoteMemory.h"
 
+
+RemoteMemory* RemoteMemory::instance = nullptr;
 
 
 /**
 * Increment remotely instance's ref count assign to the id
 */
-void remoteGarbageCollectorClient::remoteIncrementInstance(std::string& id) {
+void RemoteMemory::remoteIncrementInstance(std::string& id) {
+    printf("INCREMENT REF COUNT REMOTELY");
     Json::Value root;
     root["COMMAND "] = "INCREMENT";
     root["id"] = id;
-    //Send id
+    sendMessage(root);
 }
 
 
@@ -22,17 +25,26 @@ void remoteGarbageCollectorClient::remoteIncrementInstance(std::string& id) {
  * Increment remotely instance's ref count assign to the id
  * @param id
  */
-void remoteGarbageCollectorClient::remoteDecremetnInstance(std::string& id) {
+void RemoteMemory::remoteDecremetnInstance(std::string& id) {
+    printf("DECREMENT REF COUNT REMOTELY");
     Json::Value root;
     root["COMMAND"] = "DECREMENT";
     root["id"] = id;
+    sendMessage(root);
 }
 
 
-/**
- * Changes the value stored by VSPtr instance
- */
-void remoteGarbageCollectorClient::changeValue() {
 
+
+std::string RemoteMemory::sendMessage(Json::Value &root) {
+    std::string message = root.toStyledString();
+    std::string valueReceived = clientSocket.sendInfo(const_cast<char *>(message.c_str()));
+    return valueReceived;
 
 }
+
+void *RemoteMemory::getAddr() {
+    Json::Value root;
+    root["command"] = "ADDR";
+}
+
