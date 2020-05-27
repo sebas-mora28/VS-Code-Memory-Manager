@@ -75,7 +75,7 @@ public:
     /**
      * This method send information to the server
      */
-    std::string sendInfo(char* message);
+    std::string sendInfo(const char* message);
 
 
 private:

@@ -6,6 +6,7 @@
 #define MEMORYMANAGER_REMOTEGARBAGECOLLECTORCLIENT_H
 
 #include "ClientSocket.h"
+#include <jsoncpp/json/json.h>
 
 
 
@@ -16,12 +17,14 @@ class remoteGarbageCollectorClient {
     ClientSocket clientSocket;
 
 
-
+public:
 
     /**
      * Adds VSPtr instance remotely
      */
-    void remoteAddInstance();
+
+    template<typename T>
+    void remoteAddInstance(T value, std::string& type,  std::string& id);
 
 
     /**
@@ -39,8 +42,38 @@ class remoteGarbageCollectorClient {
 
 
 
+    /**
+     * Changes the value stored by the VSPtr instance
+     */
+    void changeValue();
+
+
+
 
 };
+
+
+
+
+
+
+
+/**
+* Adds VSPtr instance remotely
+*/
+template<typename T>
+void remoteGarbageCollectorClient::remoteAddInstance(T value, std::string& type, std::string& id) {
+    Json::Value root;
+    root["COMMAND"] = "ADD";
+
+    Json::Value info;
+    info["id"] = id;
+    info["value"] = value;
+    info["type"] = type;
+    root["VSPtrInfo"] = info;
+
+}
+
 
 
 #endif //MEMORYMANAGER_REMOTEGARBAGECOLLECTORCLIENT_H

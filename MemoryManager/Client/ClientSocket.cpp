@@ -65,9 +65,9 @@ bool ClientSocket::isClientConnectedToServer() const {
 /**
  * This method send information to the server
  */
-std::string  ClientSocket::sendInfo(char* message) {
+std::string  ClientSocket::sendInfo(const char* message) {
 
-    
+    std::cout << "Mensaje enviado: " << message << "\n";
     messageSended = send(client, message, strlen(message), 0);
 
     try {
