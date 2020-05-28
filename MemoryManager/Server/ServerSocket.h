@@ -17,7 +17,7 @@ public:
     ~ServerSocket() = default;
 
     int createSocket();
-    
+
 
 private:
 
