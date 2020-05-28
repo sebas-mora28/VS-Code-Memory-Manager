@@ -18,6 +18,9 @@ public:
 
     int createSocket();
 
+    void increment(std::string id);
+
+    void decrement(std::string id);
 
 private:
 

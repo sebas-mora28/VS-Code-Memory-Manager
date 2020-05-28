@@ -163,3 +163,11 @@ int ServerSocket::createSocket() {
 void ServerSocket::sendMessage(int clientServer, char buf[4096]) {
     send(clientServer, buf, strlen(buf) + 1, 0);
 }
+
+void ServerSocket::increment(std::string id) {
+    GarbageCollector::getGarbageCollectorInstance()->incrementRefCount(id);
+}
+
+void ServerSocket::decrement(std::string id) {
+    GarbageCollector::getGarbageCollectorInstance()->decrementRedCount(id);
+}
