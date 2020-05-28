@@ -22,6 +22,8 @@ public:
 
     void decrement(std::string id);
 
+    void evaluateJson(Json::Value);
+
 private:
 
     static void sendMessage(int clientServer, char buf[4096]);

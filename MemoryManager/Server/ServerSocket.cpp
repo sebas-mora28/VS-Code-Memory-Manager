@@ -151,7 +151,7 @@ int ServerSocket::createSocket() {
                     Json::Reader reader;
                     Json::Value obj;
                     reader.parse(data, obj);
-
+                    evaluateJson(obj);
                     buf[valread] = '\0';
                     sendMessage(sd, buf);
                 }
@@ -170,4 +170,48 @@ void ServerSocket::increment(std::string id) {
 
 void ServerSocket::decrement(std::string id) {
     GarbageCollector::getGarbageCollectorInstance()->decrementRedCount(id);
+}
+
+void instanceCreator(std::string data, std::string type, std::string id) {
+    if (type == "int") {
+        int *temp = new int;
+        GarbageCollector::getGarbageCollectorInstance()->addInstance(temp, id);
+    } else if (type == "string") {
+        auto *temp = new std::string;
+        GarbageCollector::getGarbageCollectorInstance()->addInstance(temp, id);
+    } else if (type == "float") {
+        float *temp = new float;
+        GarbageCollector::getGarbageCollectorInstance()->addInstance(temp, id);
+    } else if (type == "bool") {
+        bool b = (data == "1" || data == "true");
+        bool *temp = new bool;
+        GarbageCollector::getGarbageCollectorInstance()->addInstance(temp, id);
+    }else if (type == "long") {
+        long *temp = new long;
+        GarbageCollector::getGarbageCollectorInstance()->addInstance(temp, id);
+    }
+}
+
+void ServerSocket::evaluateJson(Json::Value info) {
+
+    Json::FastWriter fastWriter;
+    Json::Value obj = info["VSPtrInfo"];
+    if (info["COMMAND"] == "ADD") {
+        std::cout << "Adding to Garbage Collector." << std::endl;
+        std::string val = fastWriter.write(obj["value"]);
+        std::string type = fastWriter.write(obj["type"]);
+        std::string id = fastWriter.write(obj["id"]);
+        instanceCreator(val, type, id);
+        GarbageCollector::getGarbageCollectorInstance()->printGargabeCollectorInfo();
+    }
+    if (info["COMMAND"] == "INCREMENT") {
+        std::cout << "Incremented VSPtr recurrences in the Garbage Collector." << std::endl;
+        std::string id = fastWriter.write(obj["id"]);
+        increment(id);
+    }
+    if (info["COMMAND"] == "DECREMENT") {
+        std::cout << "Decremented VSPtr recurrences in the Garbage Collector." << std::endl;
+        std::string id = fastWriter.write(obj["id"]);
+        decrement(id);
+    }
 }
