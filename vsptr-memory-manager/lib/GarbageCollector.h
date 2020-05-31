@@ -6,14 +6,14 @@
 #define GC_GARBAGECOLLECTIOR_H
 
 #include "VSPtrInstance.h"
-#include "UUID.h"
+#include "UUID/UUID.h"
 #include <thread>
 #include <mutex>
 #include <sstream>
 #include <fstream>
 #include "jsoncpp/json/json.h"
 #include <map>
-#include <condition_variable>
+#include <stdio.h>
 
 
 
@@ -79,7 +79,7 @@ public:
 
 
     /**
-     * This method increment the ref count to the instance with the id
+     * This method increments the instance's ref count assign to the id
      * @param id instance's id
      */
     void incrementRefCount(const std::string& id);
@@ -87,7 +87,7 @@ public:
 
 
     /**
-  * This method decrement the ref count to the instance with the id
+  * This method decrements the instance's ref count assign to the id
   * @param id instance's id
   */
 
@@ -112,12 +112,17 @@ public:
 
 
 
-
-
+    /**
+     * Loops through garbage collector hash map and serialize each vsptrInfo into a json file
+     */
     void generateJSON();
 
 
 
+    /**
+     * Spawn garbageCollector Thread
+     * @return
+     */
     std::thread spawnThread();
 
 
@@ -147,7 +152,7 @@ public:
  */
 template <typename T>
 void GarbageCollector::addInstance(const T& value, std::string& id) {
-    std::cout << "INSTANCIA EN ADD INSTANCE " <<  value << "\n";
+    //printf("INSTNACIA EN ADD INSTANCE &p", value);
     VSPtrInstance<T>* vsPtrInstance = new VSPtrInstance<T>(value, id);
     mapGarbageCollector[id] = vsPtrInstance;
 

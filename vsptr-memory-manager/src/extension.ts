@@ -67,6 +67,10 @@ export function activate(context: vscode.ExtensionContext) {
 	//Copy and paste the library to the working directory 
 	configLibraryDirecory();
 
+
+	//Init server 
+	//initServer(); 
+
 	//Add WebView content from index.html
 	updateWebView(context.extensionPath);
 		
@@ -75,6 +79,17 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(disposable);
 }
 
+
+function initServer(){
+
+	const init = exec('cd src && ./initServer', function(err : any, stdout : any , stderr : any){
+		console.log("Server init"); 
+		console.log(stderr);
+		if(err != null){
+			console.log("error" + err); 
+		}
+	})
+}
 
 function configLibraryDirecory(){
 	

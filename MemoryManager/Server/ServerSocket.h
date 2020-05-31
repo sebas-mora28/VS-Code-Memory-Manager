@@ -11,6 +11,11 @@
 
 
 class ServerSocket {
+
+
+private:
+    int currentSocket;
+
 public:
     ServerSocket() = default;
 
@@ -22,7 +27,7 @@ public:
 
     void decrement(std::string id);
 
-    void evaluateJson(Json::Value);
+    void evaluateJson(Json::Value& info);
 
 private:
 

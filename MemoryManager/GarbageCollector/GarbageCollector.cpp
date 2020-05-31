@@ -85,10 +85,13 @@ void GarbageCollector::printGargabeCollectorInfo() {
  */
 void GarbageCollector::incrementRefCount(const std::string& id) {
     std::unique_lock<std::mutex> lock(mutex_);
-    VSPrtInfo* current = mapGarbageCollector[id];
-    printf("INCREMENTA EL CONTADOR DE REFERENCIAS: id: %s  refCount: %d \n", current->id.c_str(), current->refcount);
-    current->refcount++;
 
+    if(!(mapGarbageCollector.find(id) == mapGarbageCollector.end())) {
+        VSPrtInfo *current = mapGarbageCollector[id];
+        current->refcount++;
+        printf("INCREMENTA EL CONTADOR DE REFERENCIAS: id: %s  refCount: %d \n", current->id.c_str(),
+               current->refcount);
+    }
 
 }
 
@@ -100,9 +103,13 @@ void GarbageCollector::incrementRefCount(const std::string& id) {
  */
 void GarbageCollector::decrementRedCount(const std::string& id) {
     std::unique_lock<std::mutex> lock(mutex_);
-    VSPrtInfo* current = mapGarbageCollector[id];
-    current->refcount--;
-    printf("DECREMENTA EL CONTADOR DE REFERENCIAS: id: %s  refCount: %d \n", current->id.c_str(), current->refcount);
+
+    if(!(mapGarbageCollector.find(id) == mapGarbageCollector.end())) {
+        VSPrtInfo *current = mapGarbageCollector[id];
+        current->refcount--;
+        printf("DECREMENTA EL CONTADOR DE REFERENCIAS: id: %s  refCount: %d \n", current->id.c_str(),current->refcount);
+    }
+
 }
 
 
@@ -125,9 +132,9 @@ void GarbageCollector::decrementRedCount(const std::string& id) {
 void GarbageCollector::executeGarbageCollector() {
     try{
         while(true){
-            std::this_thread::sleep_for(std::chrono::seconds(10));
+            std::this_thread::sleep_for(std::chrono::seconds(5));
             std::unique_lock<std::mutex> locker(mutex_);
-            printf("START EXECUTING THREAD\n");
+            printf("START EXECUTING THREAD 1\n");
             for(std::map<std::string, VSPrtInfo*>::iterator it= mapGarbageCollector.begin(); it != mapGarbageCollector.end(); it++){
                 if(it->second->refcount == 0){
                     VSPrtInfo* vsPrtInfo = it->second;
@@ -183,7 +190,7 @@ void GarbageCollector::generateJSON() {
 
     }
     my_list["VSPtr"] = vec;
-    std::ofstream file("./vsptr.json");
+    std::ofstream file("../src/vsptr.json");
     writer.write(file, my_list);
     file.close();
 }

@@ -1,6 +1,3 @@
-//
-// Created by david on 27/5/20.
-//
 
 #include "ServerSocket.h"
 
@@ -134,6 +131,7 @@ int ServerSocket::createSocket() {
         //else its some IO operation on some other socket
         for (i = 0; i < max_clients; i++) {
             sd = client_socket[i];
+            currentSocket = sd;
 
             if (FD_ISSET(sd, &readfds)) {
                 char buf[4096];
@@ -152,8 +150,6 @@ int ServerSocket::createSocket() {
                     Json::Value obj;
                     reader.parse(data, obj);
                     evaluateJson(obj);
-                    buf[valread] = '\0';
-                    sendMessage(sd, buf);
                 }
             }
         }
@@ -172,8 +168,8 @@ void ServerSocket::decrement(std::string id) {
     GarbageCollector::getGarbageCollectorInstance()->decrementRedCount(id);
 }
 
-void instanceCreator(std::string data, std::string type, std::string id) {
-    if (type == "int") {
+void instanceCreator(std::string& type, std::string& id) {
+    if (type.compare("i")) {
         int *temp = new int;
         GarbageCollector::getGarbageCollectorInstance()->addInstance(temp, id);
     } else if (type == "string") {
@@ -183,7 +179,6 @@ void instanceCreator(std::string data, std::string type, std::string id) {
         float *temp = new float;
         GarbageCollector::getGarbageCollectorInstance()->addInstance(temp, id);
     } else if (type == "bool") {
-        bool b = (data == "1" || data == "true");
         bool *temp = new bool;
         GarbageCollector::getGarbageCollectorInstance()->addInstance(temp, id);
     }else if (type == "long") {
@@ -192,26 +187,26 @@ void instanceCreator(std::string data, std::string type, std::string id) {
     }
 }
 
-void ServerSocket::evaluateJson(Json::Value info) {
+void ServerSocket::evaluateJson(Json::Value& info) {
 
     Json::FastWriter fastWriter;
     Json::Value obj = info["VSPtrInfo"];
     if (info["COMMAND"] == "ADD") {
         std::cout << "Adding to Garbage Collector." << std::endl;
-        std::string val = fastWriter.write(obj["value"]);
         std::string type = fastWriter.write(obj["type"]);
         std::string id = fastWriter.write(obj["id"]);
-        instanceCreator(val, type, id);
+        instanceCreator(type, id);
         GarbageCollector::getGarbageCollectorInstance()->printGargabeCollectorInfo();
     }
     if (info["COMMAND"] == "INCREMENT") {
-        std::cout << "Incremented VSPtr recurrences in the Garbage Collector." << std::endl;
-        std::string id = fastWriter.write(obj["id"]);
+        std::string id = fastWriter.write(info["id"]);
+        std::cout << "Incremented VSPtr recurrences in the Garbage Collector  xd.  " << id << std::endl;
         increment(id);
     }
     if (info["COMMAND"] == "DECREMENT") {
-        std::cout << "Decremented VSPtr recurrences in the Garbage Collector." << std::endl;
-        std::string id = fastWriter.write(obj["id"]);
+        std::string id = fastWriter.write(info["id"]);
+        std::cout << "Decremented VSPtr recurrences in the Garbage Collector.  " << id  << std::endl;
         decrement(id);
+        GarbageCollector::getGarbageCollectorInstance()->printGargabeCollectorInfo();
     }
 }

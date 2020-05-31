@@ -73,6 +73,7 @@ bool ClientSocket::isClientConnectedToServer() const {
  * This method send information to the server
  */
 std::string  ClientSocket::sendInfo(char* message) {
+    createSocket();
     messageSended = send(client, message, strlen(message) + 1, 0);
     try {
         if (!messageSendedSuccessfully()) {
@@ -109,6 +110,7 @@ std::string ClientSocket::messageReceivedFromServer() const {
         char bufferReceived[1024];
         memset(bufferReceived, 0, 1024);
         int bytesReceived = recv(client, bufferReceived, 1024, 0);
+        close(client);
         return std::string(bufferReceived, bytesReceived);
 
     } catch (std::exception& err) {
