@@ -71,6 +71,8 @@ export function activate(context: vscode.ExtensionContext) {
 	//Init server 
 	//initServer(); 
 
+
+
 	//Add WebView content from index.html
 	updateWebView(context.extensionPath);
 		
@@ -274,8 +276,27 @@ class ExtensionWebViewPanel {
 
 		let jsonFile = JSON.parse(fs.readFileSync(path.join(vscode.workspace.rootPath, 'lib/vsptr.json'), 'utf8'));
 
+
+		let jsonFileServer = JSON.parse(fs.readFileSync(path.join(this._extensionPath, 'src/vsptr.json'), 'utf8'));
+
 	
-		const tableHtml = jsonFile.VSPtr.reduce((acc : any, data : any) => {
+	
+		const heap_local = jsonFile.VSPtr.reduce((acc : any, data : any) => {
+			return `
+			${acc}
+			<tr>
+				<td>${data.id}</td>
+				<td>${data.addr}</td>
+				<td>${data.refcount}</td>
+				<td>${data.value}
+				<td>${data.type}</td>
+			</tr>
+		`;
+	}, '');
+	
+
+
+		const heap_remote =  jsonFileServer.VSPtr.reduce((acc : any, data : any) => {
 			return `
 			${acc}
 			<tr>
@@ -312,10 +333,10 @@ class ExtensionWebViewPanel {
 						<body>
 						<div class="container">
 							<div class="table-responsive">
-									<h1>Heap Visualizer</h1>
+									<h1>Heap Visualizer Local</h1>
 										<br />
 
-										<table class="table table-bordered table-striped" id="vsptr_table">
+										<table class="table-heap-local" id="vsptr_table">
 											<tr>
 												<th>id</th>
 												<th>addr</th>
@@ -323,9 +344,29 @@ class ExtensionWebViewPanel {
 												<th>value</th>
 												<th>type</th>
 											</tr>
-											${ tableHtml }
-										</table>
+											${ heap_local }
+										</table> 
+
 									</div>
+
+								
+							<div class="table-heap-remote">
+									<h1> Heap Visualizer Remote </h1>
+										<br />
+
+										<table class="table-heap-remote" id="vsptr_remote_table">
+											<tr>
+												<th>id</th>
+												<th>addr</th>
+												<th>refCount</th>
+												<th>value</th>
+												<th>type</th>
+											</tr>
+											${ heap_remote }
+										</table> 
+
+									</div>
+		
 								</div>
                 <script nonce="${nonce}" src="${scriptUri}"></script>
             </body>
