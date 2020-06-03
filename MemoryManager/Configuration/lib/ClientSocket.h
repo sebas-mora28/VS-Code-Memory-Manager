@@ -25,8 +25,8 @@ class ClientSocket {
 
 
 private:
-    unsigned int PORT = 54000;
-    std::string ipAddres = "127.0.0.1";
+    unsigned int PORT;
+    std::string ipAddres;
     int client;
     int serverConnection;
     int messageSended;
@@ -60,15 +60,11 @@ private:
      */
     void connetClientToServer();
 
-
-    
     /**
      * Verifies if client socket is connected to the server
      * @return 
      */
     bool isClientConnectedToServer() const;
-    
-
 
 
 public:
@@ -76,6 +72,28 @@ public:
      * This method send information to the server
      */
     std::string sendInfo(char* message);
+
+
+
+    /**
+     * Set PORT
+     */
+    void setPORT(const int PORT);
+
+
+    /**
+     * Set IpAddress
+     */
+    void setIpAdrress(std::string& ipAddress);
+
+
+    /**
+     * Set password
+     */
+    void setPassword(std::string& password);
+
+
+
 
 
 private:

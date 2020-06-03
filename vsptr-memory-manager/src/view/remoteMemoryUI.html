@@ -3,7 +3,8 @@
     <body>
 
         <head>
-            <title>REMOTE GARBAGE COLLECTOR</title>
+    
+            <title >REMOTE GARBAGE COLLECTOR</title>
         </head>
 
         <style>
@@ -57,7 +58,10 @@
 
         </style>
 
-        <button id='connection' onclick="changeLabel()" >
+    
+        <h1 id="title"> REMOTE MEMORY </h1>
+
+        <button id='connection' type="button" onclick="init()" >
             Connection
         </button>
     
@@ -83,12 +87,20 @@
         <label id="name"></label>
     
     
-        <script src="./libHandling.js">
-    
+        <script>
+
+
+            function init(){
+
+                console.log(document.getElementById('port').value);
+
+                //document.getElementById('title').innerHTML = "VSC"
+            }
+
+          
         </script>
 
         <script>
-            const styleSrc = vscode.Uri.file()
         </script>
 
     </body>

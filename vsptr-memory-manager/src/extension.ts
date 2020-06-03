@@ -7,6 +7,11 @@ import * as path from 'path';
  
 const exec  = require('child_process').exec;  
 
+let panel_remote_memory : vscode.WebviewPanel; 
+
+const ffi = require('ffi-napi');
+
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 
@@ -15,6 +20,9 @@ export function activate(context: vscode.ExtensionContext) {
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
 	console.log('Congratulations, your extension "vsptr-memory-manager" is now active!');
+
+
+
 
 	/*
 	context.subscriptions.push(
@@ -68,19 +76,58 @@ export function activate(context: vscode.ExtensionContext) {
 	configLibraryDirecory();
 
 
+	
 	//Init server 
 	//initServer(); 
 
 
 
 	//Add WebView content from index.html
-	updateWebView(context.extensionPath);
+	updateRemoteMemoryWebView(context.extensionPath);
+
+
+
+	//Messages receive from webview 
+	panel_remote_memory.webview.onDidReceiveMessage(
+		message => {
+			console.log(message._PORT + "  " +   message._PASSWORD + "   " +   message._IPADDRESS);
+			initClient(message._PORT, message._IPADDRESS);
+		},
+		undefined,
+		context.subscriptions
+	)
 		
 	});
 
 	context.subscriptions.push(disposable);
 }
 
+
+
+
+
+/**
+ * Inicialize client 
+ * @param PORT 
+ * @param ipAddress 
+ */
+function initClient(PORT : string, ipAddress :string){
+
+	const _path = path.join(vscode.workspace.rootPath, 'lib', 'libVSCode')
+	const client = ffi.Library(vscode.workspace.rootPath + '/lib/libVSode', {
+		'connectClient':[
+			'void',['string', 'string', 'string']
+		]
+	});
+
+	client.connectClient(PORT, ipAddress, "sebas");
+	vscode.window.showInformationMessage(`Connection Successfully    PORT : ${PORT}   IpAdress: ${ipAddress}`);
+}
+
+
+/**
+ * Inicialize server to provide remote memory 
+ */
 
 function initServer(){
 
@@ -93,6 +140,12 @@ function initServer(){
 	})
 }
 
+
+
+
+/**
+ * Copy and paste dynamic library and header to user working directory 
+ */
 function configLibraryDirecory(){
 	
 		var child = exec('cp -r ./lib ' + vscode.workspace.rootPath, 
@@ -109,24 +162,99 @@ function configLibraryDirecory(){
 
 
 
-
-function updateWebView(extensionPath : any){
+/**
+ * Set and update remote memory webview
+ * @param extensionPath 
+ */
+function updateRemoteMemoryWebView(extensionPath : any){
 	
 	try{
-	const panel = vscode.window.createWebviewPanel( 
+	panel_remote_memory = vscode.window.createWebviewPanel( 
 		'memoryManager', 'REMOTE GARBAGE COLLECTOR',
 		 vscode.ViewColumn.Beside, {
 
 		enableScripts: true,
 		localResourceRoots: [vscode.Uri.file(path.join(extensionPath, 'src/view'))]
 	});
+
+	const onDiskPath = vscode.Uri.file(path.join(extensionPath, 'src', 'view', 'styleRemoteMemory.css'))
+
+	const style = panel_remote_memory.webview.asWebviewUri(onDiskPath);
 	
-	fs.readFile(path.join(extensionPath, 'src/view', 'index.html'), (err, data)=>{
-		if(err){
-			console.log(err);
-		}
-		panel.webview.html = data.toString();  
-	});
+
+		//panel.webview.html = data.toString();
+		
+	panel_remote_memory.webview.html = `<!DOCTYPE html>
+		<html>
+			<body>
+		
+				<head>
+					<script type="text/javascript" src='./view/clientInformation.ts'> </script>
+					<link rel="stylesheet" type="text/css" href="${style}">
+					<title >REMOTE GARBAGE COLLECTOR</title>
+				</head>
+		
+				<h1 id="title"> REMOTE MEMORY </h1>
+		
+				<button id='connection' type="button" onclick="initClient()" >
+					Connection
+				</button>
+
+
+				<p1 id="default_port"> Default PORT : </p1>
+				<p1 id="default_ip" > Default Ip Address : 127.0.0.1</p1>
+			
+				<form>
+		
+					<label for="ipAddress" id="labelIpAddress"> Ip Address</label><br>
+					<input type="text" id="ipAddress" name="ipAddress" ><br>
+		
+		
+					<label for="password" id="labelPassword"> password</label><br>
+					<input type="password" id="password" name="password" pattern=".{6,}"><br>
+		
+		
+					<label for="port" id="labelPort"> Port</label><br>
+					<input type="text" id="port" name="port" ><br>
+		
+		
+		
+		
+				</form>
+			
+			
+				<label id="name"></label>
+			
+			
+				<script type="text/javascript">
+
+					const vscode = acquireVsCodeApi();
+
+					function initClient(){
+
+						const PORT = document.getElementById("port").value;
+						const IpAdress = document.getElementById("ipAddress").value;
+						const PASSWORD  = document.getElementById("password").value;
+
+						
+						vscode.postMessage({
+							_PORT : PORT,
+							_IPADDRESS : IpAdress,
+							_PASSWORD : PASSWORD
+						})
+						
+
+					}
+					
+				
+				</script>
+		
+				<script>
+					const styleSrc = vscode.Uri.file()
+				</script>
+		
+			</body>
+		</html>`
 	}catch(error){
 		console.log(error);
 	}
@@ -274,10 +402,17 @@ class ExtensionWebViewPanel {
 
 
 
+		
+		const onDiskPath = vscode.Uri.file(path.join(this._extensionPath, 'src', 'view', 'styleHeap.css'));
+		const style = webview.asWebviewUri(onDiskPath);
+
+
+
+
 		let jsonFile = JSON.parse(fs.readFileSync(path.join(vscode.workspace.rootPath, 'lib/vsptr.json'), 'utf8'));
-
-
 		let jsonFileServer = JSON.parse(fs.readFileSync(path.join(this._extensionPath, 'src/vsptr.json'), 'utf8'));
+
+
 
 	
 	
@@ -308,31 +443,35 @@ class ExtensionWebViewPanel {
 			</tr>
 		`;
 	}, '');
-	
+
+
+
 
 		let renderedHtlm = `<!DOCTYPE html>
             <html lang="en">
             <head>
 				<meta charset="UTF-8">
-				
-				<style>
-				table, th, td {
-					border: 1px solid white;
-				}
-				</style>
 
+				<style> 
+
+					table, th, td {
+						border: 1px solid white;
+					}
+				</style>
+				
                 <!--
                 Use a content security policy to only allow loading images from https or from our extension directory,
                 and only allow scripts that have a specific nonce.
                 -->
                 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src ${webview.cspSource} https:; script-src 'nonce-${nonce}';">
 
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+				<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
                 <title>VSCode Heap Visualizer</title>
-            </head>
-						<body>
+			</head>
+					<body>
 						<div class="container">
-							<div class="table-responsive">
+							<div class="table-responsive" style="overflow-x:auto;">
 									<h1>Heap Visualizer Local</h1>
 										<br />
 
@@ -347,11 +486,11 @@ class ExtensionWebViewPanel {
 											${ heap_local }
 										</table> 
 
-									</div>
+							</div>
 
 								
 							<div class="table-heap-remote">
-									<h1> Heap Visualizer Remote </h1>
+									<h1 id="title_heap_remote"> Heap Visualizer Remote </h1>
 										<br />
 
 										<table class="table-heap-remote" id="vsptr_remote_table">
@@ -365,11 +504,11 @@ class ExtensionWebViewPanel {
 											${ heap_remote }
 										</table> 
 
-									</div>
+							</div>
 		
-								</div>
-                <script nonce="${nonce}" src="${scriptUri}"></script>
-            </body>
+						</div>
+				<script nonce="${nonce}" src="${scriptUri}"></script>
+            	</body>
 						</html>`;
 
 		

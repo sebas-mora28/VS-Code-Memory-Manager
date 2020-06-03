@@ -10,12 +10,13 @@ g++ -Wall -Wextra -o GarbageCollector.o -c -fPIC ../GarbageCollector/GarbageColl
 g++ -Wall -Wextra -o UUID.o -c -fPIC ../GarbageCollector/UUID/UUID.cpp
 g++ -Wall -Wextra -o ClientSocket.o -c -fPIC ../Client/ClientSocket.cpp
 g++ -Wall -Wextra -o RemoteMemory.o -c -fPIC ../Client/RemoteMemory.cpp
+g++ -Wall -Wextra -o InializeClient.o -c -fPIC ../Client/InitializeClient.cpp
 
 
 
 
 #Compile the shared library
-g++ -shared -o libVSCode.so GarbageCollector.o UUID.o RemoteMemory.o ClientSocket.o -ljsoncpp -lpthread
+g++ -shared -o libVSCode.so GarbageCollector.o UUID.o RemoteMemory.o ClientSocket.o InializeClient.o -ljsoncpp -lpthread
 
 
 #Delete .o produced in the first step

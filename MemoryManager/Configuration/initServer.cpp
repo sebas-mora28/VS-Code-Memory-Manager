@@ -7,5 +7,4 @@ int main(){
 
     ServerSocket& socket = *(new ServerSocket);
     socket.createSocket();
-    return 0;
 }

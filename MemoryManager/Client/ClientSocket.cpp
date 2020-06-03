@@ -119,3 +119,19 @@ std::string ClientSocket::messageReceivedFromServer() const {
     }
 
 }
+
+ void ClientSocket::setPORT(const int PORT) {
+    this->PORT = PORT;
+}
+
+void ClientSocket::setIpAdrress(std::string &ipAddress) {
+    this->ipAddres = ipAddress;
+
+}
+
+void ClientSocket::setPassword(std::string &) {
+    //Set password
+
+}
+
+

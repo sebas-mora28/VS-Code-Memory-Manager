@@ -19,8 +19,7 @@ private:
     ClientSocket clientSocket;
     static RemoteMemory* instance;
 
-    RemoteMemory(){
-    };
+    RemoteMemory()= default;
 
 
 
@@ -95,7 +94,17 @@ public:
 
 
 
-     void getAddr();
+
+     /**
+      * Init socket client with the PORT, ipAddress and password given by the user
+      * @param PORT
+      * @param ipAddress
+      * @param password
+      */
+     void initClient(const int PORT, std::string& ipAddress, std::string& password);
+
+
+
 
 
 };

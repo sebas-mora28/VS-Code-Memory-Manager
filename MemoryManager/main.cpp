@@ -10,22 +10,16 @@
 #include "unordered_map"
 
 
-int foo(){
-    return 2;
-}
-
-int bar(){
-    return 10;
-}
-
 int main() {
 
     while(true) {
 
 
+        /*
         VSPtr<int> vsPtr = VSPtr<int>::NewRemote();
         VSPtr<int> vsPtr2 = VSPtr<int>::NewRemote();
         VSPtr<int> vsPtr3 = VSPtr<int>::NewRemote();
+         */
 
 
 

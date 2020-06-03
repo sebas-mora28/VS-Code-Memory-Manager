@@ -43,13 +43,8 @@ std::string RemoteMemory::sendMessage(Json::Value &root) {
 
 }
 
-void RemoteMemory::getAddr() {
-    Json::Value root;
-    root["command"] = "ADDR";
-}
 
-
-void RemoteMemory::remoteAddInstance(string &type, string& id) {
+void RemoteMemory::remoteAddInstance(std::string &type, std::string& id) {
     Json::Value root;
     root["COMMAND"] = "ADD";
     Json::Value info;
@@ -57,6 +52,12 @@ void RemoteMemory::remoteAddInstance(string &type, string& id) {
     info["id"] = id;
     root["VSPtrInfo"] = info;
     sendMessage(root);
+
+}
+
+void RemoteMemory::initClient(const int PORT, std::string &ipAddress, std::string &password) {
+    clientSocket.setPORT(PORT);
+    clientSocket.setIpAdrress(ipAddress);
 
 }
 
