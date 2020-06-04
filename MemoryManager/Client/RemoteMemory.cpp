@@ -55,10 +55,9 @@ void RemoteMemory::remoteAddInstance(std::string &type, std::string& id) {
 
 }
 
-void RemoteMemory::initClient(const int PORT, std::string &ipAddress, std::string &password) {
-    clientSocket.setPORT(PORT);
-    clientSocket.setIpAdrress(ipAddress);
-
+void RemoteMemory::testConnection() {
+    char* message = "Connection Successfully";
+    clientSocket.sendInfo(message);
 }
 
 

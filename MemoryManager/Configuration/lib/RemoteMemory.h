@@ -19,7 +19,7 @@ private:
     ClientSocket clientSocket;
     static RemoteMemory* instance;
 
-    RemoteMemory()= default;
+    RemoteMemory() = default;
 
 
 
@@ -101,7 +101,7 @@ public:
       * @param ipAddress
       * @param password
       */
-     void initClient(const int PORT, std::string& ipAddress, std::string& password);
+     void testConnection();
 
 
 
@@ -141,7 +141,6 @@ T RemoteMemory::getValue(std::string &id) {
 }
 
 
-typedef std::string string;
 
 template<typename T>
 T RemoteMemory::convertValue(std::string& value){

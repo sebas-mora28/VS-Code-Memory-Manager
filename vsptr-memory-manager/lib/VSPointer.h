@@ -7,8 +7,8 @@
 #define GC_VSPOINTER_H
 
 #include <iostream>
-#include "../GarbageCollector/GarbageCollector.h"
-#include "../Client/RemoteMemory.h"
+#include "GarbageCollector.h"
+#include "RemoteMemory.h"
 #include <typeinfo>
 
 

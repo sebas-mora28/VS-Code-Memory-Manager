@@ -6,10 +6,9 @@
 #define GC_GARBAGECOLLECTIOR_H
 
 #include "VSPtrInstance.h"
-#include "UUID/UUID.h"
+#include "UUID.h"
 #include <thread>
 #include <mutex>
-#include <sstream>
 #include <fstream>
 #include "jsoncpp/json/json.h"
 #include <map>

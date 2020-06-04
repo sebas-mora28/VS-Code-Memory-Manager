@@ -3,6 +3,8 @@
 //
 
 #include <cstring>
+#include <fstream>
+#include <jsoncpp/json/json.h>
 #include "ClientSocket.h"
 
 
@@ -120,7 +122,7 @@ std::string ClientSocket::messageReceivedFromServer() const {
 
 }
 
- void ClientSocket::setPORT(const int PORT) {
+ void ClientSocket::setPORT(int PORT) {
     this->PORT = PORT;
 }
 
@@ -131,6 +133,18 @@ void ClientSocket::setIpAdrress(std::string &ipAddress) {
 
 void ClientSocket::setPassword(std::string &) {
     //Set password
+
+}
+
+ClientSocket::ClientSocket() {
+        std::ifstream connectionInfo;
+        std::string data;
+        connectionInfo.open("./lib/connectionData.json");
+        Json::Reader reader;
+        Json::Value obj;
+        reader.parse(connectionInfo, obj);
+        this->PORT =  obj["ConnectionData"]["PORT"].asInt();
+        this->ipAddres = obj["ConnectionData"]["IpAdress"].toStyledString();
 
 }
 

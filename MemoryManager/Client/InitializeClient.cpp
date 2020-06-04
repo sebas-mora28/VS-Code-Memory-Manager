@@ -5,11 +5,6 @@
 #include "../Client/RemoteMemory.h"
 
 
-extern "C" void  connectClient(char* port, char* ipAdress, char* password){
-    const int PORT = atoi(port);
-    std::string IPADDRESS(ipAdress);
-    std::string PASSWORD(password);
-    RemoteMemory::getInstance()->initClient(PORT, IPADDRESS, PASSWORD);
-    std::cout << "SET CLIENT" << "\n";
-
+extern "C" void  testConnection(){
+    RemoteMemory::getInstance()->testConnection();
 }

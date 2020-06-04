@@ -4,12 +4,13 @@ import * as vscode from 'vscode';
 import * as fs from 'fs'; 
 import * as path from 'path';
 
- 
+
 const exec  = require('child_process').exec;  
 
 let panel_remote_memory : vscode.WebviewPanel; 
 
 const ffi = require('ffi-napi');
+
 
 
 // this method is called when your extension is activated
@@ -22,6 +23,7 @@ export function activate(context: vscode.ExtensionContext) {
 	console.log('Congratulations, your extension "vsptr-memory-manager" is now active!');
 
 
+	//console.log(client.connectClient("sebas", "hola", "sebas"));
 
 
 	/*
@@ -90,8 +92,10 @@ export function activate(context: vscode.ExtensionContext) {
 	//Messages receive from webview 
 	panel_remote_memory.webview.onDidReceiveMessage(
 		message => {
-			console.log(message._PORT + "  " +   message._PASSWORD + "   " +   message._IPADDRESS);
-			initClient(message._PORT, message._IPADDRESS);
+			let PORT : string = message._PORT.toString();
+			let Ip : string =  message._IPADDRESS.toString()
+
+			initClient(PORT, Ip)
 		},
 		undefined,
 		context.subscriptions
@@ -113,15 +117,20 @@ export function activate(context: vscode.ExtensionContext) {
  */
 function initClient(PORT : string, ipAddress :string){
 
-	const _path = path.join(vscode.workspace.rootPath, 'lib', 'libVSCode')
-	const client = ffi.Library(vscode.workspace.rootPath + '/lib/libVSode', {
-		'connectClient':[
-			'void',['string', 'string', 'string']
-		]
-	});
 
-	client.connectClient(PORT, ipAddress, "sebas");
-	vscode.window.showInformationMessage(`Connection Successfully    PORT : ${PORT}   IpAdress: ${ipAddress}`);
+	const connectionData = { ConnectionData: 
+		{
+			"PORT": parseInt(PORT),
+			"IpAdress":ipAddress
+		}
+	}
+
+	const connectionJson = JSON.stringify(connectionData);
+
+
+	const _path = path.join(vscode.workspace.rootPath, 'lib', 'connectionData.json');
+	fs.writeFileSync(_path, connectionJson);
+
 }
 
 
@@ -183,6 +192,7 @@ function updateRemoteMemoryWebView(extensionPath : any){
 	
 
 		//panel.webview.html = data.toString();
+
 		
 	panel_remote_memory.webview.html = `<!DOCTYPE html>
 		<html>
@@ -331,7 +341,7 @@ class ExtensionWebViewPanel {
 
 
 		setInterval(()=>{
-			if(fs.existsSync(path.join(vscode.workspace.rootPath, 'lib/vsptr.json'))){
+			if(fs.existsSync(path.join(vscode.workspace.rootPath, 'lib/vsptr.json')) ||  fs.existsSync(path.join(this._extensionPath, 'src/vsptr.json')) ){
 				this._update();
 			}else{
 				console.log("No hay contenido");
@@ -356,6 +366,7 @@ class ExtensionWebViewPanel {
 			null,
 			this._disposables
 		);
+
 
 		// Handle messages from the webview
 		this._panel.webview.onDidReceiveMessage(
@@ -386,6 +397,40 @@ class ExtensionWebViewPanel {
 		}
 	}
 
+
+
+
+	private getHeapTable(jsonFile : any) {
+		const table = jsonFile.VSPtr.reduce((acc : any, data : any) => {
+			return `
+			${acc}
+			<tr>
+				<td>${data.id}</td>
+				<td>${data.addr}</td>
+				<td>${data.refcount}</td>
+				<td>${data.value}</td>
+				<td>${data.type}</td>
+			</tr>
+		`;
+	}, '');
+
+	return table; 
+		
+	}
+
+	private getEmptyTable() {
+		return `
+		<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>`
+		
+	}
+
+
 	private _update() {
 		const webview = this._panel.webview;
 
@@ -409,43 +454,33 @@ class ExtensionWebViewPanel {
 
 
 
-		let jsonFile = JSON.parse(fs.readFileSync(path.join(vscode.workspace.rootPath, 'lib/vsptr.json'), 'utf8'));
-		let jsonFileServer = JSON.parse(fs.readFileSync(path.join(this._extensionPath, 'src/vsptr.json'), 'utf8'));
+
+		
+		let heap_local;
+		if(fs.existsSync(path.join(vscode.workspace.rootPath, 'lib/vsptr.json'))){
+			let jsonFile = JSON.parse(fs.readFileSync(path.join(vscode.workspace.rootPath, 'lib/vsptr.json'), 'utf8'));
+			heap_local = this.getHeapTable(jsonFile);
+		
+
+		}else{
+			heap_local =  this.getEmptyTable();
+		}
 
 
 
+
+		let heap_remote;
+		if(fs.existsSync(path.join(this._extensionPath, 'src/vsptr.json'))){
+			let jsonFileServer = JSON.parse(fs.readFileSync(path.join(this._extensionPath, 'src/vsptr.json'), 'utf8'));
+			heap_remote = this.getHeapTable(jsonFileServer);
 	
-	
-		const heap_local = jsonFile.VSPtr.reduce((acc : any, data : any) => {
-			return `
-			${acc}
-			<tr>
-				<td>${data.id}</td>
-				<td>${data.addr}</td>
-				<td>${data.refcount}</td>
-				<td>${data.value}
-				<td>${data.type}</td>
-			</tr>
-		`;
-	}, '');
-	
+
+		}else{
+			heap_remote =  this.getEmptyTable();
+		}
 
 
-		const heap_remote =  jsonFileServer.VSPtr.reduce((acc : any, data : any) => {
-			return `
-			${acc}
-			<tr>
-				<td>${data.id}</td>
-				<td>${data.addr}</td>
-				<td>${data.refcount}</td>
-				<td>${data.value}
-				<td>${data.type}</td>
-			</tr>
-		`;
-	}, '');
-
-
-
+	 
 
 		let renderedHtlm = `<!DOCTYPE html>
             <html lang="en">
@@ -486,25 +521,29 @@ class ExtensionWebViewPanel {
 											${ heap_local }
 										</table> 
 
-							</div>
-
-								
+							</div>			
+							
+							
+							
 							<div class="table-heap-remote">
-									<h1 id="title_heap_remote"> Heap Visualizer Remote </h1>
-										<br />
+							<h1 id="title_heap_remote"> Heap Visualizer Remote </h1>
+								<br />
 
-										<table class="table-heap-remote" id="vsptr_remote_table">
-											<tr>
-												<th>id</th>
-												<th>addr</th>
-												<th>refCount</th>
-												<th>value</th>
-												<th>type</th>
-											</tr>
-											${ heap_remote }
-										</table> 
+								<table class="table-heap-remote" id="vsptr_remote_table">
+									<tr>
+										<th>id</th>
+										<th>addr</th>
+										<th>refCount</th>
+										<th>value</th>
+										<th>type</th>
+									</tr>
+									${ heap_remote }
+								</table> 
 
-							</div>
+					</div>
+
+
+
 		
 						</div>
 				<script nonce="${nonce}" src="${scriptUri}"></script>
@@ -512,8 +551,6 @@ class ExtensionWebViewPanel {
 						</html>`;
 
 		
-
-		//console.log(renderedHtlm);
 		this._panel.webview.html = renderedHtlm;
 	}
 }

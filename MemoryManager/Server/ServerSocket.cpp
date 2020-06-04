@@ -138,6 +138,10 @@ int ServerSocket::createSocket() {
                 valread = read(sd, buf, 1024);
                 std::string data = std::string(buf, 0, valread);
                 std::cout << data << std::endl;
+
+                if(data.compare("Connection Successfully")){
+                    printf("");
+                }
                 if (valread == 0) {
                     getpeername(sd, (struct sockaddr *) &address,
                                 (socklen_t *) &addrlen);

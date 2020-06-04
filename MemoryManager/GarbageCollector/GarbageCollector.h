@@ -9,7 +9,6 @@
 #include "UUID/UUID.h"
 #include <thread>
 #include <mutex>
-#include <sstream>
 #include <fstream>
 #include "jsoncpp/json/json.h"
 #include <map>

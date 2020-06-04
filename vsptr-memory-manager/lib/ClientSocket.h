@@ -18,6 +18,7 @@
 
 
 
+
 /**
  * This class initialize the client socket and connect
  */
@@ -34,7 +35,7 @@ private:
 
 public:
 
-    ClientSocket() = default;
+    ClientSocket();
 
     ~ClientSocket() = default; //Por definir
 
@@ -74,11 +75,10 @@ public:
     std::string sendInfo(char* message);
 
 
-
     /**
      * Set PORT
      */
-    void setPORT(const int PORT);
+    void setPORT(int PORT);
 
 
     /**

@@ -5,7 +5,7 @@
 #ifndef MEMORYMANAGER_INITIALIZECLIENT_H
 #define MEMORYMANAGER_INITIALIZECLIENT_H
 
-extern "C" void connectClient(char* port, char* ipAdress, char* password);
+extern "C" void testConnection();
 
 
 
