@@ -44,12 +44,12 @@ std::string RemoteMemory::sendMessage(Json::Value &root) {
 }
 
 
-void RemoteMemory::remoteAddInstance(std::string &type, std::string& id) {
+void RemoteMemory::remoteAddInstance(const char* type, std::string& id) {
     Json::Value root;
     root["COMMAND"] = "ADD";
     Json::Value info;
-    info["type"] = type;
     info["id"] = id;
+    info["type"] = type;
     root["VSPtrInfo"] = info;
     sendMessage(root);
 

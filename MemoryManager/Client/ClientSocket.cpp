@@ -137,14 +137,16 @@ void ClientSocket::setPassword(std::string &) {
 }
 
 ClientSocket::ClientSocket() {
+        /*
         std::ifstream connectionInfo;
         std::string data;
         connectionInfo.open("./lib/connectionData.json");
         Json::Reader reader;
         Json::Value obj;
         reader.parse(connectionInfo, obj);
-        this->PORT =  obj["ConnectionData"]["PORT"].asInt();
-        this->ipAddres = obj["ConnectionData"]["IpAdress"].toStyledString();
+        this->PORT =  obj["ConnectionInfo"]["PORT"].asInt();
+        this->ipAddres = obj["ConnectionInfo"]["IpAdress"].toStyledString();
+         */
 
 }
 

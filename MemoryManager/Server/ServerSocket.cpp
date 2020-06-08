@@ -16,7 +16,6 @@
 
 #define PORT 54000
 
-
 int ServerSocket::createSocket() {
     int opt = true;
     int master_socket, addrlen, new_socket, client_socket[30],
@@ -173,32 +172,41 @@ void ServerSocket::decrement(std::string id) {
 }
 
 void instanceCreator(std::string& type, std::string& id) {
-    if (type.compare("i")) {
-        int *temp = new int;
+    if (type == "i") {
+        int *temp = new int{};
         GarbageCollector::getGarbageCollectorInstance()->addInstance(temp, id);
-    } else if (type == "string") {
-        auto *temp = new std::string;
+    } else if (type == typeid(std::string).name()) {
+        auto *temp = new std::string{};
         GarbageCollector::getGarbageCollectorInstance()->addInstance(temp, id);
-    } else if (type == "float") {
-        float *temp = new float;
+    } else if (type== "f") {
+        float *temp = new float{};
         GarbageCollector::getGarbageCollectorInstance()->addInstance(temp, id);
-    } else if (type == "bool") {
-        bool *temp = new bool;
+    } else if (type=="b") {
+        bool *temp = new bool{};
         GarbageCollector::getGarbageCollectorInstance()->addInstance(temp, id);
-    }else if (type == "long") {
-        long *temp = new long;
+    }else if (type=="l") {
+        long *temp = new long{};
         GarbageCollector::getGarbageCollectorInstance()->addInstance(temp, id);
+    }else if(type == "c"){
+        char* temp = new char{};
+        GarbageCollector::getGarbageCollectorInstance()->addInstance(temp, id);
+    }else if(type=="d"){
+        double* temp = new double{};
+        GarbageCollector::getGarbageCollectorInstance()->addInstance(temp, id);
+
     }
 }
 
 void ServerSocket::evaluateJson(Json::Value& info) {
-
     Json::FastWriter fastWriter;
     Json::Value obj = info["VSPtrInfo"];
+
+    std::cout << info["COMMAND"] << "\n";
     if (info["COMMAND"] == "ADD") {
         std::cout << "Adding to Garbage Collector." << std::endl;
-        std::string type = fastWriter.write(obj["type"]);
-        std::string id = fastWriter.write(obj["id"]);
+        std::string type = obj["type"].toStyledString();
+        std::string  id = obj["id"].toStyledString();
+        type = type.substr(1,1);
         instanceCreator(type, id);
         GarbageCollector::getGarbageCollectorInstance()->printGargabeCollectorInfo();
     }
@@ -212,5 +220,17 @@ void ServerSocket::evaluateJson(Json::Value& info) {
         std::cout << "Decremented VSPtr recurrences in the Garbage Collector.  " << id  << std::endl;
         decrement(id);
         GarbageCollector::getGarbageCollectorInstance()->printGargabeCollectorInfo();
+    }
+    if(info["COMMAND"] == "GET"){
+        std::string id = fastWriter.write(info["id"]);
+        //std::string value = GarbageCollector::getGarbageCollectorInstance()->get
+
+    }
+    if(info["COMMAND"] == "SET"){
+        std::string id = fastWriter.write(info["id"]);
+        std::string newValue = info["newValue"].toStyledString();
+        std::cout << newValue << "\n";
+        GarbageCollector::getGarbageCollectorInstance()->setValue(newValue, id);
+
     }
 }

@@ -26,8 +26,8 @@ class ClientSocket {
 
 
 private:
-    unsigned int PORT;
-    std::string ipAddres;
+    unsigned int PORT = 54000;
+    std::string ipAddres = "127.0.0.1";
     int client;
     int serverConnection;
     int messageSended;

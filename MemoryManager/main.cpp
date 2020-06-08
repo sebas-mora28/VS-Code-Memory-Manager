@@ -5,35 +5,71 @@
 #include <unordered_set>
 #include "Client/InitializeClient.h"
 
-
-
 #include "unordered_map"
 
 
+/*
+class Base{
+
+    std::string id;
+
+    virtual void* get();
+
+};
+
+template<class T>
+class Derivded : public Base {
+
+
+public :
+    Derivded(T& instance){
+        this->instance = instance;
+}
+    void* get(){
+        return instance;
+    }
+
+public:
+    T instance;
+};
+
+*/
+
 int main() {
+
+
+    double* number = new double {};
+
+    std::string name = "58.25";
+    std::stringstream str(name);
+
+    str >> *number;
+
+    std::cout << *number << "\n";
 
 
     while(true) {
 
 
-        VSPtr<int> vsPtr = VSPtr<int>::NewRemote();
-        VSPtr<int> vsPtr2 = VSPtr<int>::NewRemote();
-        VSPtr<int> vsPtr3 = VSPtr<int>::NewRemote();
 
-        VSPtr<int> vsPtr22 = VSPtr<int>::New();
-        *vsPtr22 = 65;
+        VSPtr<int> vsptr = VSPtr<int>::NewRemote();
+        *vsptr = 8;
+        VSPtr<char> vsptr2 = VSPtr<char>::NewRemote();
+        *vsptr2 = 'a';
 
-        VSPtr<int> vsPtr33 = VSPtr<int>::New();
-        *vsPtr33 = 147;
+        VSPtr<float> vsPtr4 = VSPtr<float>::NewRemote();
+        vsPtr4 = 14.25f;
 
-        VSPtr<int> vsPtr4 = VSPtr<int>::New();
-        *vsPtr4 = 145;
+        VSPtr<double> vsPtr5 = VSPtr<double>::NewRemote();
+        *vsPtr5 = 58.25;
 
-        VSPtr<char> vsPtr1 = VSPtr<char>::New();
 
-        *vsPtr1 = 'c';
+
+
 
         std::this_thread::sleep_for(std::chrono::seconds(10));
 
     }
+
+
 }

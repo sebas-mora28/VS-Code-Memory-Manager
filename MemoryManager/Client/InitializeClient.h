@@ -8,5 +8,8 @@
 extern "C" void testConnection();
 
 
+extern "C" char* getGarbageCollectorList();
+
+
 
 #endif //MEMORYMANAGER_INITIALIZECLIENT_H

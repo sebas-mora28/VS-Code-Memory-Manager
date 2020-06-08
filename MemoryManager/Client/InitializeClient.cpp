@@ -8,3 +8,9 @@
 extern "C" void  testConnection(){
     RemoteMemory::getInstance()->testConnection();
 }
+
+
+extern "C" char* getGarbageCollectorList(){
+    char* message = "hola";
+    return message;
+}

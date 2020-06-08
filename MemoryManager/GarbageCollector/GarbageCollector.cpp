@@ -51,7 +51,7 @@ GarbageCollector* GarbageCollector::getGarbageCollectorInstance() {
  * Generate a new ID when a VSPointer is created;
  * @return
  */
-std::string GarbageCollector::generateID() const {
+std::string GarbageCollector::generateID()const {
     return UUID::generateUUID();
 }
 
@@ -130,7 +130,8 @@ void GarbageCollector::decrementRedCount(const std::string& id) {
 void GarbageCollector::executeGarbageCollector() {
     try{
         while(true){
-            std::this_thread::sleep_for(std::chrono::seconds(5));
+            std::this_thread::sleep_for(std::chrono::seconds(15));
+            printGargabeCollectorInfo();
             std::unique_lock<std::mutex> locker(mutex_);
             printf("START EXECUTING THREAD 1\n");
             for(std::map<std::string, VSPrtInfo*>::iterator it= mapGarbageCollector.begin(); it != mapGarbageCollector.end(); it++){
@@ -177,7 +178,6 @@ void GarbageCollector::generateJSON() {
 
         std::ostringstream get_addr;
         get_addr << current->getAdress();
-
         obj["id"] = current->id;
         obj["addr"] = get_addr.str();
         obj["type"] = current->type;
@@ -191,4 +191,13 @@ void GarbageCollector::generateJSON() {
     std::ofstream file("./lib/vsptr.json");
     writer.write(file, my_list);
     file.close();
+}
+
+
+void GarbageCollector::setValue(std::string newValue, std::string& id) {
+    std::cout << "HOLAA  " << newValue << "\n";
+    mapGarbageCollector[id]->setValue(newValue);
+
+
+
 }

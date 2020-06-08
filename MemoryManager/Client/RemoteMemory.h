@@ -43,7 +43,7 @@ public:
      */
 
 
-    void remoteAddInstance(std::string& type, std::string& id);
+    void remoteAddInstance(const char* type, std::string& id);
 
 
     /**
@@ -65,7 +65,7 @@ public:
      * Changes the value stored by the VSPtr instance
      */
     template<typename T>
-    void changeValue(T& newValue, std::string& id);
+    void setValue(T& newValue, std::string& id);
 
 
 
@@ -118,12 +118,14 @@ public:
 * Changes the value stored by VSPtr instance
 */
 template<typename T>
-void RemoteMemory::changeValue(T& newValue, std::string& id) {
+void RemoteMemory::setValue(T& newValue, std::string& id) {
     printf("CHANGE VALUE REMOTELY");
     Json::Value root;
-    root["COMMAND"] = "CHANGE";
+    root["COMMAND"] = "SET";
     root["id"] = id;
-    root["value"] = newValue;
+    root["newValue"] = newValue;
+    std::cout << root << "\n";
+    sendMessage(root);
 }
 
 
@@ -136,7 +138,7 @@ T RemoteMemory::getValue(std::string &id) {
     Json::Value root;
     root["COMMAND"] = "GET";
     root["id"] = id;
-    std::string value = "8";//sendMessage(root);
+    std::string value = sendMessage(root);
     return convertValue<T>(value);
 }
 
