@@ -1,7 +1,18 @@
-table, th, td {
-    border: 1px solid white;
+
+table {
+    border-collapse: collapse;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    text-align: center;
+    
 }
 
-body{
-    background-color: #95A1B5;
+
+th, th{
+    border: 1px solid;
+    padding: 10px;
+    min-width: 150px;
+    background: white;
+    box-sizing: border-box;
+    text-align: center;
 }
+

@@ -2,12 +2,12 @@ const ffi = require('ffi-napi');
 
 
 
-const client = ffi.Library('/home/sebasmora/Desktop/ffd' + '/lib/libVSCodeRemote', {
-    'testConnection':[
-        'void',[]
+const client = new ffi.Library('/home/sebasmora/Documents/TEC/Semestre III/Datos II/VS-Code-Memory-Manager/vsptr-memory-manager/lib/libVSCode', {
+    'getGarbageCollectorList':[
+        'string',[]
     ]
 });
 
-client.testConnection();
+console.log(client.getGarbageCollectorList());
 
 

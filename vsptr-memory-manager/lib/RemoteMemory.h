@@ -43,7 +43,7 @@ public:
      */
 
 
-    void remoteAddInstance(std::string& type, std::string& id);
+    void remoteAddInstance(const char* type, std::string& id);
 
 
     /**
