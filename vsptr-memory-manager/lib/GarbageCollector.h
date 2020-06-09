@@ -5,6 +5,8 @@
 #ifndef GC_GARBAGECOLLECTIOR_H
 #define GC_GARBAGECOLLECTIOR_H
 
+#include <iostream>
+#include <any>
 #include "VSPtrInstance.h"
 #include "UUID.h"
 #include <thread>
@@ -126,6 +128,17 @@ public:
 
 
 
+    /*
+    template<typename T>
+    void setValue(T value, std::string& id);
+     */
+
+
+
+    void setValue(std::string newValue, std::string& id);
+
+
+
 };
 
 
@@ -158,6 +171,13 @@ void GarbageCollector::addInstance(const T& value, std::string& id) {
 }
 
 
+/*
+template<typename T>
+void GarbageCollector::setValue(T value, std::string& id) {
+    VSPrtInfo* current = mapGarbageCollector[id];
+    current->setValue(value);
+}
+ */
 
 
 #endif //GC_GARBAGECOLLECTIOR_H

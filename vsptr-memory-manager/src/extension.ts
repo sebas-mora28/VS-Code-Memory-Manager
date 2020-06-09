@@ -32,6 +32,9 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.showInformationMessage('VSPtr MemoryManager');
 		HeapVisualizer.createOrShow(context.extensionPath);
 		RemoteMemory.createOrShow(context.extensionPath);
+		initServer();
+		configLibraryDirecory();
+		
 	})
 	);
 	
@@ -56,12 +59,12 @@ export function activate(context: vscode.ExtensionContext) {
 
 
 	//Copy and paste the library to the working directory 
-	configLibraryDirecory();
+	
 
 
 	
 	//Init server 
-	initServer(); 
+	 
 
 
 

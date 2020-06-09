@@ -94,19 +94,6 @@ export class RemoteMemory {
     private createConnectionInfo(PORT : string, IpAdress : string, password : string) {
 
 
-		try{
-		const client = new ffi.Library('/home/sebasmora/Documents/TEC/Semestre III/Datos II/VS-Code-Memory-Manager/vsptr-memory-manager/lib/libVSCode', {
-			'getGarbageCollectorList':[
-				'string',[]
-			]
-		});
-
-		const res = client.getGarbageCollectorList();
-		console.log( "HOLAAAAA"  + res);
-	}catch(err){
-		console.log(err);
-	}
-
         const connectionInfo = {
             ConnectionInfo :
             {

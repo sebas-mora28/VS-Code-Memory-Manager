@@ -1,18 +1,46 @@
 
+
 table {
+
+
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: normal;
+    border: none;
     border-collapse: collapse;
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    text-align: center;
+    width: 100%;
+    max-width: 100%;
+    white-space: nowrap;
+    background-color: white;
+
+
     
 }
 
 
-th, th{
-    border: 1px solid;
-    padding: 10px;
-    min-width: 150px;
-    background: white;
-    box-sizing: border-box;
+
+td, th {
     text-align: center;
+    padding: 8px;
 }
 
+td {
+    border-right: 1px solid #f8f8f8;
+    font-size: 12px;
+    text-shadow: black;
+    color: black;
+}
+
+th {
+    color: #ffffff;
+    background: #4FC3A1;
+}
+
+tr:nth-child(even) {
+    background: #F8F8F8;
+}
+
+th:nth-child(odd) {
+    color: #ffffff;
+    background: #324960;
+}

@@ -1,12 +1,9 @@
-body {
-    background-color: #254925;
-} 
 
 
 #title {
-    color: black;
+    color: white;
     position: absolute;
-    left: 200px;
+    left: 100px;
 }
 
 #default_port {
@@ -38,7 +35,16 @@ body {
     font-weight: bold;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     font-size: 20px;
-    background-color: #B37917;
+    background-color: rgb(41, 179, 23);
+}
+
+
+input{
+    font-size: 25px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-weight: bold;
+    width: 240px;
+    height: 35px;
 }
 
 
@@ -46,8 +52,8 @@ body {
     position: absolute;
     left: 50px;
     top: 270px;
-    width: 220px;
-    height: 25px;
+ 
+
 
 }
 
@@ -65,8 +71,7 @@ body {
     position: absolute;
     left: 53px;
     top: 470px;
-    width: 220px;
-    height: 25px;
+
 }
 
 #labelPassword{
@@ -83,8 +88,7 @@ body {
     position: absolute;
     left: 50px;
     top:370px;
-    width: 220px;
-    height: 25px;
+
     
 }
 

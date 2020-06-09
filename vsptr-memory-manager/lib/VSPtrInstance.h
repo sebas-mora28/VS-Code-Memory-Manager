@@ -21,6 +21,7 @@ public:
 
     virtual void* getAdress() = 0;
     virtual std::string getValue() = 0;
+    virtual void setValue(std::string newVal) = 0;
 
 
     virtual ~VSPrtInfo() {
@@ -34,7 +35,7 @@ public:
 template <typename T>
 class VSPtrInstance: public VSPrtInfo{
 
-private:
+public:
     /**VSPtr instance*/
     T instance;
 
@@ -63,6 +64,13 @@ public:
         std::stringstream str;
         str << (*instance);
         return str.str();
+    }
+
+    void setValue(std::string newVal){
+        std::cout << "ANTIGUO VALOR  " << newVal << "\n";
+        std::stringstream str(newVal);
+        str >> (*instance);
+        std::cout << "NUEVO VALOR  " << *instance << "\n";
     }
 
 
@@ -137,8 +145,10 @@ std::string VSPtrInstance<T>::getTypeData(T &type) {
         return "char";
     }else if(result == "Pf"){
         return "float";
-    }else if(result == "Pl"){
+    }else if(result == "Pl") {
         return "long";
+    }else if(result == "Pd"){
+        return "double";
     }else{
         return result;
     }

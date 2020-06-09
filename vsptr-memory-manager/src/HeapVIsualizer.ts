@@ -6,7 +6,6 @@
 import * as path from 'path';
 import * as vscode from 'vscode'
 import * as fs from 'fs'
-import * as ffi from 'ffi-napi'
 
 
 export class HeapVisualizer {
@@ -65,7 +64,8 @@ export class HeapVisualizer {
 
 
 		setInterval(()=>{
-			if(fs.existsSync(path.join(vscode.workspace.rootPath, 'lib/vsptr.json')) ||  fs.existsSync(path.join(this._extensionPath, 'src/vsptr.json')) ){
+			if(fs.existsSync(path.join(vscode.workspace.rootPath, 'lib/vsptr.json')) ||  fs.existsSync(path.join(this._extensionPath, 'src/vsptrRemote.json')) ){
+				
 				this._update();
 			}else{
 				console.log("No hay contenido");
@@ -176,9 +176,6 @@ export class HeapVisualizer {
 		const UriStyle = webview.asWebviewUri(style);
 
 
-
-
-
 		
 		let heap_local;
 		if(fs.existsSync(path.join(vscode.workspace.rootPath, 'lib/vsptr.json'))){
@@ -192,10 +189,14 @@ export class HeapVisualizer {
 
 
 
+	
+
+
+
 
 		let heap_remote;
-		if(fs.existsSync(path.join(this._extensionPath, 'src/vsptr.json'))){
-			let jsonFileServer = JSON.parse(fs.readFileSync(path.join(this._extensionPath, 'src/vsptr.json'), 'utf8'));
+		if(fs.existsSync(path.join(this._extensionPath, 'src/vsptrRemote.json'))){
+			let jsonFileServer = JSON.parse(fs.readFileSync(path.join(this._extensionPath, 'src/vsptrRemote.json'), 'utf8'));
 			heap_remote = this.getHeapTable(jsonFileServer);
 	
 
@@ -204,25 +205,19 @@ export class HeapVisualizer {
 		}
 
 
-	 
-
+		console.log(UriStyle);
 		let renderedHtlm = `<!DOCTYPE html>
             <html lang="en">
             <head>
 				<meta charset="UTF-8">
 
-				<style> 
-
-					table, th, td {
-						border: 1px solid white;
-					}
-				</style>
-				
+		
+	
                 <!--
                 Use a content security policy to only allow loading images from https or from our extension directory,
                 and only allow scripts that have a specific nonce.
                 -->
-                <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src ${webview.cspSource} https:; script-src 'nonce-${nonce}';">
+                
 				<link rel="stylesheet" type="text/css" href="${UriStyle}">
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -266,16 +261,14 @@ export class HeapVisualizer {
 
 					</div>
 
-
-
-		
 						</div>
 				<script nonce="${nonce}" src="${scriptUri}"></script>
             	</body>
 						</html>`;
+						
 
-		
 		this._panel.webview.html = renderedHtlm;
+
 	}
 }
 

@@ -11,7 +11,6 @@
 #include "RemoteMemory.h"
 #include <typeinfo>
 
-
 template<class T>
 class VSPtr{
 
@@ -112,10 +111,13 @@ public:
      * Copy constructor
      * @param p
      */
-    VSPtr(const VSPtr<T>& other) {
+
+    VSPtr(const VSPtr& other) {
+        std::cout << other.id << "\n";
         addr = other.addr;
         printf("Copia \n");
     }
+
 
 
 
@@ -145,13 +147,12 @@ public:
     VSPtr<T>& operator=(VSPtr<T>& other) {
         printf("Pointer to Pointer %d \n", other.is_remote);
         this->is_remote ? decrementRefCountRemotely(id) : decrementRefCountLocally(id);
-        addr = other.get_ptr(); id = other.get_id();
+        addr = other.get_ptr();
+        id = other.get_id();
         other.is_remote ? incrementRefCountRemotely(id) : incrementRefCountLocally(id);
         GarbageCollector::getGarbageCollectorInstance()->printGargabeCollectorInfo();
         return *this;
     }
-
-
 
 
 
@@ -160,10 +161,12 @@ public:
      * @param element
      * @return
      */
-    VSPtr<T>& operator=(T element) {
-        printf("Pointer to data");
-        addr = new T(element);
-        return *this;
+    void operator=(T element) {
+        if(!is_remote){
+            *addr = element;
+        }else{
+            RemoteMemory::getInstance()->setValue(element, id);
+        }
     }
 
 
@@ -182,12 +185,14 @@ public:
 
 
 
+
+
     /**
      * Overload the * operator
      * @return
      */
-    T& operator*() {
-        return *addr;
+    VSPtr &operator*(){
+        return *this;
     }
 
 
@@ -217,8 +222,6 @@ public:
          VSPtr<T> newVSptr {VSPtr<T>(true)};
          return newVSptr;
      }
-
-
 
 };
 
@@ -279,6 +282,10 @@ void VSPtr<T>::addInstanceLocally() {
 
 
 
+
+
+
+
 /**
  * Adds new VSPtr instance remotely
  * @tparam T
@@ -286,7 +293,7 @@ void VSPtr<T>::addInstanceLocally() {
 template<class T>
 void VSPtr<T>::addInstanceRemotely() {
     this->is_remote = true;
-    std::string name = typeid(T).name();
+    const char* name = typeid(T).name();
     this->id = GarbageCollector::getGarbageCollectorInstance()->generateID();
     RemoteMemory::getInstance()->remoteAddInstance(name, id);
     std::cout << "El id es " << id << "\n";
