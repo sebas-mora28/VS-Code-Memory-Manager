@@ -179,7 +179,16 @@ public:
      * @return
      */
     T& operator&() {
-        return *addr;
+        if(!is_remote){
+            return *addr;
+        }else{
+            T* value = new T{};
+            std::string val = RemoteMemory::getInstance()->getValue(id);
+            std::stringstream str(val);
+            str >> (*value);
+            return *value;
+        }
+
     }
 
 

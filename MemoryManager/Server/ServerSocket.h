@@ -15,23 +15,57 @@ class ServerSocket {
 
 private:
     int currentSocket;
-
 public:
+
+    /**
+     * Constructor
+     */
     ServerSocket() = default;
 
+    /**
+     * Destructor
+     */
     ~ServerSocket() = default;
 
-    int createSocket();
 
+
+    /**
+    * Creates Server sockets
+    */
+    void createSocket();
+
+
+    /**
+    * Increment ref count of VSPointer instance
+    * @param id id of VSPointer
+    */
     void increment(std::string id);
 
+
+    /**
+    * Decrement ref count of VSPointer instance
+    * @param id id of VSPointer
+    */
     void decrement(std::string id);
 
+
+
+    /**
+    * Evaluate JSON received from client
+    * @param info json received from client socket
+    */
     void evaluateJson(Json::Value& info);
 
 private:
 
-    static void sendMessage(int clientServer, char buf[4096]);
+
+    /**
+    * Send information to client
+    * @param clientServer client socket
+    * @param buf buffered sended to client
+    */
+
+    static void sendMessage(int clientServer, std::string& buffer);
 
 
 };

@@ -65,7 +65,6 @@ export class HeapVisualizer {
 
 		setInterval(()=>{
 			if(fs.existsSync(path.join(vscode.workspace.rootPath, 'lib/vsptr.json')) ||  fs.existsSync(path.join(this._extensionPath, 'src/vsptrRemote.json')) ){
-				
 				this._update();
 			}else{
 				console.log("No hay contenido");
@@ -145,11 +144,7 @@ export class HeapVisualizer {
 	private getEmptyTable() {
 		return `
 		<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
+				<td>No hay datos que mostrar</td>
 			</tr>`
 		
 	}
@@ -204,8 +199,6 @@ export class HeapVisualizer {
 			heap_remote =  this.getEmptyTable();
 		}
 
-
-		console.log(UriStyle);
 		let renderedHtlm = `<!DOCTYPE html>
             <html lang="en">
             <head>

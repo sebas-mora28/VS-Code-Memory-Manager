@@ -3,7 +3,7 @@
 #include <thread>
 #include "Client/ClientSocket.h"
 #include <unordered_set>
-#include "Client/InitializeClient.h"
+
 
 #include "unordered_map"
 
@@ -38,31 +38,38 @@ public:
 int main() {
 
 
-    double* number = new double {};
-
-    std::string name = "58.25";
-    std::stringstream str(name);
-
-    str >> *number;
-
-    std::cout << *number << "\n";
-
-
     while(true) {
 
 
 
-        VSPtr<int> vsptr = VSPtr<int>::NewRemote();
-        *vsptr = 8;
-        VSPtr<char> vsptr2 = VSPtr<char>::NewRemote();
-        *vsptr2 = 'a';
+        VSPtr<int> vsptr = VSPtr<int>::New();
+        *vsptr = 254;
 
-        VSPtr<float> vsPtr4 = VSPtr<float>::NewRemote();
-        vsPtr4 = 14.25f;
+        VSPtr<double> vsPtr2 = VSPtr<double>::New();
+        *vsPtr2 = 145.254;
 
-        VSPtr<double> vsPtr5 = VSPtr<double>::NewRemote();
-        *vsPtr5 = 58.25;
+        VSPtr<char> vsPtr3 = VSPtr<char>::New();
+        *vsPtr2 = 'x';
 
+        VSPtr<float> vsPtr4 = VSPtr<float>::New();
+        *vsPtr4 = 145.254;
+
+
+
+
+
+
+        VSPtr<int> vsptrR = VSPtr<int>::NewRemote();
+        *vsptrR = 254;
+
+        VSPtr<double> vsPtr2R = VSPtr<double>::NewRemote();
+        *vsPtr2R = 145.254;
+
+        VSPtr<char> vsPtr3R = VSPtr<char>::NewRemote();
+        *vsPtr2R = 'x';
+
+        VSPtr<float> vsPtr4R = VSPtr<float>::NewRemote();
+        *vsPtr4R = 145.254;
 
 
 

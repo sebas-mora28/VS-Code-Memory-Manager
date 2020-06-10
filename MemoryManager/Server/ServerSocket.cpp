@@ -16,7 +16,11 @@
 
 #define PORT 54000
 
-int ServerSocket::createSocket() {
+
+/**
+ * Creates Server sockets
+ */
+void ServerSocket::createSocket() {
     int opt = true;
     int master_socket, addrlen, new_socket, client_socket[30],
             max_clients = 30, activity, i, valread, sd;
@@ -102,16 +106,21 @@ int ServerSocket::createSocket() {
                 exit(EXIT_FAILURE);
             }
 
+            currentSocket = new_socket;
             //inform user of socket number - used in send and receive commands
             printf("New connection , socket fd is %d , ip is : %s , port : %\n", new_socket,
                    inet_ntoa(address.sin_addr),
                    ntohs(address.sin_port));
 
             //send new connection greeting message
+
+
+            /*
             char *message = "You`ve connected to the GC Server.";
             if (send(new_socket, message, strlen(message), 0) != strlen(message)) {
                 perror("send");
             }
+             */
 
             puts("Welcome message sent successfully");
 
@@ -130,7 +139,6 @@ int ServerSocket::createSocket() {
         //else its some IO operation on some other socket
         for (i = 0; i < max_clients; i++) {
             sd = client_socket[i];
-            currentSocket = sd;
 
             if (FD_ISSET(sd, &readfds)) {
                 char buf[4096];
@@ -139,8 +147,9 @@ int ServerSocket::createSocket() {
                 std::cout << data << std::endl;
 
                 if(data.compare("Connection Successfully")){
-                    printf("");
+                    printf("\n");
                 }
+
                 if (valread == 0) {
                     getpeername(sd, (struct sockaddr *) &address,
                                 (socklen_t *) &addrlen);
@@ -159,18 +168,41 @@ int ServerSocket::createSocket() {
     }
 }
 
-void ServerSocket::sendMessage(int clientServer, char buf[4096]) {
+
+
+/**
+ * Send information to client
+ * @param clientServer client socket
+ * @param buf buffered sended to client
+ */
+void ServerSocket::sendMessage(int clientServer, std::string& buffer) {
+    const char* buf = buffer.c_str();
     send(clientServer, buf, strlen(buf) + 1, 0);
 }
 
+/**
+ * Increment ref count of VSPointer instance
+ * @param id id of VSPointer
+ */
 void ServerSocket::increment(std::string id) {
     GarbageCollector::getGarbageCollectorInstance()->incrementRefCount(id);
 }
 
+
+/**
+ * Decrement ref count of VSPointer instance
+ * @param id id of VSPointer
+ */
 void ServerSocket::decrement(std::string id) {
     GarbageCollector::getGarbageCollectorInstance()->decrementRedCount(id);
 }
 
+
+/**
+ * Create the VSPointer instance with the information received from client
+ * @param type type of VSPointer
+ * @param id id of VSPointer
+ */
 void instanceCreator(std::string& type, std::string& id) {
     if (type == "i") {
         int *temp = new int{};
@@ -197,40 +229,53 @@ void instanceCreator(std::string& type, std::string& id) {
     }
 }
 
+/**
+ * Evaluate JSON received from client
+ * @param info json received from client socket
+ */
 void ServerSocket::evaluateJson(Json::Value& info) {
+    Json::StreamWriterBuilder builder;
     Json::FastWriter fastWriter;
     Json::Value obj = info["VSPtrInfo"];
 
-    std::cout << info["COMMAND"] << "\n";
+    std::cout << "COMMAND" << info["COMMAND"] << "\n";
     if (info["COMMAND"] == "ADD") {
         std::cout << "Adding to Garbage Collector." << std::endl;
-        std::string type = obj["type"].toStyledString();
-        std::string  id = obj["id"].toStyledString();
+        std::string type = fastWriter.write(obj["type"]);
+        std::string  id = fastWriter.write(obj["id"]);
         type = type.substr(1,1);
         instanceCreator(type, id);
         GarbageCollector::getGarbageCollectorInstance()->printGargabeCollectorInfo();
+        std::string message = "INSTANCE ADDED";
+        sendMessage(currentSocket,message);
     }
     if (info["COMMAND"] == "INCREMENT") {
-        std::string id = fastWriter.write(info["id"]);
+        std::string id =fastWriter.write(info["id"]);
         std::cout << "Incremented VSPtr recurrences in the Garbage Collector  xd.  " << id << std::endl;
         increment(id);
+        std::string message = "INCREMENT DONE";
+        sendMessage(currentSocket, message);
     }
     if (info["COMMAND"] == "DECREMENT") {
         std::string id = fastWriter.write(info["id"]);
         std::cout << "Decremented VSPtr recurrences in the Garbage Collector.  " << id  << std::endl;
         decrement(id);
         GarbageCollector::getGarbageCollectorInstance()->printGargabeCollectorInfo();
+        std::string message = "DECREMENT DONE";
+        sendMessage(currentSocket, message);
     }
     if(info["COMMAND"] == "GET"){
         std::string id = fastWriter.write(info["id"]);
-        //std::string value = GarbageCollector::getGarbageCollectorInstance()->get
-
+        std::string value = GarbageCollector::getGarbageCollectorInstance()->getValue(id);
+        sendMessage(currentSocket, value);
     }
     if(info["COMMAND"] == "SET"){
         std::string id = fastWriter.write(info["id"]);
         std::string newValue = info["newValue"].toStyledString();
         std::cout << newValue << "\n";
         GarbageCollector::getGarbageCollectorInstance()->setValue(newValue, id);
+        std::string message = "SET DONE";
+        sendMessage(currentSocket, message);
 
     }
 }

@@ -98,7 +98,7 @@ public:
 
 
     /**
-     * Print all the garbage collectot's list elements
+     * Prints all the garbage collectot's list elements
      */
     void printGargabeCollectorInfo();
 
@@ -132,10 +132,10 @@ public:
     template<typename T>
     void setValue(T value, std::string& id);
      */
-
-
-
     void setValue(std::string newValue, std::string& id);
+
+
+    std::string getValue(std::string& id);
 
 
 
@@ -169,6 +169,8 @@ void GarbageCollector::addInstance(const T& value, std::string& id) {
     mapGarbageCollector[id] = vsPtrInstance;
 
 }
+
+
 
 
 /*

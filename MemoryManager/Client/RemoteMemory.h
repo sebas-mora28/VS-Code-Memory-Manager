@@ -7,7 +7,7 @@
 
 #include "ClientSocket.h"
 #include <jsoncpp/json/json.h>
-
+#include <cstring>
 
 
 /**
@@ -72,8 +72,7 @@ public:
     /**
      * Gets the value stored in VSPtr instance
      */
-    template<typename T>
-     T getValue(std::string& id);
+     std::string getValue(std::string& id);
 
 
 
@@ -82,7 +81,7 @@ public:
      * @param root
      * @return
      */
-     std::string sendMessage(Json::Value& root);
+     std::string post(Json::Value& root);
 
 
 
@@ -91,17 +90,6 @@ public:
       */
      template<typename T>
      T convertValue(std::string& value);
-
-
-
-
-     /**
-      * Init socket client with the PORT, ipAddress and password given by the user
-      * @param PORT
-      * @param ipAddress
-      * @param password
-      */
-     void testConnection();
 
 
 
@@ -124,26 +112,18 @@ void RemoteMemory::setValue(T& newValue, std::string& id) {
     root["COMMAND"] = "SET";
     root["id"] = id;
     root["newValue"] = newValue;
-    std::cout << root << "\n";
-    sendMessage(root);
+    std::cout << root.get("COMMAND", "DEFAULT").asString() << "\n";
+    post(root);
 }
+
 
 
 /**
- * Gets the value stored in VSptr instance
- * @param id
+
+ * @tparam T
+ * @param value
+ * @return
  */
-template<typename T>
-T RemoteMemory::getValue(std::string &id) {
-    Json::Value root;
-    root["COMMAND"] = "GET";
-    root["id"] = id;
-    std::string value = sendMessage(root);
-    return convertValue<T>(value);
-}
-
-
-
 template<typename T>
 T RemoteMemory::convertValue(std::string& value){
     try {

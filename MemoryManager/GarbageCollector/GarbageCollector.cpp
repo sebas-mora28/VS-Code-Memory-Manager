@@ -17,7 +17,7 @@ GarbageCollector* GarbageCollector::garbageCollector = nullptr;
 
 /**
  * Spawn the thread
- * @return
+ * @return thread object
  */
 std::thread GarbageCollector::spawnThread(){
     return std::thread(&GarbageCollector::executeGarbageCollector, this);
@@ -25,7 +25,7 @@ std::thread GarbageCollector::spawnThread(){
 
 
 /**
-    * Constructor garbage collector, declared private avoiding instance it more than once
+    * Constructor garbage collector
     */
 GarbageCollector::GarbageCollector() {
     GCThread = spawnThread();  //Initialize Garbage collector thread;
@@ -130,7 +130,7 @@ void GarbageCollector::decrementRedCount(const std::string& id) {
 void GarbageCollector::executeGarbageCollector() {
     try{
         while(true){
-            std::this_thread::sleep_for(std::chrono::seconds(15));
+            std::this_thread::sleep_for(std::chrono::seconds(5));
             printGargabeCollectorInfo();
             std::unique_lock<std::mutex> locker(mutex_);
             printf("START EXECUTING THREAD 1\n");
@@ -167,6 +167,9 @@ void GarbageCollector::executeGarbageCollector() {
  *   JSON
  *********************************************************************************************************************/
 
+/**
+ * Generate a json file that stores all VSPointers instances information
+ */
 void GarbageCollector::generateJSON() {
 
     Json::StyledStreamWriter writer;
@@ -188,16 +191,20 @@ void GarbageCollector::generateJSON() {
 
     }
     my_list["VSPtr"] = vec;
-    std::ofstream file("./lib/vsptr.json");
+    std::ofstream file("./vsptrRemote.json");
     writer.write(file, my_list);
     file.close();
+}
+
+
+std::string GarbageCollector::getValue(std::string& id) {
+    std::string value = mapGarbageCollector[id]->getValue();
+    return value;
 }
 
 
 void GarbageCollector::setValue(std::string newValue, std::string& id) {
     std::cout << "HOLAA  " << newValue << "\n";
     mapGarbageCollector[id]->setValue(newValue);
-
-
 
 }
