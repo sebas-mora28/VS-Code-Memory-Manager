@@ -1,0 +1,6 @@
+{
+	"COMMAND" : "SET",
+	"VSPtrInfo" : null,
+	"id" : "yhepsjcmifjosmo83ezg53db",
+	"newValue" : 97
+}

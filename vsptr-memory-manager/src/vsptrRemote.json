@@ -1,0 +1,19 @@
+{
+	"VSPtr" : 
+	[
+		{
+			"addr" : "0x55ed031a2f40",
+			"id" : "\"a4k5fmn9r34qe1s45j7nlpl4\"\n",
+			"refcount" : "1",
+			"type" : "int",
+			"value" : "85"
+		},
+		{
+			"addr" : "0x55ed031a2da0",
+			"id" : "\"lmvez4dil5fh6xx3u1k7jmd1\"\n",
+			"refcount" : "1",
+			"type" : "float",
+			"value" : "85.25"
+		}
+	]
+}
