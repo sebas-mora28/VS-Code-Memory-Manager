@@ -1,0 +1,216 @@
+\hypertarget{classVSPtrInstance}{}\doxysection{V\+S\+Ptr\+Instance$<$ T $>$ Class Template Reference}
+\label{classVSPtrInstance}\index{VSPtrInstance$<$ T $>$@{VSPtrInstance$<$ T $>$}}
+
+
+{\ttfamily \#include $<$V\+S\+Ptr\+Instance.\+h$>$}
+
+Inheritance diagram for V\+S\+Ptr\+Instance$<$ T $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classVSPtrInstance}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classVSPtrInstance_a14f55a7550a2e34106e6054a30911d27}{V\+S\+Ptr\+Instance}} (T \mbox{\hyperlink{classVSPtrInstance_ac036771c0c30b66a3da4ce2506b320e2}{instance}}, std\+::string \&id)
+\item 
+void $\ast$ \mbox{\hyperlink{classVSPtrInstance_a984ca9a62b2322dc8c1d873a4264e857}{get\+Adress}} () override
+\item 
+\mbox{\Hypertarget{classVSPtrInstance_a571a90d1185099ba161690b6e0c9bbd7}\label{classVSPtrInstance_a571a90d1185099ba161690b6e0c9bbd7}} 
+std\+::string {\bfseries get\+Value} () override
+\item 
+\mbox{\Hypertarget{classVSPtrInstance_a9005f79d9c2a50e031f5ac4c4a0fbf91}\label{classVSPtrInstance_a9005f79d9c2a50e031f5ac4c4a0fbf91}} 
+void {\bfseries set\+Value} (std\+::string new\+Val)
+\item 
+std\+::string \mbox{\hyperlink{classVSPtrInstance_adec70017e0cf94795c7ae2d3ece9022f}{get\+Type\+Data}} (T \&type)
+\item 
+\mbox{\hyperlink{classVSPtrInstance_a68de4766e4553a0f04ac1d50b57e7824}{$\sim$\+V\+S\+Ptr\+Instance}} ()
+\item 
+\mbox{\hyperlink{classVSPtrInstance_a14f55a7550a2e34106e6054a30911d27}{V\+S\+Ptr\+Instance}} (T \mbox{\hyperlink{classVSPtrInstance_ac036771c0c30b66a3da4ce2506b320e2}{instance}}, std\+::string \&id)
+\item 
+void $\ast$ \mbox{\hyperlink{classVSPtrInstance_a984ca9a62b2322dc8c1d873a4264e857}{get\+Adress}} () override
+\item 
+\mbox{\Hypertarget{classVSPtrInstance_a571a90d1185099ba161690b6e0c9bbd7}\label{classVSPtrInstance_a571a90d1185099ba161690b6e0c9bbd7}} 
+std\+::string {\bfseries get\+Value} () override
+\item 
+\mbox{\Hypertarget{classVSPtrInstance_a9005f79d9c2a50e031f5ac4c4a0fbf91}\label{classVSPtrInstance_a9005f79d9c2a50e031f5ac4c4a0fbf91}} 
+void {\bfseries set\+Value} (std\+::string new\+Val)
+\item 
+std\+::string \mbox{\hyperlink{classVSPtrInstance_adec70017e0cf94795c7ae2d3ece9022f}{get\+Type\+Data}} (T \&type)
+\item 
+\mbox{\hyperlink{classVSPtrInstance_a68de4766e4553a0f04ac1d50b57e7824}{$\sim$\+V\+S\+Ptr\+Instance}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+T \mbox{\hyperlink{classVSPtrInstance_ac036771c0c30b66a3da4ce2506b320e2}{instance}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+class V\+S\+Ptr\+Instance$<$ T $>$}
+
+Struct that holds a \mbox{\hyperlink{classVSPtr}{V\+S\+Ptr}} 
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classVSPtrInstance_a14f55a7550a2e34106e6054a30911d27}\label{classVSPtrInstance_a14f55a7550a2e34106e6054a30911d27}} 
+\index{VSPtrInstance$<$ T $>$@{VSPtrInstance$<$ T $>$}!VSPtrInstance@{VSPtrInstance}}
+\index{VSPtrInstance@{VSPtrInstance}!VSPtrInstance$<$ T $>$@{VSPtrInstance$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{VSPtrInstance()}{VSPtrInstance()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classVSPtrInstance}{V\+S\+Ptr\+Instance}}$<$ T $>$\+::\mbox{\hyperlink{classVSPtrInstance}{V\+S\+Ptr\+Instance}} (\begin{DoxyParamCaption}\item[{T}]{instance,  }\item[{std\+::string \&}]{id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+\mbox{\hyperlink{classVSPtr}{V\+S\+Ptr}} constructor 
+\begin{DoxyParams}{Parameters}
+{\em instance} & \mbox{\hyperlink{classVSPtr}{V\+S\+Ptr}} instance\\
+\hline
+\end{DoxyParams}
+This method add a new instance to the garbage collector list 
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em instance} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classVSPtrInstance_a68de4766e4553a0f04ac1d50b57e7824}\label{classVSPtrInstance_a68de4766e4553a0f04ac1d50b57e7824}} 
+\index{VSPtrInstance$<$ T $>$@{VSPtrInstance$<$ T $>$}!````~VSPtrInstance@{$\sim$VSPtrInstance}}
+\index{````~VSPtrInstance@{$\sim$VSPtrInstance}!VSPtrInstance$<$ T $>$@{VSPtrInstance$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{$\sim$VSPtrInstance()}{~VSPtrInstance()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classVSPtrInstance}{V\+S\+Ptr\+Instance}}$<$ T $>$\+::$\sim$\mbox{\hyperlink{classVSPtrInstance}{V\+S\+Ptr\+Instance}}}
+
+This method add a new instance to the garbage collector list 
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em instance} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classVSPtrInstance_a14f55a7550a2e34106e6054a30911d27}\label{classVSPtrInstance_a14f55a7550a2e34106e6054a30911d27}} 
+\index{VSPtrInstance$<$ T $>$@{VSPtrInstance$<$ T $>$}!VSPtrInstance@{VSPtrInstance}}
+\index{VSPtrInstance@{VSPtrInstance}!VSPtrInstance$<$ T $>$@{VSPtrInstance$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{VSPtrInstance()}{VSPtrInstance()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classVSPtrInstance}{V\+S\+Ptr\+Instance}}$<$ T $>$\+::\mbox{\hyperlink{classVSPtrInstance}{V\+S\+Ptr\+Instance}} (\begin{DoxyParamCaption}\item[{T}]{instance,  }\item[{std\+::string \&}]{id }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+\mbox{\hyperlink{classVSPtr}{V\+S\+Ptr}} constructor 
+\begin{DoxyParams}{Parameters}
+{\em instance} & \mbox{\hyperlink{classVSPtr}{V\+S\+Ptr}} instance \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classVSPtrInstance_a68de4766e4553a0f04ac1d50b57e7824}\label{classVSPtrInstance_a68de4766e4553a0f04ac1d50b57e7824}} 
+\index{VSPtrInstance$<$ T $>$@{VSPtrInstance$<$ T $>$}!````~VSPtrInstance@{$\sim$VSPtrInstance}}
+\index{````~VSPtrInstance@{$\sim$VSPtrInstance}!VSPtrInstance$<$ T $>$@{VSPtrInstance$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{$\sim$VSPtrInstance()}{~VSPtrInstance()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+\mbox{\hyperlink{classVSPtrInstance}{V\+S\+Ptr\+Instance}}$<$ T $>$\+::$\sim$\mbox{\hyperlink{classVSPtrInstance}{V\+S\+Ptr\+Instance}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+This method add a new instance to the garbage collector list 
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em instance} & \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classVSPtrInstance_a984ca9a62b2322dc8c1d873a4264e857}\label{classVSPtrInstance_a984ca9a62b2322dc8c1d873a4264e857}} 
+\index{VSPtrInstance$<$ T $>$@{VSPtrInstance$<$ T $>$}!getAdress@{getAdress}}
+\index{getAdress@{getAdress}!VSPtrInstance$<$ T $>$@{VSPtrInstance$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{getAdress()}{getAdress()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void$\ast$ \mbox{\hyperlink{classVSPtrInstance}{V\+S\+Ptr\+Instance}}$<$ T $>$\+::get\+Adress (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+This method return that \mbox{\hyperlink{classVSPtr}{V\+S\+Ptr}} instance that holds \mbox{\hyperlink{classVSPtrInstance}{V\+S\+Ptr\+Instance}} 
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classVSPrtInfo}{V\+S\+Prt\+Info}}.
+
+\mbox{\Hypertarget{classVSPtrInstance_a984ca9a62b2322dc8c1d873a4264e857}\label{classVSPtrInstance_a984ca9a62b2322dc8c1d873a4264e857}} 
+\index{VSPtrInstance$<$ T $>$@{VSPtrInstance$<$ T $>$}!getAdress@{getAdress}}
+\index{getAdress@{getAdress}!VSPtrInstance$<$ T $>$@{VSPtrInstance$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{getAdress()}{getAdress()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void$\ast$ \mbox{\hyperlink{classVSPtrInstance}{V\+S\+Ptr\+Instance}}$<$ T $>$\+::get\+Adress (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+This method return that \mbox{\hyperlink{classVSPtr}{V\+S\+Ptr}} instance that holds \mbox{\hyperlink{classVSPtrInstance}{V\+S\+Ptr\+Instance}} 
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classVSPrtInfo}{V\+S\+Prt\+Info}}.
+
+\mbox{\Hypertarget{classVSPtrInstance_adec70017e0cf94795c7ae2d3ece9022f}\label{classVSPtrInstance_adec70017e0cf94795c7ae2d3ece9022f}} 
+\index{VSPtrInstance$<$ T $>$@{VSPtrInstance$<$ T $>$}!getTypeData@{getTypeData}}
+\index{getTypeData@{getTypeData}!VSPtrInstance$<$ T $>$@{VSPtrInstance$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{getTypeData()}{getTypeData()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+std\+::string \mbox{\hyperlink{classVSPtrInstance}{V\+S\+Ptr\+Instance}}$<$ T $>$\+::get\+Type\+Data (\begin{DoxyParamCaption}\item[{T \&}]{type }\end{DoxyParamCaption})}
+
+Get the data type of current instance 
+\begin{DoxyParams}{Parameters}
+{\em type} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classVSPtrInstance_adec70017e0cf94795c7ae2d3ece9022f}\label{classVSPtrInstance_adec70017e0cf94795c7ae2d3ece9022f}} 
+\index{VSPtrInstance$<$ T $>$@{VSPtrInstance$<$ T $>$}!getTypeData@{getTypeData}}
+\index{getTypeData@{getTypeData}!VSPtrInstance$<$ T $>$@{VSPtrInstance$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{getTypeData()}{getTypeData()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+std\+::string \mbox{\hyperlink{classVSPtrInstance}{V\+S\+Ptr\+Instance}}$<$ T $>$\+::get\+Type\+Data (\begin{DoxyParamCaption}\item[{T \&}]{type }\end{DoxyParamCaption})}
+
+Get the data type of current instance 
+\begin{DoxyParams}{Parameters}
+{\em type} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classVSPtrInstance_ac036771c0c30b66a3da4ce2506b320e2}\label{classVSPtrInstance_ac036771c0c30b66a3da4ce2506b320e2}} 
+\index{VSPtrInstance$<$ T $>$@{VSPtrInstance$<$ T $>$}!instance@{instance}}
+\index{instance@{instance}!VSPtrInstance$<$ T $>$@{VSPtrInstance$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{instance}{instance}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+T \mbox{\hyperlink{classVSPtrInstance}{V\+S\+Ptr\+Instance}}$<$ T $>$\+::instance}
+
+\mbox{\hyperlink{classVSPtr}{V\+S\+Ptr}} instance 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Configuration/lib/V\+S\+Ptr\+Instance.\+h\end{DoxyCompactItemize}

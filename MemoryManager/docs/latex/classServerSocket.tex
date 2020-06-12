@@ -1,0 +1,93 @@
+\hypertarget{classServerSocket}{}\doxysection{Server\+Socket Class Reference}
+\label{classServerSocket}\index{ServerSocket@{ServerSocket}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classServerSocket_ac4635bf3651859be179018cb66d65b65}{Server\+Socket}} ()=default
+\item 
+\mbox{\hyperlink{classServerSocket_af7672ee8b796b2a3765de1787c4707b0}{$\sim$\+Server\+Socket}} ()=default
+\item 
+void \mbox{\hyperlink{classServerSocket_a79f80df664e33f766c13b113d17392ea}{create\+Socket}} ()
+\item 
+void \mbox{\hyperlink{classServerSocket_adb79e15913defb0e3af7a221bc6a287a}{increment}} (std\+::string id)
+\item 
+void \mbox{\hyperlink{classServerSocket_ac79632d638667763dd83f0acf604cf39}{decrement}} (std\+::string id)
+\item 
+std\+::string \mbox{\hyperlink{classServerSocket_a9a2c27cbc0ec6849618c41c3665e56d7}{make\+M\+D5}} (std\+::string message)
+\item 
+void \mbox{\hyperlink{classServerSocket_a678be90af7fcaf5d0bc6850ef8c354a8}{evaluate\+Json}} (Json\+::\+Value \&info)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classServerSocket_ac4635bf3651859be179018cb66d65b65}\label{classServerSocket_ac4635bf3651859be179018cb66d65b65}} 
+\index{ServerSocket@{ServerSocket}!ServerSocket@{ServerSocket}}
+\index{ServerSocket@{ServerSocket}!ServerSocket@{ServerSocket}}
+\doxysubsubsection{\texorpdfstring{ServerSocket()}{ServerSocket()}}
+{\footnotesize\ttfamily Server\+Socket\+::\+Server\+Socket (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+Constructor \mbox{\Hypertarget{classServerSocket_af7672ee8b796b2a3765de1787c4707b0}\label{classServerSocket_af7672ee8b796b2a3765de1787c4707b0}} 
+\index{ServerSocket@{ServerSocket}!````~ServerSocket@{$\sim$ServerSocket}}
+\index{````~ServerSocket@{$\sim$ServerSocket}!ServerSocket@{ServerSocket}}
+\doxysubsubsection{\texorpdfstring{$\sim$ServerSocket()}{~ServerSocket()}}
+{\footnotesize\ttfamily Server\+Socket\+::$\sim$\+Server\+Socket (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+Destructor 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classServerSocket_a79f80df664e33f766c13b113d17392ea}\label{classServerSocket_a79f80df664e33f766c13b113d17392ea}} 
+\index{ServerSocket@{ServerSocket}!createSocket@{createSocket}}
+\index{createSocket@{createSocket}!ServerSocket@{ServerSocket}}
+\doxysubsubsection{\texorpdfstring{createSocket()}{createSocket()}}
+{\footnotesize\ttfamily void Server\+Socket\+::create\+Socket (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Creates Server sockets \mbox{\Hypertarget{classServerSocket_ac79632d638667763dd83f0acf604cf39}\label{classServerSocket_ac79632d638667763dd83f0acf604cf39}} 
+\index{ServerSocket@{ServerSocket}!decrement@{decrement}}
+\index{decrement@{decrement}!ServerSocket@{ServerSocket}}
+\doxysubsubsection{\texorpdfstring{decrement()}{decrement()}}
+{\footnotesize\ttfamily void Server\+Socket\+::decrement (\begin{DoxyParamCaption}\item[{std\+::string}]{id }\end{DoxyParamCaption})}
+
+Decrement ref count of V\+S\+Pointer instance 
+\begin{DoxyParams}{Parameters}
+{\em id} & id of V\+S\+Pointer \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classServerSocket_a678be90af7fcaf5d0bc6850ef8c354a8}\label{classServerSocket_a678be90af7fcaf5d0bc6850ef8c354a8}} 
+\index{ServerSocket@{ServerSocket}!evaluateJson@{evaluateJson}}
+\index{evaluateJson@{evaluateJson}!ServerSocket@{ServerSocket}}
+\doxysubsubsection{\texorpdfstring{evaluateJson()}{evaluateJson()}}
+{\footnotesize\ttfamily void Server\+Socket\+::evaluate\+Json (\begin{DoxyParamCaption}\item[{Json\+::\+Value \&}]{info }\end{DoxyParamCaption})}
+
+Evaluate J\+S\+ON received from client 
+\begin{DoxyParams}{Parameters}
+{\em info} & json received from client socket \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classServerSocket_adb79e15913defb0e3af7a221bc6a287a}\label{classServerSocket_adb79e15913defb0e3af7a221bc6a287a}} 
+\index{ServerSocket@{ServerSocket}!increment@{increment}}
+\index{increment@{increment}!ServerSocket@{ServerSocket}}
+\doxysubsubsection{\texorpdfstring{increment()}{increment()}}
+{\footnotesize\ttfamily void Server\+Socket\+::increment (\begin{DoxyParamCaption}\item[{std\+::string}]{id }\end{DoxyParamCaption})}
+
+Increment ref count of V\+S\+Pointer instance 
+\begin{DoxyParams}{Parameters}
+{\em id} & id of V\+S\+Pointer \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classServerSocket_a9a2c27cbc0ec6849618c41c3665e56d7}\label{classServerSocket_a9a2c27cbc0ec6849618c41c3665e56d7}} 
+\index{ServerSocket@{ServerSocket}!makeMD5@{makeMD5}}
+\index{makeMD5@{makeMD5}!ServerSocket@{ServerSocket}}
+\doxysubsubsection{\texorpdfstring{makeMD5()}{makeMD5()}}
+{\footnotesize\ttfamily std\+::string Server\+Socket\+::make\+M\+D5 (\begin{DoxyParamCaption}\item[{std\+::string}]{message }\end{DoxyParamCaption})}
+
+Receives string, this contains a password which is converted to M\+D5 to be sent when a client connects. 
+\begin{DoxyParams}{Parameters}
+{\em password} & variable in this class. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Server/Server\+Socket.\+h\item 
+Server/Server\+Socket.\+cpp\end{DoxyCompactItemize}
