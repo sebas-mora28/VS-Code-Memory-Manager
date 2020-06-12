@@ -21,6 +21,7 @@ void ClientSocket::createSocket(){
         if (!isClientCreatedSuccessfully()) {
             throw std::exception();
         }
+        //Acá tiene que pasarle a connectClientToServer la contraseña que se agarra del input.
         connectClientToServer("GCSERVER");
     } catch (std::exception& err) {
         std::cout << "Error creating client  : " << err.what() << "\n";
