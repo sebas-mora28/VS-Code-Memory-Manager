@@ -15,6 +15,7 @@ class ServerSocket {
 
 private:
     int currentSocket;
+    std::string password = "GCSERVER";
 public:
 
     /**
@@ -48,6 +49,7 @@ public:
     */
     void decrement(std::string id);
 
+    std::string makeMD5(std::string message);
 
 
     /**
@@ -64,6 +66,7 @@ private:
     * @param clientServer client socket
     * @param buf buffered sended to client
     */
+
 
     static void sendMessage(int clientServer, std::string& buffer);
 

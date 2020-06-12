@@ -5,6 +5,7 @@
 #include <cstring>
 #include <fstream>
 #include <jsoncpp/json/json.h>
+#include <iomanip>
 #include "ClientSocket.h"
 
 
@@ -20,12 +21,31 @@ void ClientSocket::createSocket(){
         if (!isClientCreatedSuccessfully()) {
             throw std::exception();
         }
-        connetClientToServer();
+        connectClientToServer("GCSERVER");
     } catch (std::exception& err) {
         std::cout << "Error creating client  : " << err.what() << "\n";
     }
 }
 
+bool ClientSocket::sendPassWord(std::string password) {
+    std::string s = makeMD5(password);
+
+}
+
+
+std::string ClientSocket::makeMD5(std::string message) {
+
+    unsigned char result[MD5_DIGEST_LENGTH];
+    MD5((unsigned char*)message.c_str(), message.size(), result);
+
+    std::ostringstream sout;
+    sout<<std::hex<<std::setfill('0');
+    for(long long c: result)
+    {
+        sout<<std::setw(2)<<(long long)c;
+    }
+    return sout.str();
+}
 
 /**
  *Verifies if client socket created successfully
@@ -40,7 +60,7 @@ bool ClientSocket::isClientCreatedSuccessfully() const {
 /**
  * This method connects looking for the listen server and connect the client;
  */
-void ClientSocket::connetClientToServer()  {
+void ClientSocket::connectClientToServer(std::string password)  {
     hint.sin_family = AF_INET;
     hint.sin_port = htons(PORT);
     try {
@@ -48,8 +68,9 @@ void ClientSocket::connetClientToServer()  {
 
         serverConnection = connect(client, (sockaddr *) &hint, sizeof(hint));
 
+        std::string message = messageReceivedFromServer();
 
-        if (!isClientConnectedToServer()) {
+        if (!isClientConnectedToServer() and (message == makeMD5(password))) {
             throw std::exception();
         }
         std::cout << "Client connected Successfully";
@@ -78,7 +99,7 @@ std::string  ClientSocket::sendInfo(char* message) {
     createSocket();
     messageSended = send(client, message, strlen(message) + 1, 0);
     try {
-        if (!messageSendedSuccessfully()) {
+        if (!messageSentSuccessfully()) {
             throw std::exception();
         }
         return messageReceivedFromServer();
@@ -97,7 +118,7 @@ std::string  ClientSocket::sendInfo(char* message) {
  * Verifies if the message was sended successfully
  * @return
  */
-bool ClientSocket::messageSendedSuccessfully() const {
+bool ClientSocket::messageSentSuccessfully() const {
     return messageSended != -1;
 }
 
@@ -127,7 +148,7 @@ std::string ClientSocket::messageReceivedFromServer() const {
     this->PORT = PORT;
 }
 
-void ClientSocket::setIpAdrress(std::string &ipAddress) {
+void ClientSocket::setIpAddress(std::string &ipAddress) {
     this->ipAddres = ipAddress;
 
 }

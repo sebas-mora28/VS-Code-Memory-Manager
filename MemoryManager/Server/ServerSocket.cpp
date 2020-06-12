@@ -13,6 +13,8 @@
 #include "../GarbageCollector/GarbageCollector.h"
 #include <netinet/in.h>
 #include <sys/time.h> //FD_SET, FD_ISSET, FD_ZERO macros
+#include <openssl/md5.h>
+#include <iomanip>
 
 #define PORT 54000
 
@@ -112,15 +114,15 @@ void ServerSocket::createSocket() {
                    inet_ntoa(address.sin_addr),
                    ntohs(address.sin_port));
 
-            //send new connection greeting message
+            //send new connection the servers password.
 
+            char message[100];
+            strcpy(message, makeMD5(password).c_str());
 
-            /*
-            char *message = "You`ve connected to the GC Server.";
             if (send(new_socket, message, strlen(message), 0) != strlen(message)) {
                 perror("send");
             }
-             */
+
 
             puts("Welcome message sent successfully");
 
@@ -146,7 +148,7 @@ void ServerSocket::createSocket() {
                 std::string data = std::string(buf, 0, valread);
                 std::cout << data << std::endl;
 
-                if(data.compare("Connection Successfully")){
+                if (data.compare("Connection Successfully")) {
                     printf("\n");
                 }
 
@@ -169,14 +171,13 @@ void ServerSocket::createSocket() {
 }
 
 
-
 /**
  * Send information to client
  * @param clientServer client socket
  * @param buf buffered sended to client
  */
-void ServerSocket::sendMessage(int clientServer, std::string& buffer) {
-    const char* buf = buffer.c_str();
+void ServerSocket::sendMessage(int clientServer, std::string &buffer) {
+    const char *buf = buffer.c_str();
     send(clientServer, buf, strlen(buf) + 1, 0);
 }
 
@@ -203,27 +204,27 @@ void ServerSocket::decrement(std::string id) {
  * @param type type of VSPointer
  * @param id id of VSPointer
  */
-void instanceCreator(std::string& type, std::string& id) {
+void instanceCreator(std::string &type, std::string &id) {
     if (type == "i") {
         int *temp = new int{};
         GarbageCollector::getGarbageCollectorInstance()->addInstance(temp, id);
     } else if (type == typeid(std::string).name()) {
         auto *temp = new std::string{};
         GarbageCollector::getGarbageCollectorInstance()->addInstance(temp, id);
-    } else if (type== "f") {
+    } else if (type == "f") {
         float *temp = new float{};
         GarbageCollector::getGarbageCollectorInstance()->addInstance(temp, id);
-    } else if (type=="b") {
+    } else if (type == "b") {
         bool *temp = new bool{};
         GarbageCollector::getGarbageCollectorInstance()->addInstance(temp, id);
-    }else if (type=="l") {
+    } else if (type == "l") {
         long *temp = new long{};
         GarbageCollector::getGarbageCollectorInstance()->addInstance(temp, id);
-    }else if(type == "c"){
-        char* temp = new char{};
+    } else if (type == "c") {
+        char *temp = new char{};
         GarbageCollector::getGarbageCollectorInstance()->addInstance(temp, id);
-    }else if(type=="d"){
-        double* temp = new double{};
+    } else if (type == "d") {
+        double *temp = new double{};
         GarbageCollector::getGarbageCollectorInstance()->addInstance(temp, id);
 
     }
@@ -233,7 +234,7 @@ void instanceCreator(std::string& type, std::string& id) {
  * Evaluate JSON received from client
  * @param info json received from client socket
  */
-void ServerSocket::evaluateJson(Json::Value& info) {
+void ServerSocket::evaluateJson(Json::Value &info) {
     Json::StreamWriterBuilder builder;
     Json::FastWriter fastWriter;
     Json::Value obj = info["VSPtrInfo"];
@@ -242,15 +243,15 @@ void ServerSocket::evaluateJson(Json::Value& info) {
     if (info["COMMAND"] == "ADD") {
         std::cout << "Adding to Garbage Collector." << std::endl;
         std::string type = fastWriter.write(obj["type"]);
-        std::string  id = fastWriter.write(obj["id"]);
-        type = type.substr(1,1);
+        std::string id = fastWriter.write(obj["id"]);
+        type = type.substr(1, 1);
         instanceCreator(type, id);
         GarbageCollector::getGarbageCollectorInstance()->printGargabeCollectorInfo();
         std::string message = "INSTANCE ADDED";
-        sendMessage(currentSocket,message);
+        sendMessage(currentSocket, message);
     }
     if (info["COMMAND"] == "INCREMENT") {
-        std::string id =fastWriter.write(info["id"]);
+        std::string id = fastWriter.write(info["id"]);
         std::cout << "Incremented VSPtr recurrences in the Garbage Collector  xd.  " << id << std::endl;
         increment(id);
         std::string message = "INCREMENT DONE";
@@ -258,18 +259,18 @@ void ServerSocket::evaluateJson(Json::Value& info) {
     }
     if (info["COMMAND"] == "DECREMENT") {
         std::string id = fastWriter.write(info["id"]);
-        std::cout << "Decremented VSPtr recurrences in the Garbage Collector.  " << id  << std::endl;
+        std::cout << "Decremented VSPtr recurrences in the Garbage Collector.  " << id << std::endl;
         decrement(id);
         GarbageCollector::getGarbageCollectorInstance()->printGargabeCollectorInfo();
         std::string message = "DECREMENT DONE";
         sendMessage(currentSocket, message);
     }
-    if(info["COMMAND"] == "GET"){
+    if (info["COMMAND"] == "GET") {
         std::string id = fastWriter.write(info["id"]);
         std::string value = GarbageCollector::getGarbageCollectorInstance()->getValue(id);
         sendMessage(currentSocket, value);
     }
-    if(info["COMMAND"] == "SET"){
+    if (info["COMMAND"] == "SET") {
         std::string id = fastWriter.write(info["id"]);
         std::string newValue = info["newValue"].toStyledString();
         std::cout << newValue << "\n";
@@ -279,3 +280,24 @@ void ServerSocket::evaluateJson(Json::Value& info) {
 
     }
 }
+
+/**
+     * Receives string, this contains a password which is converted to MD5 to be sent when a client connects.
+     * @param password variable in this class.
+     */
+std::string ServerSocket::makeMD5(std::string message) {
+
+    unsigned char result[MD5_DIGEST_LENGTH];
+    MD5((unsigned char*)message.c_str(), message.size(), result);
+
+    std::ostringstream sout;
+    sout<<std::hex<<std::setfill('0');
+    for(long long c: result)
+    {
+        sout<<std::setw(2)<<(long long)c;
+    }
+    return sout.str();
+}
+
+
+
