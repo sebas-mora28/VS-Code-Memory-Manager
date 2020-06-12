@@ -186,9 +186,6 @@ export class HeapVisualizer {
 
 	
 
-
-
-
 		let heap_remote;
 		if(fs.existsSync(path.join(this._extensionPath, 'src/vsptrRemote.json'))){
 			let jsonFileServer = JSON.parse(fs.readFileSync(path.join(this._extensionPath, 'src/vsptrRemote.json'), 'utf8'));

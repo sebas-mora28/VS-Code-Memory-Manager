@@ -1,0 +1,40 @@
+{
+	"VSPtr" : 
+	[
+		{
+			"addr" : "0x55fa95571db0",
+			"id" : "\"5dqnmxkqhwhpnmmfmp13le4x\"\n",
+			"refcount" : "1",
+			"type" : "char",
+			"value" : "1"
+		},
+		{
+			"addr" : "0x55fa955717d0",
+			"id" : "\"67xfixjzfytj9nvnu4ytwfj8\"\n",
+			"refcount" : "1",
+			"type" : "double",
+			"value" : "145.254"
+		},
+		{
+			"addr" : "0x55fa955715c0",
+			"id" : "\"9gbrgt5epkhdghhxyf69o9va\"\n",
+			"refcount" : "1",
+			"type" : "float",
+			"value" : "145.254"
+		},
+		{
+			"addr" : "0x55fa95572910",
+			"id" : "\"r3dlc4cx6yak5spla63lye74\"\n",
+			"refcount" : "0",
+			"type" : "double",
+			"value" : "145.254"
+		},
+		{
+			"addr" : "0x55fa955718f0",
+			"id" : "\"vvcavxsww4pldnuq2rtj2lti\"\n",
+			"refcount" : "2",
+			"type" : "int",
+			"value" : "254"
+		}
+	]
+}

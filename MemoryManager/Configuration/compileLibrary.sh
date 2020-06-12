@@ -19,7 +19,7 @@ g++ -shared -std=c++17 -o libVSCode.so GarbageCollector.o UUID.o ClientSocket.o 
 #Delete .o produced in the first step
 rm GarbageCollector.o UUID.o RemoteMemory.o ClientSocket.o
 #cp ../GarbageCollector/*.h ../Configuration/lib
-#cp ../Client/*.h ../Configuration/lib
+cp ../Client/*.h ../Configuration/lib
 #cp ../VSPointer/*.h ../Configuration/lib
 mv libVSCode.so ../Configuration/lib
 

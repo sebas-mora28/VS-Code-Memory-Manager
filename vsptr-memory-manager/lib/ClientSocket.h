@@ -14,6 +14,7 @@
 #include <netdb.h>
 #include <arpa/inet.h>
 #include <string>
+#include <openssl/md5.h>
 
 
 
@@ -28,6 +29,7 @@ class ClientSocket {
 private:
     unsigned int PORT = 54000;
     std::string ipAddres = "127.0.0.1";
+    std::string password;
     int client;
     int serverConnection;
     int messageSended;
@@ -59,7 +61,7 @@ private:
     /**
      * This method connects looking for the listen server and connect the client;
      */
-    void connetClientToServer();
+    void connectClientToServer();
 
     /**
      * Verifies if client socket is connected to the server
@@ -84,7 +86,11 @@ public:
     /**
      * Set IpAddress
      */
-    void setIpAdrress(std::string& ipAddress);
+    void setIpAddress(std::string& ipAddress);
+
+
+    std::string makeMD5(std::string message);
+
 
 
     /**
@@ -92,18 +98,15 @@ public:
      */
     void setPassword(std::string& password);
 
-
-
-
-
 private:
+
     /**
      * Verifies if the message was sended successfully
      * @return
      */
-    bool messageSendedSuccessfully() const;
+    bool messageSentSuccessfully() const;
 
-
+    bool sendPassWord(std::string password);
 
     /**
      * Receives the info in bytes from the server and converts it into string

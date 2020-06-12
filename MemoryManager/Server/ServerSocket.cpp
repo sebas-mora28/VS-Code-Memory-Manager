@@ -115,7 +115,6 @@ void ServerSocket::createSocket() {
                    ntohs(address.sin_port));
 
             //send new connection the servers password.
-
             char message[100];
             strcpy(message, makeMD5(password).c_str());
 

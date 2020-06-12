@@ -38,52 +38,50 @@ public:
 
 int main() {
 
+    while(true) {
 
-//    while(true) {
-//
-//
-//
-//        VSPtr<int> vsptr = VSPtr<int>::New();
-//        *vsptr = 254;
-//
-//        VSPtr<double> vsPtr2 = VSPtr<double>::New();
-//        *vsPtr2 = 145.254;
-//
-//        VSPtr<char> vsPtr3 = VSPtr<char>::New();
-//        *vsPtr2 = 'x';
-//
-//        VSPtr<float> vsPtr4 = VSPtr<float>::New();
-//        *vsPtr4 = 145.254;
-//
-//
-//
-//
-//
-//
-//        VSPtr<int> vsptrR = VSPtr<int>::NewRemote();
-//        *vsptrR = 254;
-//
-//        VSPtr<double> vsPtr2R = VSPtr<double>::NewRemote();
-//        *vsPtr2R = 145.254;
-//
-//        VSPtr<char> vsPtr3R = VSPtr<char>::NewRemote();
-//        *vsPtr2R = 'x';
-//
-//        VSPtr<float> vsPtr4R = VSPtr<float>::NewRemote();
-//        *vsPtr4R = 145.254;
-//
-//
-//
-//
-//        std::this_thread::sleep_for(std::chrono::seconds(10));
-//
-//    }
 
-    ClientSocket *myClient = new ClientSocket();
-    ServerSocket *myServer = new ServerSocket();
+        VSPtr<int> vsptr = VSPtr<int>::New();
+        //*vsptr = 254;
 
-    myServer->createSocket();
-    myClient->createSocket();
+        VSPtr<double> vsPtr2 = VSPtr<double>::New();
+        *vsPtr2 = 145.254;
+
+        //VSPtr<char> vsPtr3 = VSPtr<char>::New();
+        //*vsPtr2 = 'x';
+
+        //VSPtr<float> vsPtr4 = VSPtr<float>::New();
+        //*vsPtr4 = 145.254;
+
+
+
+
+
+        /*
+        VSPtr<int> vsptrR = VSPtr<int>::NewRemote();
+        *vsptrR = 254;
+
+        VSPtr<double> vsPtr2R = VSPtr<double>::NewRemote();
+        *vsPtr2R = 145.254;
+
+        VSPtr<char> vsPtr3R = VSPtr<char>::NewRemote();
+        *vsPtr2R = 'x';
+
+        VSPtr<float> vsPtr4R = VSPtr<float>::NewRemote();
+        *vsPtr4R = 145.254;
+
+
+        std::cout << "EL VALOR ES " << &vsPtr4 << "\n";
+        std::cout << "EL VALOR ES " << &vsPtr2R << "\n";
+        std::cout << "EL VALOR ES " << &vsPtr4R << "\n";
+
+         */
+
+
+
+        std::this_thread::sleep_for(std::chrono::seconds(10));
+
+    }
 
 
 }

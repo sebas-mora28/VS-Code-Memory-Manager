@@ -176,6 +176,7 @@ export class RemoteMemory {
 
 				<p1 id="default_port"> Default PORT : 54000 </p1>
 				<p1 id="default_ip" > Default Ip Address : 127.0.0.1</p1>
+				<p1 id="defualt_password"> Default Password : GCSERVER</p1>
 			
 				<form>
 		

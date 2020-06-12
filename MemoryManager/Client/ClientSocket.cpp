@@ -22,7 +22,7 @@ void ClientSocket::createSocket(){
             throw std::exception();
         }
         //Acá tiene que pasarle a connectClientToServer la contraseña que se agarra del input.
-        connectClientToServer("GCSERVER");
+        connectClientToServer();
     } catch (std::exception& err) {
         std::cout << "Error creating client  : " << err.what() << "\n";
     }
@@ -61,7 +61,7 @@ bool ClientSocket::isClientCreatedSuccessfully() const {
 /**
  * This method connects looking for the listen server and connect the client;
  */
-void ClientSocket::connectClientToServer(std::string password)  {
+void ClientSocket::connectClientToServer()  {
     hint.sin_family = AF_INET;
     hint.sin_port = htons(PORT);
     try {
@@ -69,7 +69,10 @@ void ClientSocket::connectClientToServer(std::string password)  {
 
         serverConnection = connect(client, (sockaddr *) &hint, sizeof(hint));
 
-        std::string message = messageReceivedFromServer();
+        char bufferReceived[1024];
+        memset(bufferReceived, 0, 1024);
+        int bytesReceived = recv(client, bufferReceived, 1024, 0);
+        std::string message = std::string(bufferReceived, bytesReceived);
 
         if (!isClientConnectedToServer() and (message == makeMD5(password))) {
             throw std::exception();
@@ -173,6 +176,7 @@ ClientSocket::ClientSocket() {
         reader.parse(connectionInfo, obj);
         this->PORT =  obj["ConnectionInfo"]["PORT"].asInt();
         this->ipAddres = obj["ConnectionInfo"]["IpAdress"].toStyledString();
+        this->password = obj["ConnectionInfo"]["password"].toStyledString();
         */
 }
 
