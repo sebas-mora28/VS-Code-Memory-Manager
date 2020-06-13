@@ -187,6 +187,7 @@ export class HeapVisualizer {
 	
 
 		let heap_remote;
+		//<link rel="stylesheet" type="text/css" href="${UriStyle}">
 		if(fs.existsSync(path.join(this._extensionPath, 'src/vsptrRemote.json'))){
 			let jsonFileServer = JSON.parse(fs.readFileSync(path.join(this._extensionPath, 'src/vsptrRemote.json'), 'utf8'));
 			heap_remote = this.getHeapTable(jsonFileServer);
@@ -201,6 +202,55 @@ export class HeapVisualizer {
             <head>
 				<meta charset="UTF-8">
 
+
+
+				<style>
+
+					table {
+  					  	border-radius: 5px;
+    					font-size: 12px;
+    					font-weight: normal;
+    					border: none;
+    					border-collapse: collapse;
+    					width: 100%;
+    					max-width: 100%;
+    					white-space: nowrap;
+    					background-color: white;
+  
+					}
+
+
+					td, th {
+    					text-align: center;
+    					padding: 8px;
+					}
+
+					td {
+    					border-right: 1px solid #f8f8f8;
+    					font-size: 12px;
+    					text-shadow: black;
+    					color: black;
+    					text-align: center;
+					}
+
+					th {
+  				  		color: #ffffff;
+   						background: #4FC3A1;
+					}
+
+					tr:nth-child(even) {
+    					background: #F8F8F8;
+					}
+
+					th:nth-child(odd) {
+    					color: #ffffff;
+   						 background: #324960;
+					}
+
+
+
+				</style> 
+
 		
 	
                 <!--
@@ -208,7 +258,7 @@ export class HeapVisualizer {
                 and only allow scripts that have a specific nonce.
                 -->
                 
-				<link rel="stylesheet" type="text/css" href="${UriStyle}">
+				
 				<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
                 <title>VSCode Heap Visualizer</title>

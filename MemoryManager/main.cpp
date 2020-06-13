@@ -9,58 +9,36 @@
 #include "unordered_map"
 
 
-/*
-class Base{
-
-    std::string id;
-
-    virtual void* get();
-
-};
-
-template<class T>
-class Derivded : public Base {
-
-
-public :
-    Derivded(T& instance){
-        this->instance = instance;
-}
-    void* get(){
-        return instance;
-    }
-
-public:
-    T instance;
-};
-
-*/
-
 int main() {
+
+
 
     while(true) {
 
 
         VSPtr<int> vsptr = VSPtr<int>::New();
-        //*vsptr = 254;
+        *vsptr = 845;
 
-        VSPtr<double> vsPtr2 = VSPtr<double>::New();
-        *vsPtr2 = 145.254;
-
-        //VSPtr<char> vsPtr3 = VSPtr<char>::New();
-        //*vsPtr2 = 'x';
+        VSPtr<char> vsPtr3 = VSPtr<char>::New();
+        *vsPtr3 = 'x';
 
         //VSPtr<float> vsPtr4 = VSPtr<float>::New();
         //*vsPtr4 = 145.254;
 
 
 
-
-
         /*
         VSPtr<int> vsptrR = VSPtr<int>::NewRemote();
-        *vsptrR = 254;
+        *vsptrR = 145;
 
+        vsptr = vsptrR;
+
+        *vsptr = 45;
+         * */
+
+
+        std::cout << "EL VALOR ES : " << &vsPtr3<< "\n";
+        /*
         VSPtr<double> vsPtr2R = VSPtr<double>::NewRemote();
         *vsPtr2R = 145.254;
 

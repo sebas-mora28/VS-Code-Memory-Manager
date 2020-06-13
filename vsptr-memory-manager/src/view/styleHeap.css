@@ -1,8 +1,5 @@
 
-
 table {
-
-
     border-radius: 5px;
     font-size: 12px;
     font-weight: normal;
@@ -12,11 +9,8 @@ table {
     max-width: 100%;
     white-space: nowrap;
     background-color: white;
-
-
-    
+  
 }
-
 
 
 td, th {

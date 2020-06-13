@@ -2,39 +2,46 @@
 	"VSPtr" : 
 	[
 		{
-			"addr" : "0x55fa95571db0",
-			"id" : "\"5dqnmxkqhwhpnmmfmp13le4x\"\n",
-			"refcount" : "1",
-			"type" : "char",
-			"value" : "1"
+			"addr" : "0x562492e8b850",
+			"id" : "\"7h994si1acjv9aez4fin4yy6\"\n",
+			"refcount" : "2",
+			"type" : "int",
+			"value" : "745"
 		},
 		{
-			"addr" : "0x55fa955717d0",
-			"id" : "\"67xfixjzfytj9nvnu4ytwfj8\"\n",
-			"refcount" : "1",
-			"type" : "double",
-			"value" : "145.254"
+			"addr" : "0x562492e8d100",
+			"id" : "\"jdyvitizdcs4sudxximjhsu8\"\n",
+			"refcount" : "2",
+			"type" : "int",
+			"value" : "4556"
 		},
 		{
-			"addr" : "0x55fa955715c0",
-			"id" : "\"9gbrgt5epkhdghhxyf69o9va\"\n",
-			"refcount" : "1",
+			"addr" : "0x562492e8c4a0",
+			"id" : "\"l3hgxr6b3fv1q4rw7v8rpcdf\"\n",
+			"refcount" : "2",
 			"type" : "float",
 			"value" : "145.254"
 		},
 		{
-			"addr" : "0x55fa95572910",
-			"id" : "\"r3dlc4cx6yak5spla63lye74\"\n",
-			"refcount" : "0",
-			"type" : "double",
-			"value" : "145.254"
+			"addr" : "0x562492e8b5c0",
+			"id" : "\"mjnh2o8id4qgearuag1apcyj\"\n",
+			"refcount" : "1",
+			"type" : "bool",
+			"value" : "0"
 		},
 		{
-			"addr" : "0x55fa955718f0",
-			"id" : "\"vvcavxsww4pldnuq2rtj2lti\"\n",
-			"refcount" : "2",
-			"type" : "int",
-			"value" : "254"
+			"addr" : "0x562492e8bcb0",
+			"id" : "\"qtq9nhvld6w5p3vmfaqx335y\"\n",
+			"refcount" : "0",
+			"type" : "bool",
+			"value" : "0"
+		},
+		{
+			"addr" : "0x562492e8bed0",
+			"id" : "\"rsbxa96qh3xw63mc529kgfw8\"\n",
+			"refcount" : "1",
+			"type" : "double",
+			"value" : "14788.3"
 		}
 	]
 }

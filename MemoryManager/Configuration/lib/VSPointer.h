@@ -149,7 +149,9 @@ public:
         this->is_remote ? decrementRefCountRemotely(id) : decrementRefCountLocally(id);
         addr = other.get_ptr();
         id = other.get_id();
+        std::cout << "NEW ID " << id;
         other.is_remote ? incrementRefCountRemotely(id) : incrementRefCountLocally(id);
+        other.is_remote ? this->is_remote=true : this->is_remote=false;
         GarbageCollector::getGarbageCollectorInstance()->printGargabeCollectorInfo();
         return *this;
     }
@@ -180,7 +182,12 @@ public:
      */
     T& operator&() {
         if(!is_remote){
-            return *addr;
+            //return *addr;
+            T* value = new T{};
+            std::string val = GarbageCollector::getGarbageCollectorInstance()->getValue(id);
+            std::stringstream str(val);
+            str >> (*value);
+            return *value;
         }else{
             T* value = new T{};
             std::string val = RemoteMemory::getInstance()->getValue(id);

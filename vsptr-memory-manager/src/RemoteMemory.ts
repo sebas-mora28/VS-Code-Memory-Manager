@@ -6,7 +6,6 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
 import * as fs from 'fs';
-import * as ffi from 'ffi-napi';
 
 
 export class RemoteMemory {
@@ -159,11 +158,131 @@ export class RemoteMemory {
 		let renderedHtlm = `<!DOCTYPE html>
 		<html>
 			<body>
+
+
+				<style> 
+
+
+
+					#title {
+    				color: white;
+    				position: absolute;
+    				left: 100px;
+					}
+
+					#default_port {
+    					position: absolute;
+    					left: 50px;
+    					top: 90px;
+    					font-family: Arial, Helvetica, sans-serif;
+    					font-weight: bold;
+    					font-size: 20px;
+    					color:white;
+					}
+
+					#default_ip {
+    					position: absolute;
+    					left: 53px;
+    					top: 140px;
+    					font-family: Arial, Helvetica, sans-serif;
+    					font-size: 20px;
+    					font-weight: bold;
+    					color : white
+					}
+
+					#defualt_password {
+    					position: absolute;
+    					left: 53px;
+    					top: 190px;
+    					font-family: Arial, Helvetica, sans-serif;
+    					font-size: 20px;
+    					font-weight: bold;
+    					color : white
+
+
+					}
+
+					#connection{
+    					position: absolute;
+    					left: 53px;
+    					top: 530px;
+    					width: 135px;
+    					height: 40px;
+    					font-weight: bold;
+    					font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    					font-size: 20px;
+    					background-color: rgb(41, 179, 23);
+					}
+
+
+					input{
+    					font-size: 25px;
+    					font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    					font-weight: bold;
+   						width: 240px;
+    					height: 35px;
+					}
+
+
+					#ipAddress{
+    					position: absolute;
+    					left: 50px;
+    					top: 270px;
+ 
+
+					}
+
+					#labelIpAddress{
+    					position: absolute;
+    					left: 53px;
+    					top: 230px;
+    					font-size: 30px;
+    					font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    					font-weight: bold;
+					}
+
+
+					#password{
+  						position: absolute;
+   						left: 53px;
+    					top: 470px;
+
+					}
+
+					#labelPassword{
+  						position: absolute;
+  						left: 53px;
+    					top: 430px;
+    					font-size: 30px;
+    					font-weight: bold;
+    					font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+						}
+
+
+					#port{
+    					position: absolute;
+    					left: 50px;
+    					top:370px;
+
+    
+					}
+
+					#labelPort{
+    					position: absolute;
+    					left: 53px;
+    					top: 330px;
+    					font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    					font-size: 30px;
+    					font-weight: bold;
+					}
+
+
+				</style>
 		
 				<head>
                     <script type="text/javascript" src='./view/clientInformation.ts'> </script>
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <link rel="stylesheet" type="text/css" href="${UriStyle}">
+                    
 					<title >REMOTE GARBAGE COLLECTOR</title>
 				</head>
 		
@@ -192,8 +311,7 @@ export class RemoteMemory {
 					<input type="text" id="port" name="port" ><br>
 		
 		
-		
-		
+	
 				</form>
 			
 			
@@ -214,8 +332,7 @@ export class RemoteMemory {
 							_PORT : PORT,
 							_IPADDRESS : IpAdress,
 							_PASSWORD : PASSWORD
-						})
-						
+						});	
 
 					}
 					

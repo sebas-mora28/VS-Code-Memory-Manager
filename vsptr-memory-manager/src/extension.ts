@@ -11,8 +11,6 @@ const exec  = require('child_process').exec;
 
 let panel_remote_memory : vscode.WebviewPanel; 
 
-const ffi = require('ffi-napi');
-
 
 
 // this method is called when your extension is activated
@@ -41,7 +39,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 
 
-		try{
+	try{
 		if (vscode.window.registerWebviewPanelSerializer) {
 			// Make sure we register a serializer in activation event
 			vscode.window.registerWebviewPanelSerializer(HeapVisualizer.viewType, {
@@ -55,19 +53,6 @@ export function activate(context: vscode.ExtensionContext) {
 	}catch(error){
 		console.log(error);
 	}
-
-
-
-	//Copy and paste the library to the working directory 
-	
-
-
-	
-	//Init server 
-	 
-
-
-
 }
 	
 

@@ -191,7 +191,7 @@ void GarbageCollector::generateJSON() {
 
     }
     my_list["VSPtr"] = vec;
-    std::ofstream file("./lib/vsptr.json");
+    std::ofstream file("./vsptrRemote.json");
     writer.write(file, my_list);
     file.close();
 }
